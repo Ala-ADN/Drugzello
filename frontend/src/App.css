@@ -1,8 +1,137 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.left-panel {
+  flex: 1;
   padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.right-panel {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.panel-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
   text-align: center;
+}
+
+.editor-container {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  height: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-weight: 600;
+  color: #555;
+  text-align: left;
+}
+
+.control-group select {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  transition: border-color 0.3s ease;
+}
+
+.control-group select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.check-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.check-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.check-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 600;
+  padding: 1rem;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+}
+
+.result {
+  background: rgba(39, 174, 96, 0.1);
+  border: 2px solid #27ae60;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.result h2 {
+  color: #27ae60;
+  margin: 0 0 1rem 0;
+}
+
+.result p {
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .logo {
@@ -39,4 +168,475 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Laboratory Flask Styles */
+.lab-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.molecule-preview {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 120px;
+  background: transparent;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  z-index: 10;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  /* Add subtle shadow for floating effect */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* Special styling for molecule image vs fallback display */
+.molecule-preview.has-image {
+  background: transparent;
+  border: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+.molecule-preview.has-fallback {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.molecule-preview.updated {
+  animation: moleculePulse 0.5s ease-in-out;
+}
+
+.molecule-preview.dropping {
+  animation: moleculeDrop 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.molecule-preview.vanished {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(280px) scale(0.3);
+}
+
+.molecule-preview.reappearing {
+  animation: moleculeReappear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes moleculePulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+@keyframes moleculeDrop {
+  0% { 
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+  70% { 
+    transform: translateX(-50%) translateY(250px) scale(0.8);
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(-50%) translateY(280px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes moleculeReappear {
+  0% { 
+    transform: translateX(-50%) translateY(280px) scale(0.3);
+    opacity: 0;
+    visibility: visible;
+  }
+  30% { 
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+    opacity: 0.8;
+  }
+  70% { 
+    transform: translateX(-50%) translateY(10px) scale(0.95);
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.flask-container {
+  position: relative;
+  width: 280px;
+  height: 420px;
+  margin-top: 50px;
+}
+
+.flask {
+  position: absolute;
+  width: 280px;
+  height: 420px;
+  background: transparent;
+  border: 4px solid #333;
+  border-radius: 0 0 140px 140px;
+  border-top: none;
+  overflow: hidden;
+}
+
+.solvent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  border-radius: 0 0 136px 136px;
+  transition: all 0.5s ease;
+}
+
+.solvent.water {
+  background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 50%, #0288d1 100%);
+  animation: waterWave 2s ease-in-out infinite;
+}
+
+.solvent.water.splash {
+  animation: waterWave 2s ease-in-out infinite, solventSplash 1s ease-out;
+}
+
+.solvent.oil {
+  background: linear-gradient(180deg, #ffb74d 0%, #ff9800 50%, #f57c00 100%);
+  animation: oilWave 2.5s ease-in-out infinite;
+}
+
+.solvent.oil.splash {
+  animation: oilWave 2.5s ease-in-out infinite, solventSplash 1s ease-out;
+}
+
+.solvent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: surfaceWave 1.5s ease-in-out infinite;
+}
+
+@keyframes waterWave {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes oilWave {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes surfaceWave {
+  0%, 100% { 
+    transform: scaleX(1) translateY(0px);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scaleX(1.1) translateY(-2px);
+    opacity: 0.5;
+  }
+}
+
+@keyframes solventSplash {
+  0% { 
+    transform: translateY(0px) scaleY(1);
+  }
+  30% { 
+    transform: translateY(-20px) scaleY(1.3);
+  }
+  60% { 
+    transform: translateY(-10px) scaleY(1.1);
+  }
+  100% { 
+    transform: translateY(0px) scaleY(1);
+  }
+}
+
+/* Splash Particles */
+.splash-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+.splash-1 {
+  top: 40%;
+  left: 30%;
+  animation: splashParticle1 1s ease-out;
+}
+
+.splash-2 {
+  top: 40%;
+  right: 30%;
+  animation: splashParticle2 1s ease-out;
+}
+
+.splash-3 {
+  top: 35%;
+  left: 50%;
+  animation: splashParticle3 1s ease-out;
+}
+
+.splash-4 {
+  top: 45%;
+  left: 40%;
+  animation: splashParticle4 1s ease-out;
+}
+
+@keyframes splashParticle1 {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(-30px, -40px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes splashParticle2 {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(30px, -35px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes splashParticle3 {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(0, -50px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes splashParticle4 {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(-15px, -30px) scale(0);
+    opacity: 0;
+  }
+}
+
+.flask-label {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.no-solvent-message {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Modal Popup Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 2rem;
+  background: #f8f9fa;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-item label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.solubility-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.solubility-value.high {
+  background: #d4edda;
+  color: #155724;
+  border: 2px solid #c3e6cb;
+}
+
+.solubility-value.low {
+  background: #f8d7da;
+  color: #721c24;
+  border: 2px solid #f5c6cb;
+}
+
+.solubility-value.medium {
+  background: #fff3cd;
+  color: #856404;
+  border: 2px solid #ffeaa7;
+}
+
+.result-explanation {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-explanation label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.result-explanation p {
+  margin: 0;
+  line-height: 1.6;
+  color: #555;
+  font-size: 1rem;
+}
+
+.modal-footer {
+  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.modal-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.modal-button:active {
+  transform: translateY(0);
 }

@@ -48,7 +48,7 @@ def list_molecules():
 @app.post("/molecules", response_model=Molecule)
 def create_molecule(mol: MoleculeCreate):
     # Mock rdkit verification
-    if not mol.smiles or "@" in mol.smiles:
+    if not mol.smiles:
         raise HTTPException(status_code=400, detail="Invalid molecule (mocked rdkit check)")
     new_id = len(MOCK_MOLECULES) + 1
     molecule = {"id": new_id, **mol.dict()}
@@ -69,7 +69,7 @@ def check_solubility(req: SolubilityRequest):
         smiles = mol["smiles"]
     elif req.smiles:
         # Mock rdkit verification
-        if not req.smiles or "@" in req.smiles:
+        if not req.smiles:
             raise HTTPException(status_code=400, detail="Invalid molecule (mocked rdkit check)")
         smiles = req.smiles
     else:

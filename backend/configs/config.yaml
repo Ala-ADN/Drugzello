@@ -1,0 +1,34 @@
+# Main application configuration
+app:
+  name: "Drugzello ML Backend"
+  version: "1.0.0"
+  debug: false
+  
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:5173"  # Frontend development server
+    - "http://localhost:3000"  # Alternative frontend port
+
+# Data paths
+data:
+  raw_data_path: "data/raw"
+  processed_data_path: "data/processed"
+  features_path: "data/features"
+  
+# Model configuration
+model:
+  model_path: "models/trained"
+  experiments_path: "models/experiments"
+  registry_path: "models/registry"
+  
+# Logging
+logging:
+  level: "INFO"
+  format: "structured"
+  
+# Monitoring
+monitoring:
+  enable_metrics: true
+  metrics_port: 9090

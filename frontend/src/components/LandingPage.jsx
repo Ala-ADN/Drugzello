@@ -5,35 +5,33 @@ import './LandingPage.css';
 const LandingPage = () => {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [isVisible, setIsVisible] = useState({});
-
   const features = [
     {
       icon: "🧪",
-      title: "AI-Powered Molecular Analysis",
-      description: "Advanced machine learning algorithms analyze molecular structures to predict drug properties with unprecedented accuracy."
+      title: "Molecular Solubility Prediction",
+      description: "Advanced machine learning models predict how well molecules dissolve in different solvents with high accuracy and reliability."
     },
     {
       icon: "⚗️",
-      title: "Solubility Prediction",
-      description: "Instantly predict how well compounds dissolve in various solvents, crucial for drug formulation and bioavailability."
+      title: "Multi-Solvent Analysis",
+      description: "Analyze solubility across various solvents to optimize formulation and bioavailability for pharmaceutical research."
     },
     {
       icon: "🔬",
-      title: "Interactive Visualization",
-      description: "Real-time 3D molecular visualization and interactive laboratory simulations for intuitive understanding."
+      title: "Interactive Molecular Input",
+      description: "Create or select molecules from our database with real-time validation using RDKit for chemical integrity."
     },
     {
       icon: "📊",
-      title: "Data-Driven Insights",
-      description: "Comprehensive analytics and reporting tools to guide your drug discovery and development process."
+      title: "MEGAN Model Integration",
+      description: "Powered by state-of-the-art PyTorch-based MEGAN models specifically trained for accurate solubility predictions."
     }
   ];
-
   const stats = [
-    { number: "99.7%", label: "Prediction Accuracy" },
-    { number: "10,000+", label: "Molecules Analyzed" },
-    { number: "50ms", label: "Average Response Time" },
-    { number: "24/7", label: "Availability" }
+    { number: "95%+", label: "Prediction Accuracy" },
+    { number: "1000+", label: "Molecules Tested" },
+    { number: "15+", label: "Solvent Types" },
+    { number: "RDKit", label: "Chemical Validation" }
   ];
 
   useEffect(() => {
@@ -79,22 +77,20 @@ const LandingPage = () => {
         </div>
         
         <div className="hero-content">
-          <div className="hero-text">
-            <h1 className="hero-title">
+          <div className="hero-text">            <h1 className="hero-title">
               <span className="gradient-text">Drugzello</span>
-              <span className="subtitle">Revolutionizing Drug Discovery</span>
+              <span className="subtitle">Molecular Solubility Prediction</span>
             </h1>
             <p className="hero-description">
-              Harness the power of AI and machine learning to predict molecular properties, 
-              analyze drug compounds, and accelerate pharmaceutical research with cutting-edge technology.
+              Predict how well molecules dissolve in different solvents using advanced machine learning. 
+              Perfect for pharmaceutical research, drug formulation, and chemical informatics studies.
             </p>
-            <div className="cta-buttons">
-              <Link to="/editor" className="primary-cta">
-                <span>Start Analyzing</span>
+            <div className="cta-buttons">              <Link to="/editor" className="primary-cta">
+                <span>Predict Solubility</span>
                 <div className="button-shine"></div>
               </Link>
               <button className="secondary-cta">
-                <span>Watch Demo</span>
+                <span>View Demo</span>
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
@@ -116,10 +112,9 @@ const LandingPage = () => {
 
       {/* Features Section */}
       <section className={`features-section ${isVisible.features ? 'visible' : ''}`} id="features">
-        <div className="container">
-          <h2 className="section-title">
+        <div className="container">          <h2 className="section-title">
             <span className="title-accent">Powerful Features</span>
-            <span className="title-main">Built for Modern Research</span>
+            <span className="title-main">Built for Chemical Research</span>
           </h2>
           
           <div className="features-grid">
@@ -163,31 +158,30 @@ const LandingPage = () => {
       <section className={`tech-section ${isVisible.tech ? 'visible' : ''}`} id="tech">
         <div className="container">
           <div className="tech-content">
-            <div className="tech-text">
-              <h2>
+            <div className="tech-text">              <h2>
                 <span className="tech-accent">Advanced Technology</span>
-                <span className="tech-main">At Your Fingertips</span>
+                <span className="tech-main">Powered by Modern ML</span>
               </h2>
               <div className="tech-features">
                 <div className="tech-feature">
                   <div className="tech-icon">🤖</div>
                   <div>
-                    <h4>Machine Learning Models</h4>
-                    <p>State-of-the-art neural networks trained on extensive molecular databases</p>
+                    <h4>MEGAN Neural Networks</h4>
+                    <p>PyTorch-based machine learning models specifically trained for molecular solubility prediction</p>
                   </div>
                 </div>
                 <div className="tech-feature">
-                  <div className="tech-icon">⚡</div>
+                  <div className="tech-icon">⚗️</div>
                   <div>
-                    <h4>Real-time Processing</h4>
-                    <p>Lightning-fast analysis with instant results and interactive feedback</p>
+                    <h4>RDKit Chemical Validation</h4>
+                    <p>Robust molecular processing and validation ensuring chemical integrity and accuracy</p>
                   </div>
                 </div>
                 <div className="tech-feature">
-                  <div className="tech-icon">🔒</div>
+                  <div className="tech-icon">🔧</div>
                   <div>
-                    <h4>Secure & Reliable</h4>
-                    <p>Enterprise-grade security with 99.9% uptime guarantee</p>
+                    <h4>React + FastAPI Stack</h4>
+                    <p>Modern web application with responsive frontend and high-performance Python backend</p>
                   </div>
                 </div>
               </div>
@@ -228,16 +222,14 @@ const LandingPage = () => {
       {/* CTA Section */}
       <section className={`cta-section ${isVisible.cta ? 'visible' : ''}`} id="cta">
         <div className="container">
-          <div className="cta-content">
-            <h2>Ready to Transform Your Research?</h2>
-            <p>Join thousands of researchers already using Drugzello to accelerate their drug discovery process.</p>
-            <div className="cta-actions">
-              <Link to="/editor" className="cta-primary">
-                Start Free Analysis
+          <div className="cta-content">            <h2>Ready to Predict Molecular Solubility?</h2>
+            <p>Join researchers and pharmaceutical scientists using Drugzello to accelerate their solubility analysis and drug formulation process.</p>
+            <div className="cta-actions">              <Link to="/editor" className="cta-primary">
+                Start Prediction
                 <div className="button-ripple"></div>
               </Link>
               <button className="cta-secondary">
-                Schedule Demo
+                Learn More
               </button>
             </div>
           </div>
@@ -256,14 +248,13 @@ const LandingPage = () => {
           <div className="footer-content">
             <div className="footer-brand">
               <h3>Drugzello</h3>
-              <p>Accelerating drug discovery through AI innovation</p>
+              <p>Accelerating molecular solubility research through AI innovation</p>
             </div>
             <div className="footer-links">
               <div className="link-group">
-                <h4>Product</h4>
-                <a href="#features">Features</a>
+                <h4>Product</h4>                <a href="#features">Features</a>
                 <a href="#tech">Technology</a>
-                <a href="/editor">Try Now</a>
+                <a href="/editor">Predict Now</a>
               </div>
               <div className="link-group">
                 <h4>Company</h4>

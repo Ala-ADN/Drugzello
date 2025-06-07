@@ -1,0 +1,36 @@
+# Model-specific configuration
+model:
+  name: "MEGAN_Solubility"
+  type: "regression"
+
+  # Model architecture
+  architecture:
+    hidden_layers: [512, 256, 128]
+    dropout_rate: 0.2
+    activation: "relu"
+
+  # Training parameters
+  training:
+    batch_size: 32
+    learning_rate: 0.001
+    epochs: 100
+    early_stopping_patience: 10
+    validation_split: 0.2
+
+  # Feature engineering
+  features:
+    molecular_descriptors:
+      - "molecular_weight"
+      - "logp"
+      - "tpsa"
+      - "num_rotatable_bonds"
+    fingerprints:
+      - "morgan"
+      - "rdkit"
+    max_features: 2048
+
+  # Target variable
+  target:
+    name: "solubility"
+    scale: "log"
+    units: "mol/L"

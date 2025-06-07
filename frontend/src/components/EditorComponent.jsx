@@ -1,0 +1,343 @@
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { Editor } from 'ketcher-react';
+import { StandaloneStructServiceProvider } from 'ketcher-standalone';
+import "ketcher-react/dist/index.css";
+import './EditorComponent.css'; // Assuming you have a CSS file for styles
+const structServiceProvider = new StandaloneStructServiceProvider();
+const apiBase = import.meta.env.VITE_API_URL || '';
+
+const EditorComponent = () => {
+  const editorRef = useRef(null);
+  const [molecules, setMolecules] = useState([]);
+  const [solvents, setSolvents] = useState([]);
+  const [selectedMolId, setSelectedMolId] = useState(null);
+  const [selectedSolvent, setSelectedSolvent] = useState('');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [currentMolecule, setCurrentMolecule] = useState(null);
+  const [moleculeUpdated, setMoleculeUpdated] = useState(false);
+  const [moleculeImage, setMoleculeImage] = useState(null);
+  const [isDropping, setIsDropping] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
+  const [moleculeVanished, setMoleculeVanished] = useState(false);
+  const [moleculeReappearing, setMoleculeReappearing] = useState(false);
+  const [isCheckingMolecule, setIsCheckingMolecule] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+
+  useEffect(() => {
+    fetch(`${apiBase}/molecules`)
+      .then(res => res.json())
+      .then(setMolecules)
+      .catch(() => {});
+    fetch(`${apiBase}/solvents`)
+      .then(res => res.json())
+      .then(setSolvents)
+      .catch(() => {});
+  }, []);
+
+  const updateMoleculePreview = useCallback(async () => {
+    try {
+      if (editorRef.current) {
+        const smiles = await editorRef.current.getSmiles();
+        const molfile = await editorRef.current.getMolfile();
+        const newMolecule = { smiles, molfile };
+
+        if (smiles && smiles.trim() && smiles !== '') {
+          try {
+            const imageBlob = await editorRef.current.generateImage(molfile, {
+              outputFormat: 'svg'
+            });
+
+            if (imageBlob) {
+              const imageUrl = URL.createObjectURL(imageBlob);
+              setMoleculeImage(imageUrl);
+            }
+          } catch {
+            try {
+              const pngBlob = await editorRef.current.generateImage(molfile, {
+                outputFormat: 'png'
+              });
+
+              if (pngBlob) {
+                const imageUrl = URL.createObjectURL(pngBlob);
+                setMoleculeImage(imageUrl);
+              } else {
+                setMoleculeImage(null);
+              }
+            } catch {
+              setMoleculeImage(null);
+            }
+          }
+        } else {
+          setMoleculeImage(null);
+        }
+
+        const moleculeChanged = currentMolecule && currentMolecule.smiles !== smiles;
+        const isSignificantChange = moleculeChanged && smiles && smiles.trim() !== '';
+
+        if (isSignificantChange && !isCheckingMolecule) {
+          if (moleculeVanished) {
+            setMoleculeVanished(false);
+            setMoleculeReappearing(true);
+            setTimeout(() => setMoleculeReappearing(false), 800);
+          } else if (!moleculeVanished) {
+            setMoleculeUpdated(true);
+            setTimeout(() => setMoleculeUpdated(false), 500);
+          }
+        }
+
+        setCurrentMolecule(newMolecule);
+      }
+    } catch (error) {
+      console.error('Error updating molecule preview:', error);
+    }
+  }, [currentMolecule, moleculeVanished, isCheckingMolecule]);
+
+  useEffect(() => {
+    if (selectedMolId && editorRef.current) {
+      setTimeout(() => {
+        updateMoleculePreview();
+      }, 500);
+    }
+  }, [selectedMolId, updateMoleculePreview]);
+
+  useEffect(() => {
+    if (moleculeVanished && selectedSolvent) {
+      setMoleculeVanished(false);
+      setMoleculeReappearing(true);
+      setTimeout(() => setMoleculeReappearing(false), 800);
+    }
+  }, [selectedSolvent, moleculeVanished]);
+
+  useEffect(() => {
+    if (moleculeVanished && selectedMolId) {
+      setMoleculeVanished(false);
+      setMoleculeReappearing(true);
+      setTimeout(() => setMoleculeReappearing(false), 800);
+    }
+  }, [selectedMolId, moleculeVanished]);
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && showResultModal) {
+        setShowResultModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showResultModal]);
+
+  const handleCheck = async () => {
+    setResult(null);
+    setError('');
+    setLoading(true);
+    setIsCheckingMolecule(true);
+
+    if ((currentMolecule?.smiles || selectedMolId) && selectedSolvent) {
+      setIsDropping(true);
+
+      setTimeout(() => {
+        setShowSplash(true);
+        setTimeout(() => {
+          setShowSplash(false);
+          setIsDropping(false);
+          setMoleculeVanished(true);
+        }, 1000);
+      }, 1500);
+    }
+
+    try {
+      const payload = { solvent: selectedSolvent };
+      if (selectedMolId) {
+        payload.molecule_id = selectedMolId;
+      } else {
+        const smiles = await editorRef.current?.getSmiles();
+        payload.smiles = smiles;
+      }
+      const res = await fetch(`${apiBase}/solubility`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Error');
+      setResult(data);
+      setShowResultModal(true);
+    } catch (e) {
+      setError(e.message);
+      setIsDropping(false);
+      setShowSplash(false);
+      setMoleculeVanished(false);
+    } finally {
+      setLoading(false);
+      setIsCheckingMolecule(false);
+    }
+  };
+
+  return (
+    <div className="editor-container">
+      <div className="left-panel">
+        <h1 className="panel-title">Molecule Designer</h1>
+
+        <div className="controls-section">
+          <div className="control-group">
+            <label>Select existing molecule or draw new:</label>
+            <select value={selectedMolId || ''} onChange={e => setSelectedMolId(e.target.value || null)}>
+              <option value="">-- Draw New --</option>
+              {molecules.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div className="editor-container">
+          <Editor
+            structServiceProvider={structServiceProvider}
+            onInit={ketcher => {
+              editorRef.current = ketcher;
+              ketcher.editor.subscribe('change', () => {
+                updateMoleculePreview();
+              });
+            }}
+          />
+        </div>
+        <div className="controls-section">
+          {error && <div className="error">{error}</div>}
+        </div>
+      </div>
+
+      <div className="right-panel">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          width: '100%',
+          marginBottom: '2rem'
+        }}>
+          <div className="control-group" style={{ flex: '0 0 auto' }}>
+            <label style={{ color: 'white' }}>Select solvent:</label>
+            <select value={selectedSolvent} onChange={e => setSelectedSolvent(e.target.value)}>
+              <option value="">-- Choose Solvent --</option>
+              {solvents.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+
+          <button className="check-button" onClick={handleCheck} disabled={loading || !selectedSolvent} style={{ marginTop: 0 }}>
+            {loading ? 'Checking...' : 'Check Solubility'}
+          </button>
+        </div>
+
+        <div className="lab-container">
+          <div className={`molecule-preview ${moleculeUpdated ? 'updated' : ''} ${moleculeImage ? 'has-image' : 'has-fallback'} ${isDropping ? 'dropping' : ''} ${moleculeVanished ? 'vanished' : ''} ${moleculeReappearing ? 'reappearing' : ''}`}>
+            {moleculeImage ? (
+              <img
+                src={moleculeImage}
+                alt="Molecule structure"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  background: 'transparent'
+                }}
+                onError={() => {
+                  setMoleculeImage(null);
+                }}
+              />
+            ) : currentMolecule?.smiles && currentMolecule.smiles.trim() ? (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                fontSize: '0.8rem',
+                color: '#333',
+                textAlign: 'center',
+                padding: '5px'
+              }}>
+                <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>🧬</div>
+                <div>Molecule Detected</div>
+                <div style={{ fontSize: '0.6rem', opacity: 0.7 }}>
+                  {currentMolecule.smiles.length > 10
+                    ? currentMolecule.smiles.substring(0, 10) + '...'
+                    : currentMolecule.smiles}
+                </div>
+              </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                fontSize: '1rem',
+                color: '#666'
+              }}>
+                Draw a molecule
+              </div>
+            )}
+          </div>
+
+          <div className="flask-container">
+            <div className="flask">
+              {selectedSolvent && (
+                <div className={`solvent ${selectedSolvent.toLowerCase()} ${showSplash ? 'splash' : ''}`}></div>
+              )}
+              {showSplash && (
+                <>
+                  <div className="splash-particle splash-1"></div>
+                  <div className="splash-particle splash-2"></div>
+                  <div className="splash-particle splash-3"></div>
+                  <div className="splash-particle splash-4"></div>
+                </>
+              )}
+            </div>
+            {selectedSolvent && (
+              <div className="flask-label">
+                {selectedSolvent.charAt(0).toUpperCase() + selectedSolvent.slice(1)}
+              </div>
+            )}
+          </div>
+
+          {!selectedSolvent && (
+            <div className="no-solvent-message">
+              Select a solvent to see the laboratory setup
+            </div>
+          )}
+        </div>
+      </div>
+
+      {showResultModal && result && (
+        <div className="modal-overlay" onClick={() => setShowResultModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Solubility Analysis Results</h2>
+              <button className="modal-close" onClick={() => setShowResultModal(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="result-item">
+                <label>Solubility:</label>
+                <span className="solubility-value">
+                  {result.solubility}
+                </span>
+              </div>
+              <div className="result-explanation">
+                <label>Explanation:</label>
+                <p>{result.explanation}</p>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-button" onClick={() => setShowResultModal(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EditorComponent;

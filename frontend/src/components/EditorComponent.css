@@ -3,7 +3,7 @@
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  position: relative;
 }
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -134,13 +134,18 @@ button:focus-visible {
 
 .left-panel, .right-panel {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 1.5rem;
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 3;
   overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .left-panel {
@@ -151,13 +156,19 @@ button:focus-visible {
 .panel-header {
   margin-bottom: 2rem;
   text-align: center;
+  padding: 2rem 0 1rem 0;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
 }
 
 .logo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .dna-helix {
@@ -195,8 +206,54 @@ button:focus-visible {
 .panel-title, .analysis-title {
   font-size: 2.2rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+/* Specific styling for the right panel analysis title */
+.right-panel .analysis-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0 0.5rem 0;
+  position: relative;
+  z-index: 10;
+  visibility: visible;
+  opacity: 1;
+  padding-top: 25rem; /* Increase top padding further to ensure visibility */
+  margin-top: 0; /* Ensure no negative margin */
+}
+
+/* Add animation above the solubility analysis */
+.right-panel .analysis-title::before {
+  content: '';
+  display: block;
+  width: 100%; /* Ensure the gradient spans the full width */
+  height: 4px;
+  background: linear-gradient(90deg, #78dbff, #ff78db, #78dbff);
+  background-size: 200% 100%; /* Ensure the gradient spans beyond the visible area */
+  animation: gradientMove 3s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 .title-gradient {
@@ -213,13 +270,21 @@ button:focus-visible {
 
 .panel-subtitle {
   color: rgba(255, 255, 255, 0.95);
-  font-size: 1rem;
-  margin: 0.5rem 0 1rem 0;
-  line-height: 1.8;
-  padding: 0.5rem 0;
+  font-size: 1.1rem;
+  margin: 1rem 0 1.5rem 0;
+  line-height: 1.6;
+  padding: 0.8rem 1rem;
   text-align: center;
   font-weight: 400;
   letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  display: block;
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Modern Controls */

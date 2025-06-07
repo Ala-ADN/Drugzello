@@ -489,6 +489,8 @@ button:focus-visible {
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  margin-right: 6px;
+  margin-bottom: 1px;
 }
 
 .status-active .status-dot {
@@ -509,7 +511,7 @@ button:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 0 12px 12px;
   overflow: hidden;
-  height: 400px;
+  height: 800px;
   background: rgba(255, 255, 255, 0.98);
 }
 

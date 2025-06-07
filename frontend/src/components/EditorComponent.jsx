@@ -268,9 +268,8 @@ const EditorComponent = () => {
           </div>
 
           <button className="predict-button" onClick={handleCheck} disabled={loading || !selectedSolvent}>
-            <span className="button-icon">🧬</span>
             <span className="button-text">
-              {loading ? 'Analyzing...' : 'Predict Solubility'}
+              {loading ? 'Analyzing...' : '🧬 Predict Solubility'}
             </span>
             {loading && <div className="loading-spinner"></div>}
           </button>

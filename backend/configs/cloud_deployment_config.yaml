@@ -37,18 +37,57 @@ aws:
 
 # Azure Configuration
 azure:
-  # Deployment type: 'container_instances' or 'functions'
-  deployment_type: container_instances
+  # Deployment type: 'container_instances', 'container_apps', or 'functions'
+  deployment_type: container_apps
 
   # Azure region
   location: East US
 
   # Resource group
-  resource_group: megan-models-rg
+  resource_group: drugzello-rg
 
-  # Container Instances configuration
+  # Azure Container Registry
+  container_registry: drugzelloacr
+  
+  # Container Apps configuration
+  container_apps:
+    environment_name: drugzello-env
+    app_name: drugzello-api
+    min_replicas: 1
+    max_replicas: 5
+    cpu: 0.5   # CPU cores
+    memory: 1.0Gi   # Memory in GB
+    target_port: 8000
+    ingress: external
+
+  # Container Instances configuration (alternative deployment)
   container_instances:
-    container_name: megan-api
+    container_name: drugzello-api
+    cpu: 1.0
+    memory: 2.0
+    ports:
+      - 8000
+    
+  # Log Analytics workspace for monitoring
+  log_analytics:
+    workspace_name: drugzello-logs
+    
+  # Application Insights
+  application_insights:
+    enabled: true
+    name: drugzello-insights
+    
+  # Alert rules
+  alerts:
+    - name: high-cpu-usage
+      metric: cpu
+      threshold: 80
+      window_minutes: 5
+      
+  # Azure Blob Storage for model artifacts
+  blob_storage:
+    account_name: drugzellostorage
+    container_name: models
     image: null # Will be set during deployment
     cpu: 1.0
     memory: 1.5

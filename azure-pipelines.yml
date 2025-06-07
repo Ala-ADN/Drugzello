@@ -1,0 +1,131 @@
+# Azure DevOps CI/CD Pipeline for Drugzello ML Backend
+# File: azure-pipelines.yml
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+  paths:
+    include:
+      - backend/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Container Registry
+  containerRegistry: 'drugzelloregistry'
+  imageRepository: 'drugzello-backend'
+  tag: '$(Build.BuildId)'
+  
+  # Azure subscription
+  azureSubscription: 'your-azure-subscription'
+  
+  # Resource Group
+  resourceGroupName: 'drugzello-rg'
+  location: 'eastus'
+
+stages:
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+  - job: BuildAndTest
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.12'
+        addToPath: true
+      displayName: 'Use Python 3.12'
+
+    - script: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements/development.txt
+      displayName: 'Install dependencies'
+
+    - script: |
+        cd backend
+        pytest tests/ --junitxml=junit/test-results.xml
+      displayName: 'Run tests'
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-*.xml'
+        failTaskOnFailedTests: true
+      displayName: 'Publish test results'
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: '$(containerRegistry)'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: 'backend/Dockerfile.azure'
+        buildContext: 'backend'
+        tags: |
+          $(tag)
+          latest
+      displayName: 'Build and push Docker image'
+
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployDev
+    displayName: 'Deploy to Development Environment'
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # Create resource group if it doesn't exist
+                az group create --name $(resourceGroupName)-dev --location $(location)
+                
+                # Deploy ARM template
+                az deployment group create \
+                  --resource-group $(resourceGroupName)-dev \
+                  --template-file backend/azure/arm-template.json \
+                  --parameters \
+                    containerGroupName=$(imageRepository)-dev \
+                    imageRegistry=$(containerRegistry).azurecr.io \
+                    imageTag=$(tag)
+            displayName: 'Deploy to Azure Container Instances'
+
+- stage: DeployProd
+  displayName: 'Deploy to Production'
+  dependsOn: DeployDev
+  condition: succeeded()
+  jobs:
+  - deployment: DeployProd
+    displayName: 'Deploy to Production Environment'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # Create resource group if it doesn't exist
+                az group create --name $(resourceGroupName) --location $(location)
+                
+                # Deploy ARM template
+                az deployment group create \
+                  --resource-group $(resourceGroupName) \
+                  --template-file backend/azure/arm-template.json \
+                  --parameters \
+                    containerGroupName=$(imageRepository) \
+                    imageRegistry=$(containerRegistry).azurecr.io \
+                    imageTag=$(tag)
+            displayName: 'Deploy to Azure Container Instances'

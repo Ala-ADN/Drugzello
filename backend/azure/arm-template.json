@@ -1,0 +1,138 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "containerGroupName": {
+            "type": "string",
+            "defaultValue": "drugzello-backend",
+            "metadata": {
+                "description": "Name for the container group"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources"
+            }
+        },
+        "imageRegistry": {
+            "type": "string",
+            "defaultValue": "drugzelloregistry.azurecr.io",
+            "metadata": {
+                "description": "Container registry URL"
+            }
+        },
+        "imageTag": {
+            "type": "string",
+            "defaultValue": "latest",
+            "metadata": {
+                "description": "Image tag"
+            }
+        }
+    },
+    "variables": {
+        "containerName": "drugzello-backend",
+        "nginxContainerName": "drugzello-nginx"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerInstance/containerGroups",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('containerGroupName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "containers": [
+                    {
+                        "name": "[variables('nginxContainerName')]",
+                        "properties": {
+                            "image": "nginx:alpine",
+                            "ports": [
+                                {
+                                    "port": 80,
+                                    "protocol": "TCP"
+                                }
+                            ],
+                            "resources": {
+                                "requests": {
+                                    "cpu": 0.5,
+                                    "memoryInGB": 0.5
+                                }
+                            },
+                            "volumeMounts": [
+                                {
+                                    "name": "nginx-config",
+                                    "mountPath": "/etc/nginx/nginx.conf",
+                                    "subPath": "nginx.conf"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "[variables('containerName')]",
+                        "properties": {
+                            "image": "[concat(parameters('imageRegistry'), '/drugzello-backend:', parameters('imageTag'))]",
+                            "ports": [
+                                {
+                                    "port": 8000,
+                                    "protocol": "TCP"
+                                }
+                            ],
+                            "environmentVariables": [
+                                {
+                                    "name": "ENVIRONMENT",
+                                    "value": "production"
+                                },
+                                {
+                                    "name": "LOG_LEVEL",
+                                    "value": "INFO"
+                                }
+                            ],
+                            "resources": {
+                                "requests": {
+                                    "cpu": 2,
+                                    "memoryInGB": 4
+                                }
+                            }
+                        }
+                    }
+                ],
+                "osType": "Linux",
+                "restartPolicy": "Always",
+                "ipAddress": {
+                    "type": "Public",
+                    "ports": [
+                        {
+                            "protocol": "TCP",
+                            "port": 80
+                        }
+                    ],
+                    "dnsNameLabel": "[parameters('containerGroupName')]"
+                },
+                "volumes": [
+                    {
+                        "name": "nginx-config",
+                        "configMap": {
+                            "items": [
+                                {
+                                    "key": "nginx.conf",
+                                    "path": "nginx.conf"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "containerIPv4Address": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups/', parameters('containerGroupName'))).ipAddress.ip]"
+        },
+        "containerFQDN": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups/', parameters('containerGroupName'))).ipAddress.fqdn]"
+        }
+    }
+}

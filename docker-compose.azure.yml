@@ -1,0 +1,58 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.azure
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=${DATABASE_URL}
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
+      - LOG_LEVEL=INFO
+    volumes:
+      - azure_models:/app/models
+      - azure_logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  mlflow:
+    image: mlflow/mlflow:latest
+    ports:
+      - "5000:5000"
+    environment:
+      - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
+      - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow/mlflow.db
+      - MLFLOW_DEFAULT_ARTIFACT_ROOT=azure://mlflow-artifacts
+    volumes:
+      - azure_mlflow:/mlflow
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow/mlflow.db
+      --default-artifact-root azure://mlflow-artifacts
+      --host 0.0.0.0
+      --port 5000
+    restart: unless-stopped
+
+volumes:
+  azure_models:
+  azure_logs:
+  azure_mlflow:

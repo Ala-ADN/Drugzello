@@ -1,0 +1,46 @@
+# MLflow configuration
+mlflow:
+  # Tracking server configuration
+  tracking_uri: "file:./mlruns" # Use local file system, can be changed to remote server
+  experiment_name: "MEGAN_Solubility_Prediction"
+  default_artifact_location: "./mlartifacts"
+
+  # Registry configuration
+  registry_uri: "file:./mlruns" # Model registry location
+
+  # Remote server configuration (uncomment to use remote MLflow server)
+  # tracking_uri: "http://localhost:5000"
+  # registry_uri: "http://localhost:5000"
+
+  # Cloud storage configuration (optional)
+  # artifact_store:
+  #   type: "s3"  # or "azure", "gcs"
+  #   bucket: "mlflow-artifacts"
+  #   region: "us-west-2"
+
+  # Experiment tags
+  default_tags:
+    project: "drugzello"
+    model_type: "megan"
+    task: "solubility_prediction"
+    framework: "pytorch"
+
+  # Model registration settings
+  model_registry:
+    staging_alias: "staging"
+    production_alias: "production"
+    archive_alias: "archived"
+
+  # Logging settings
+  logging:
+    log_models: true
+    log_artifacts: true
+    log_metrics: true
+    log_params: true
+    log_system_metrics: true
+
+  # Auto-logging configuration
+  autolog:
+    pytorch: true
+    sklearn: false # We'll handle manually for better control
+    disable: false

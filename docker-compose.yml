@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount source code for development
+      - ./backend:/app
+      # Persist MLflow tracking data
+      - ./backend/mlruns:/app/mlruns
+      # Persist model artifacts
+      - ./backend/models:/app/models
+      # Persist logs
+      - ./backend/logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+      - MLFLOW_EXPERIMENT_NAME=megan_solubility
+    working_dir: /app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  mlflow:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/mlruns:/app/mlruns
+      - ./backend/models:/app/models
+    environment:
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+    working_dir: /app
+    command: mlflow ui --host 0.0.0.0 --port 5000
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: drugzello-network

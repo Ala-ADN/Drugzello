@@ -1,0 +1,127 @@
+# Cloud Deployment Configuration for MEGAN Models
+# This file contains configuration for deploying MEGAN models to various cloud platforms
+
+# AWS Configuration
+aws:
+  # Deployment type: 'lambda' or 'ecs'
+  deployment_type: lambda
+
+  # AWS Region
+  region: us-east-1
+
+  # Lambda-specific configuration
+  lambda:
+    timeout: 30 # seconds
+    memory_size: 1024 # MB
+    runtime: python3.9
+
+  # ECS-specific configuration
+  ecs:
+    cluster_name: megan-cluster
+    service_name: megan-service
+    task_definition_family: megan-task
+    container_port: 8001
+    desired_count: 1
+    cpu: 256
+    memory: 512
+
+  # ECR repository for Docker images
+  ecr:
+    repository_name: megan-models
+
+  # IAM roles (will be created if not specified)
+  iam:
+    lambda_execution_role: null
+    ecs_task_role: null
+    ecs_execution_role: null
+
+# Azure Configuration
+azure:
+  # Deployment type: 'container_instances' or 'functions'
+  deployment_type: container_instances
+
+  # Azure region
+  location: East US
+
+  # Resource group
+  resource_group: megan-models-rg
+
+  # Container Instances configuration
+  container_instances:
+    container_name: megan-api
+    image: null # Will be set during deployment
+    cpu: 1.0
+    memory: 1.5
+    port: 8001
+
+  # Azure Functions configuration
+  functions:
+    function_app_name: megan-functions
+    storage_account: null # Will be created if not specified
+    plan_type: Consumption # or Premium
+
+  # Azure Container Registry
+  acr:
+    registry_name: meganmodels
+    sku: Basic
+
+# Google Cloud Platform Configuration (for future use)
+gcp:
+  deployment_type: cloud_run
+  project_id: null
+  region: us-central1
+
+  cloud_run:
+    service_name: megan-api
+    container_port: 8001
+    memory: 1Gi
+    cpu: 1
+    max_instances: 10
+
+  # Container Registry
+  gcr:
+    hostname: gcr.io
+
+# Monitoring and logging configuration
+monitoring:
+  enable_cloudwatch: true # AWS
+  enable_application_insights: true # Azure
+  enable_stackdriver: true # GCP
+
+  # Custom metrics
+  custom_metrics:
+    - prediction_latency
+    - prediction_count
+    - error_rate
+
+# Security configuration
+security:
+  # API authentication
+  enable_api_key: true
+  enable_cors: true
+  cors_origins:
+    - "*"
+
+  # HTTPS configuration
+  force_https: true
+
+  # Rate limiting
+  rate_limiting:
+    requests_per_minute: 100
+    burst_size: 10
+
+# Model-specific configuration
+model:
+  # Model warming (keep model loaded)
+  enable_warm_start: true
+
+  # Batch prediction support
+  enable_batch_prediction: false
+  max_batch_size: 10
+
+  # Model versioning
+  enable_model_versioning: true
+
+  # A/B testing
+  enable_ab_testing: false
+  traffic_split: {} # e.g., {"v1": 90, "v2": 10}

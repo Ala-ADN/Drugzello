@@ -175,60 +175,110 @@ const EditorComponent = () => {
       setIsCheckingMolecule(false);
     }
   };
-
   return (
     <div className="editor-container">
+      {/* Animated background particles */}
+      <div className="particles-bg">
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className={`particle particle-${i % 4}`}></div>
+        ))}
+      </div>
+      
       <div className="left-panel">
-        <h1 className="panel-title">Molecule Designer</h1>
+        <div className="panel-header">
+          <div className="logo-container">
+            <div className="dna-helix"></div>
+            <h1 className="panel-title">
+              <span className="title-gradient">Molecular</span>
+              <span className="title-accent">Designer</span>
+            </h1>
+          </div>
+          <p className="panel-subtitle">Design and analyze molecular structures with precision</p>
+        </div>
 
         <div className="controls-section">
           <div className="control-group">
-            <label>Select existing molecule or draw new:</label>
-            <select value={selectedMolId || ''} onChange={e => setSelectedMolId(e.target.value || null)}>
-              <option value="">-- Draw New --</option>
-              {molecules.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-            </select>
+            <label className="modern-label">
+              <span className="label-icon">🧪</span>
+              Select existing molecule or draw new:
+            </label>
+            <div className="select-wrapper">
+              <select value={selectedMolId || ''} onChange={e => setSelectedMolId(e.target.value || null)}>
+                <option value="">✨ Draw New Molecule</option>
+                {molecules.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+              </select>
+              <div className="select-arrow"></div>
+            </div>
+          </div>        </div>
+        
+        <div className="editor-wrapper">
+          <div className="editor-header">
+            <h3>Molecular Structure Editor</h3>
+            <div className="editor-status">
+              {currentMolecule?.smiles ? (
+                <span className="status-active">
+                  <span className="status-dot"></span>
+                  Molecule detected
+                </span>
+              ) : (
+                <span className="status-waiting">
+                  <span className="status-dot"></span>
+                  Draw structure
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="editor-container">
-          <Editor
-            structServiceProvider={structServiceProvider}
-            onInit={ketcher => {
-              editorRef.current = ketcher;
-              ketcher.editor.subscribe('change', () => {
-                updateMoleculePreview();
-              });
-            }}
-          />
+          <div className="editor-frame">
+            <Editor
+              structServiceProvider={structServiceProvider}
+              onInit={ketcher => {
+                editorRef.current = ketcher;
+                ketcher.editor.subscribe('change', () => {
+                  updateMoleculePreview();
+                });
+              }}
+            />
+          </div>
         </div>
         <div className="controls-section">
           {error && <div className="error">{error}</div>}
         </div>
-      </div>
-
-      <div className="right-panel">
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          width: '100%',
-          marginBottom: '2rem'
-        }}>
-          <div className="control-group" style={{ flex: '0 0 auto' }}>
-            <label style={{ color: 'white' }}>Select solvent:</label>
-            <select value={selectedSolvent} onChange={e => setSelectedSolvent(e.target.value)}>
-              <option value="">-- Choose Solvent --</option>
-              {solvents.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </div>
-
-          <button className="check-button" onClick={handleCheck} disabled={loading || !selectedSolvent} style={{ marginTop: 0 }}>
-            {loading ? 'Checking...' : 'Check Solubility'}
-          </button>
+      </div>      <div className="right-panel">
+        <div className="panel-header">
+          <h2 className="analysis-title">
+            <span className="title-gradient">Solubility</span>
+            <span className="title-accent">Analysis</span>
+          </h2>
+          <p className="panel-subtitle">Predict molecular solubility in various solvents</p>
         </div>
 
-        <div className="lab-container">
+        <div className="analysis-controls">
+          <div className="control-group solvent-selector">
+            <label className="modern-label">
+              <span className="label-icon">⚗️</span>
+              Select solvent:
+            </label>
+            <div className="select-wrapper">
+              <select value={selectedSolvent} onChange={e => setSelectedSolvent(e.target.value)}>
+                <option value="">🔬 Choose Solvent</option>
+                {solvents.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+              <div className="select-arrow"></div>
+            </div>
+          </div>
+
+          <button className="predict-button" onClick={handleCheck} disabled={loading || !selectedSolvent}>
+            <span className="button-text">
+              {loading ? 'Analyzing...' : '🧬 Predict Solubility'}
+            </span>
+            {loading && <div className="loading-spinner"></div>}
+          </button>
+        </div>        <div className="lab-container">
+          <div className="lab-title">
+            <h3>Virtual Laboratory</h3>
+            <p>Watch the molecular interaction in real-time</p>
+          </div>
+          
           <div className={`molecule-preview ${moleculeUpdated ? 'updated' : ''} ${moleculeImage ? 'has-image' : 'has-fallback'} ${isDropping ? 'dropping' : ''} ${moleculeVanished ? 'vanished' : ''} ${moleculeReappearing ? 'reappearing' : ''}`}>
             {moleculeImage ? (
               <img
@@ -245,37 +295,20 @@ const EditorComponent = () => {
                 }}
               />
             ) : currentMolecule?.smiles && currentMolecule.smiles.trim() ? (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                height: '100%',
-                fontSize: '0.8rem',
-                color: '#333',
-                textAlign: 'center',
-                padding: '5px'
-              }}>
-                <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>🧬</div>
-                <div>Molecule Detected</div>
-                <div style={{ fontSize: '0.6rem', opacity: 0.7 }}>
-                  {currentMolecule.smiles.length > 10
-                    ? currentMolecule.smiles.substring(0, 10) + '...'
+              <div className="molecule-placeholder">
+                <div className="molecule-icon">🧬</div>
+                <div className="molecule-status">Molecule Ready</div>
+                <div className="molecule-smiles">
+                  {currentMolecule.smiles.length > 12
+                    ? currentMolecule.smiles.substring(0, 12) + '...'
                     : currentMolecule.smiles}
                 </div>
               </div>
             ) : (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                height: '100%',
-                fontSize: '1rem',
-                color: '#666'
-              }}>
-                Draw a molecule
+              <div className="molecule-placeholder empty">
+                <div className="molecule-icon">⚛️</div>
+                <div className="molecule-status">Draw a molecule</div>
+                <div className="molecule-hint">Use the editor above</div>
               </div>
             )}
           </div>
@@ -302,35 +335,54 @@ const EditorComponent = () => {
           </div>
 
           {!selectedSolvent && (
-            <div className="no-solvent-message">
-              Select a solvent to see the laboratory setup
+            <div className="setup-instructions">
+              <div className="instruction-icon">🔬</div>
+              <h4>Ready to Analyze</h4>
+              <p>Select a solvent above to begin the molecular interaction simulation</p>
             </div>
           )}
         </div>
-      </div>
-
-      {showResultModal && result && (
+      </div>      {showResultModal && result && (
         <div className="modal-overlay" onClick={() => setShowResultModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Solubility Analysis Results</h2>
-              <button className="modal-close" onClick={() => setShowResultModal(false)}>×</button>
+              <div className="modal-title-section">
+                <div className="modal-icon">🎯</div>
+                <div>
+                  <h2>Analysis Complete</h2>
+                  <p>Molecular solubility prediction results</p>
+                </div>
+              </div>
+              <button className="modal-close" onClick={() => setShowResultModal(false)}>
+                <span>×</span>
+              </button>
             </div>
             <div className="modal-body">
-              <div className="result-item">
-                <label>Solubility:</label>
-                <span className="solubility-value">
-                  {result.solubility}
-                </span>
+              <div className="result-card">
+                <div className="result-header">
+                  <span className="result-label">Predicted Solubility</span>
+                  <div className="result-badge">
+                    <span className="solubility-value">
+                      {result.solubility}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="result-explanation">
-                <label>Explanation:</label>
-                <p>{result.explanation}</p>
+              
+              <div className="explanation-card">
+                <div className="explanation-header">
+                  <span className="explanation-icon">🧠</span>
+                  <span className="explanation-label">AI Analysis</span>
+                </div>
+                <div className="explanation-content">
+                  <p>{result.explanation}</p>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button className="modal-button" onClick={() => setShowResultModal(false)}>
-                Close
+              <button className="modal-button primary" onClick={() => setShowResultModal(false)}>
+                <span className="button-icon">✅</span>
+                Got it
               </button>
             </div>
           </div>

@@ -81,7 +81,7 @@ class MLflowManager:
         self.client = MlflowClient()
         
         # Setup auto-logging if enabled
-        autolog_config = mlflow_config.get('autolog', {})
+        autolog_config = mlflow_config.get('auto_logging', mlflow_config.get('autolog', {}))
         if autolog_config.get('pytorch', False):
             mlflow.pytorch.autolog(
                 log_models=autolog_config.get('log_models', True),
@@ -163,10 +163,8 @@ class MLflowManager:
         # Flatten nested dictionaries
         flattened = self._flatten_dict(config_dict, prefix)
         
-        # Log parameters (MLflow has a limit on parameter key length)
-        for key, value in flattened.items():
-            if len(str(key)) <= 250:  # MLflow parameter key limit
-                mlflow.log_param(key, value)
+        # Log parameters in bulk
+        mlflow.log_params({key: value for key, value in flattened.items() if len(str(key)) <= 250})
     
     def log_dataset_info(self, dataset_info: Dict[str, Any]):
         """Log dataset information."""

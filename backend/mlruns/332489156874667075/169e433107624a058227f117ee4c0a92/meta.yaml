@@ -1,0 +1,15 @@
+artifact_uri: file:c:/code/Drugzello/backend/mlartifacts/169e433107624a058227f117ee4c0a92/artifacts
+end_time: 1749402333342
+entry_point_name: ''
+experiment_id: '332489156874667075'
+lifecycle_stage: active
+run_id: 169e433107624a058227f117ee4c0a92
+run_name: megan_training_20250608_180529
+run_uuid: 169e433107624a058227f117ee4c0a92
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749402329736
+status: 3
+tags: []
+user_id: alani

@@ -242,13 +242,31 @@ class DataPreprocessor:
             normalized_targets = (targets - median) / mad
         else:
             raise ValueError(f"Unknown normalization method: {method}")
-        
-        # Create new dataset with normalized targets
-        normalized_dataset = []
+          # Create new dataset with normalized targets
+        normalized_data_list = []
         for i, data in enumerate(dataset):
             new_data = data.clone()
             new_data.y = torch.tensor([normalized_targets[i]], dtype=torch.float)
-            normalized_dataset.append(new_data)
+            normalized_data_list.append(new_data)
+        
+        # Create a new dataset object that maintains the same attributes
+        # We'll create a simple wrapper that behaves like the original dataset
+        class NormalizedDataset:
+            def __init__(self, data_list, original_dataset):
+                self.data_list = data_list
+                self.num_node_features = original_dataset.num_node_features
+                self.num_edge_features = getattr(original_dataset, 'num_edge_features', 0)
+            
+            def __len__(self):
+                return len(self.data_list)
+            
+            def __getitem__(self, idx):
+                return self.data_list[idx]
+            
+            def __iter__(self):
+                return iter(self.data_list)
+        
+        normalized_dataset = NormalizedDataset(normalized_data_list, dataset)
         
         return normalized_dataset, norm_params
     
@@ -320,7 +338,74 @@ class DataPreprocessor:
             augmented_dataset.append(new_data)
         
         return augmented_dataset
-
+    
+    @staticmethod
+    def convert_to_float(dataset: Dataset) -> Dataset:
+        """
+        Convert integer node and edge features to float32 for PyTorch compatibility.
+        
+        Args:
+            dataset: Dataset with potentially integer features
+            
+        Returns:
+            Dataset with float32 features
+        """
+        from torch_geometric.data import Data
+        
+        converted_data_list = []
+        for data in dataset:
+            # Convert node features to float32
+            x = data.x.float() if data.x.dtype != torch.float32 else data.x
+            
+            # Convert edge features to float32 if they exist
+            edge_attr = None
+            if hasattr(data, 'edge_attr') and data.edge_attr is not None:
+                edge_attr = data.edge_attr.float() if data.edge_attr.dtype != torch.float32 else data.edge_attr
+            
+            # Keep edge_index as int64 (this is correct for indices)
+            edge_index = data.edge_index
+            
+            # Keep targets as they are (should already be float)
+            y = data.y
+            
+            # Create new data object with converted features
+            converted_data = Data(
+                x=x,
+                edge_index=edge_index,
+                edge_attr=edge_attr,
+                y=y
+            )
+            
+            # Copy any additional attributes
+            for key, value in data.__dict__.items():
+                if key not in ['x', 'edge_index', 'edge_attr', 'y']:
+                    setattr(converted_data, key, value)
+            
+            converted_data_list.append(converted_data)
+        
+        # Create a new dataset-like object that preserves the original dataset's attributes
+        class ConvertedDataset:
+            def __init__(self, data_list, original_dataset):
+                self.data_list = data_list
+                # Copy important attributes from original dataset
+                if hasattr(original_dataset, 'num_node_features'):
+                    self.num_node_features = original_dataset.num_node_features
+                if hasattr(original_dataset, 'num_edge_features'):
+                    self.num_edge_features = original_dataset.num_edge_features
+                if hasattr(original_dataset, 'num_features'):
+                    self.num_features = original_dataset.num_features
+            
+            def __len__(self):
+                return len(self.data_list)
+            
+            def __getitem__(self, idx):
+                return self.data_list[idx]
+            
+            def __iter__(self):
+                return iter(self.data_list)
+        
+        converted_dataset = ConvertedDataset(converted_data_list, dataset)
+        return converted_dataset
 
 # Convenience function for common data loading workflow
 def load_molecular_data(dataset_name: str = "ESOL", data_root: str = "data", 
@@ -351,6 +436,8 @@ def load_molecular_data(dataset_name: str = "ESOL", data_root: str = "data",
     
     # Get dataset statistics
     stats = loader.get_dataset_statistics(dataset)
+      # Convert integer features to float32 for PyTorch compatibility
+    dataset = DataPreprocessor.convert_to_float(dataset)
     
     # Normalize targets if requested
     norm_params = None

@@ -1,18 +1,21 @@
 # Core dependencies for the ML project
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
-numpy==1.26.2
-pandas==2.1.3
-scikit-learn==1.3.2
-torch==2.2.0
-rdkit==2025.3.2
-joblib==1.3.2
-PyYAML==6.0.1
-python-dotenv==1.0.0
+fastapi==0.115.0
+uvicorn==0.30.1
+pydantic==2.9.2
+pydantic-settings==2.5.2
+numpy>=1.26.0,<2.0  # loosen to satisfy all dependencies (pandas, matplotlib, mlflow, etc.)
+pandas==2.2.3
+scikit-learn==1.5.2
+torch==2.4.1
+torch-geometric==2.6.1
+torch-scatter==2.1.2
+rdkit==2025.3.2  # pinned to latest available release
+joblib==1.4.2
+PyYAML==6.0.2
+python-dotenv==1.0.1
 
 # MLflow for experiment tracking and model registry
-mlflow==2.8.1
-boto3==1.29.0  # For S3 artifact storage (optional)
-azure-storage-blob==12.19.0  # For Azure blob storage (optional)
+mlflow==2.17.0
+# For S3 and Azure artifact storage (optional)
+boto3==1.35.0  # For S3 artifact storage
+azure-storage-blob==12.22.0  # For Azure blob storage

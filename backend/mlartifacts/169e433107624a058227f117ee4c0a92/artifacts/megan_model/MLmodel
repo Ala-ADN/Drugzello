@@ -1,0 +1,21 @@
+artifact_path: megan_model
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.12.10
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.4.1+cpu
+mlflow_version: 2.17.0
+model_size_bytes: 117534
+model_uuid: afb176a89ed348238dfb96571dd24432
+run_id: 169e433107624a058227f117ee4c0a92
+utc_time_created: '2025-06-08 17:05:29.839388'

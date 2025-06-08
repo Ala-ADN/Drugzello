@@ -20,6 +20,10 @@ COPY requirements/ requirements/
 # Upgrade pip and setuptools
 RUN pip install --upgrade pip setuptools wheel
 
+# Preinstall PyTorch and PyG wheels to avoid source builds for torch-scatter
+RUN pip install torch==2.4.1 && \
+    pip install torch-scatter==2.1.2 torch-geometric==2.6.1 -f https://data.pyg.org/whl/torch-2.4.1+cpu.html
+
 # Install Python dependencies (try to use binary wheels)
 RUN pip install --only-binary=all --no-cache-dir -r requirements/development.txt || \
     pip install --no-cache-dir -r requirements/development.txt

@@ -2,5 +2,19 @@
 -r base.txt
 
 gunicorn==21.3.0
+psycopg2-binary==2.9.7  # For PostgreSQL
+redis==4.6.0  # For caching/sessions
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Monitoring
 prometheus-client==0.21.0
 structlog==24.1.0
+sentry-sdk[fastapi]==1.32.0
+
+# Azure integrations
+azure-identity==1.15.0
+azure-storage-blob==12.19.0
+azure-keyvault-secrets==4.7.0

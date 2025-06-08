@@ -89,12 +89,12 @@ const LandingPage = () => {
                 <span>Predict Solubility</span>
                 <div className="button-shine"></div>
               </Link>
-              <button className="secondary-cta">
+              {/* <button className="secondary-cta">
                 <span>View Demo</span>
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
-              </button>
+              </button> */}
             </div>
           </div>
           

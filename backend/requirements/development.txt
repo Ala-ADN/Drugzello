@@ -1,14 +1,15 @@
 # Development dependencies
 -r base.txt
 
-pytest==7.4.3
-pytest-cov==4.1.0
-pytest-asyncio==0.21.1
-black==23.11.0
-flake8==6.1.0
-mypy==1.7.1
-pre-commit==3.6.0
-jupyter==1.0.0
-ipykernel==6.26.0
-matplotlib==3.7.2
-seaborn==0.12.2
+pytest==8.3.0
+pytest-cov==6.1.1  # updated to latest available version
+pytest-asyncio>=0.24.0,<0.25.0
+black==24.3.0
+flake8==6.1.0  # pinned to a version that exists on Python 3.12
+mypy==1.10.0
+pre-commit==3.8.0
+jupyter==1.1.0
+ipykernel==6.29.0
+matplotlib==3.8.1
+seaborn==0.13.2
+psutil>=5.9.0  # For memory usage tests

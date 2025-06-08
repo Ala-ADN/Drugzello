@@ -1,0 +1,27 @@
+{
+  "dataset_name": "ESOL",
+  "stats": {
+    "num_samples": 1128,
+    "num_node_features": 9,
+    "num_edge_features": 3,
+    "target_mean": -3.07088700046204,
+    "target_std": 2.1049631586270596,
+    "target_min": -11.600000381469727,
+    "target_max": 1.5800000429153442,
+    "avg_nodes_per_graph": 13.345,
+    "avg_edges_per_graph": 27.508,
+    "max_nodes_per_graph": 55,
+    "max_edges_per_graph": 124
+  },
+  "norm_params": {
+    "method": "standard",
+    "mean": -3.050101949509682,
+    "std": 2.095511732497428
+  },
+  "random_state": 42,
+  "splits": {
+    "split_type": "kfold",
+    "n_folds": 2,
+    "total_size": 1128
+  }
+}

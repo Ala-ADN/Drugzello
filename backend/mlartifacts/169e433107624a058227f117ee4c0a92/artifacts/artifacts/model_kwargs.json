@@ -1,0 +1,13 @@
+{
+  "in_channels": 9,
+  "hidden_channels": 60,
+  "out_channels": 1,
+  "edge_dim": 3,
+  "num_layers": 4,
+  "K": 2,
+  "heads_gat": 1,
+  "use_edge_features": false,
+  "dropout": 0.1,
+  "layer_norm": true,
+  "residual": true
+}

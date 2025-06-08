@@ -1,6 +1,5 @@
 """
-Enhanced data loading and preprocessing utilities for molecular solubility prediction.
-Includes multi-solvent support and duplicate handling.
+Data loading and preprocessing utilities for molecular solubility prediction.
 """
 
 import torch
@@ -10,7 +9,6 @@ from torch_geometric.data import Dataset, Data
 from sklearn.model_selection import KFold, train_test_split
 import pandas as pd
 import numpy as np
-import torch
 from typing import List, Tuple, Optional, Dict, Any
 from pathlib import Path
 import pickle
@@ -30,14 +28,12 @@ class MultiSolventDataset(Dataset):
         
         # Calculate features from first sample
         if data_list:
-            self._num_node_features = data_list[0].x.size(1)
-            self._num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
-        else:
-            self._num_node_features = 0
-            self._num_edge_features = 0
+            self.num_node_features = data_list[0].x.size(1)
+            self.num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
         
         # Store reverse vocab for lookup
-        self.id_to_solvent = {v: k for k, v in solvent_vocab.items()}    
+        self.id_to_solvent = {v: k for k, v in solvent_vocab.items()}
+    
     def len(self):
         return len(self.data_list)
     
@@ -49,16 +45,6 @@ class MultiSolventDataset(Dataset):
     
     def __iter__(self):
         return iter(self.data_list)
-    
-    @property
-    def num_node_features(self) -> int:
-        """Return the number of node features."""
-        return self._num_node_features
-    
-    @property
-    def num_edge_features(self) -> int:
-        """Return the number of edge features."""
-        return self._num_edge_features
     
     def get_dataset_statistics(self) -> Dict[str, Any]:
         """Get statistics broken down by solvent and source dataset."""
@@ -122,8 +108,7 @@ class MultiSolventDataset(Dataset):
 
 class MolecularDataLoader:
     """
-    Enhanced data loader for molecular datasets with preprocessing, multi-solvent support, 
-    and duplicate handling capabilities.
+    Data loader for molecular datasets with preprocessing and splitting capabilities.
     """
     
     def __init__(self, data_root: str = "data"):
@@ -150,8 +135,7 @@ class MolecularDataLoader:
         )
         
         return dataset
-    
-    def load_moleculenet_datasets_by_solvent(self, 
+      def load_moleculenet_datasets_by_solvent(self, 
                                             dataset_configs: List[Dict[str, str]],
                                             handle_duplicates: str = 'remove') -> Tuple[Dataset, Dict[str, int], Dict[str, Any]]:
         """
@@ -159,11 +143,6 @@ class MolecularDataLoader:
         
         Args:
             dataset_configs: List of dictionaries with 'name' and 'solvent' keys
-                Example: [
-                    {'name': 'ESOL', 'solvent': 'water'},
-                    {'name': 'FreeSolv', 'solvent': 'water'},
-                    {'name': 'Lipo', 'solvent': 'octanol'}
-                ]
             handle_duplicates: How to handle duplicates ('remove', 'keep_first', 'keep_last', 'average')
         
         Returns:
@@ -371,66 +350,22 @@ class MolecularDataLoader:
     def load_custom_dataset(self, csv_path: str, smiles_col: str = 'smiles', 
                            target_col: str = 'solubility', solvent_col: str = None) -> Dataset:
         """
-        Load custom molecular dataset from CSV file with optional solvent information.
+        Load custom molecular dataset from CSV file.
         
         Args:
             csv_path: Path to CSV file with SMILES and target values
             smiles_col: Name of column containing SMILES strings
             target_col: Name of column containing target values
-            solvent_col: Name of column containing solvent information (optional)
         
         Returns:
             PyTorch Geometric dataset
         """
-        df = pd.read_csv(csv_path)
-        data_list = []
-        
-        for _, row in df.iterrows():
-            # Convert SMILES to molecular graph
-            mol = Chem.MolFromSmiles(row[smiles_col])
-            if mol is None:
-                continue
-                
-            # Extract atom features
-            atom_features = []
-            for atom in mol.GetAtoms():
-                features = [
-                    atom.GetAtomicNum(),
-                    atom.GetDegree(),
-                    atom.GetFormalCharge(),
-                    int(atom.GetHybridization()),
-                    int(atom.GetIsAromatic())
-                ]
-                atom_features.append(features)
-            
-            # Extract bond information
-            edge_indices = []
-            edge_features = []
-            for bond in mol.GetBonds():
-                i, j = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()
-                bond_type = bond.GetBondType()
-                
-                # Add both directions for undirected graph
-                edge_indices.extend([[i, j], [j, i]])
-                bond_features = [int(bond_type), int(bond.GetIsAromatic())]
-                edge_features.extend([bond_features, bond_features])
-            
-            # Create PyG Data object
-            data = Data(
-                x=torch.tensor(atom_features, dtype=torch.float),
-                edge_index=torch.tensor(edge_indices, dtype=torch.long).t().contiguous(),
-                edge_attr=torch.tensor(edge_features, dtype=torch.float) if edge_features else None,
-                y=torch.tensor([row[target_col]], dtype=torch.float),
-                smiles=row[smiles_col]
-            )
-            
-            # Add solvent information if available
-            if solvent_col and solvent_col in row:
-                data.solvent = row[solvent_col]
-                
-            data_list.append(data)
-        
-        return CustomDataset(data_list)
+        # This would require implementing SMILES to graph conversion
+        # For now, we'll raise a NotImplementedError
+        raise NotImplementedError(
+            "Custom dataset loading requires SMILES to graph conversion. "
+            "This will be implemented in a future version."
+        )
     
     def create_splits(self, dataset: Dataset, split_type: str = "random", 
                      test_size: float = 0.2, val_size: float = 0.1, 
@@ -518,7 +453,7 @@ class MolecularDataLoader:
         """
         stats = {
             'num_samples': len(dataset),
-            'num_node_features': getattr(dataset, 'num_node_features', 0),
+            'num_node_features': dataset.num_node_features,
             'num_edge_features': getattr(dataset, 'num_edge_features', 0),
         }
         
@@ -565,40 +500,9 @@ class MolecularDataLoader:
         return splits
 
 
-class CustomDataset(Dataset):
-    """Dataset wrapper for custom molecular data."""
-    
-    def __init__(self, data_list):
-        super().__init__()
-        self.data_list = data_list
-        # Calculate features from first sample
-        if data_list:
-            self._num_node_features = data_list[0].x.size(1)
-            self._num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
-        else:
-            self._num_node_features = 0
-            self._num_edge_features = 0
-    
-    def len(self):
-        return len(self.data_list)
-    
-    def get(self, idx):
-        return self.data_list[idx]
-    
-    @property
-    def num_node_features(self) -> int:
-        """Return the number of node features."""
-        return self._num_node_features
-    
-    @property
-    def num_edge_features(self) -> int:
-        """Return the number of edge features."""
-        return self._num_edge_features
-
-
 class DataPreprocessor:
     """
-    Enhanced preprocessing utilities for molecular graph data.
+    Preprocessing utilities for molecular graph data.
     """
     
     @staticmethod
@@ -641,8 +545,7 @@ class DataPreprocessor:
             normalized_targets = (targets - median) / mad
         else:
             raise ValueError(f"Unknown normalization method: {method}")
-        
-        # Create new dataset with normalized targets
+          # Create new dataset with normalized targets
         normalized_data_list = []
         for i, data in enumerate(dataset):
             new_data = data.clone()
@@ -650,10 +553,11 @@ class DataPreprocessor:
             normalized_data_list.append(new_data)
         
         # Create a new dataset object that maintains the same attributes
+        # We'll create a simple wrapper that behaves like the original dataset
         class NormalizedDataset:
             def __init__(self, data_list, original_dataset):
                 self.data_list = data_list
-                self.num_node_features = getattr(original_dataset, 'num_node_features', 0)
+                self.num_node_features = original_dataset.num_node_features
                 self.num_edge_features = getattr(original_dataset, 'num_edge_features', 0)
             
             def __len__(self):
@@ -666,69 +570,6 @@ class DataPreprocessor:
                 return iter(self.data_list)
         
         normalized_dataset = NormalizedDataset(normalized_data_list, dataset)
-        
-        return normalized_dataset, norm_params
-    
-    @staticmethod
-    def normalize_targets_by_solvent(dataset: MultiSolventDataset, 
-                                   method: str = 'standard') -> Tuple[Dataset, Dict]:
-        """
-        Normalize targets separately for each solvent to account for different scales.
-        
-        Args:
-            dataset: Multi-solvent dataset
-            method: Normalization method
-        
-        Returns:
-            Tuple of (normalized_dataset, normalization_params)
-        """
-        # Group data by solvent
-        solvent_groups = {}
-        for i, data in enumerate(dataset):
-            solvent = data.solvent_name
-            if solvent not in solvent_groups:
-                solvent_groups[solvent] = []
-            solvent_groups[solvent].append((i, data))
-        
-        # Calculate normalization parameters for each solvent
-        norm_params = {'method': method, 'by_solvent': {}}
-        normalized_data_list = [None] * len(dataset)
-        
-        for solvent, data_list in solvent_groups.items():
-            targets = []
-            indices = []
-            
-            for idx, data in data_list:
-                target = data.y.item() if data.y.dim() == 0 else data.y[0].item()
-                targets.append(target)
-                indices.append(idx)
-            
-            targets = np.array(targets)
-            
-            # Calculate normalization for this solvent
-            if method == 'standard':
-                mean = np.mean(targets)
-                std = np.std(targets)
-                norm_params['by_solvent'][solvent] = {'mean': mean, 'std': std}
-                normalized_targets = (targets - mean) / std
-            elif method == 'minmax':
-                min_val = np.min(targets)
-                max_val = np.max(targets)
-                norm_params['by_solvent'][solvent] = {'min': min_val, 'max': max_val}
-                normalized_targets = (targets - min_val) / (max_val - min_val)
-            
-            # Apply normalization to data
-            for i, (idx, data) in enumerate(data_list):
-                new_data = data.clone()
-                new_data.y = torch.tensor([normalized_targets[i]], dtype=torch.float)
-                normalized_data_list[idx] = new_data
-        
-        # Create normalized dataset
-        normalized_dataset = MultiSolventDataset(
-            normalized_data_list, 
-            dataset.dataset_info, 
-            dataset.solvent_vocab
-        )
         
         return normalized_dataset, norm_params
     
@@ -755,46 +596,6 @@ class DataPreprocessor:
             return predictions * norm_params['mad'] + norm_params['median']
         else:
             raise ValueError(f"Unknown normalization method: {method}")
-    
-    @staticmethod
-    def detect_duplicates_in_dataset(dataset: Dataset, 
-                                   similarity_threshold: float = 1.0) -> Dict[str, Any]:
-        """
-        Detect potential duplicates in a dataset.
-        
-        Args:
-            dataset: Dataset to analyze
-            similarity_threshold: Threshold for considering molecules as duplicates (1.0 = exact match)
-            
-        Returns:
-            Dictionary with duplicate analysis results
-        """
-        fingerprints = {}
-        smiles_groups = {}
-        duplicates = []
-        
-        for i, data in enumerate(dataset):
-            if hasattr(data, 'canonical_smiles'):
-                smiles = data.canonical_smiles
-                
-                if smiles in smiles_groups:
-                    smiles_groups[smiles].append(i)
-                else:
-                    smiles_groups[smiles] = [i]
-        
-        # Find exact duplicates
-        exact_duplicates = {smiles: indices for smiles, indices in smiles_groups.items() 
-                           if len(indices) > 1}
-        
-        duplicate_stats = {
-            'total_molecules': len(dataset),
-            'unique_molecules': len(smiles_groups),
-            'exact_duplicates': len(exact_duplicates),
-            'duplicate_groups': exact_duplicates,
-            'duplicate_molecules': sum(len(indices) - 1 for indices in exact_duplicates.values())
-        }
-        
-        return duplicate_stats
     
     @staticmethod
     def add_node_features(dataset: Dataset, feature_type: str = 'degree') -> Dataset:
@@ -840,6 +641,7 @@ class DataPreprocessor:
             augmented_dataset.append(new_data)
         
         return augmented_dataset
+    
     @staticmethod
     def convert_to_float(dataset: Dataset) -> Dataset:
         """
@@ -868,29 +670,21 @@ class DataPreprocessor:
             
             # Keep targets as they are (should already be float)
             y = data.y
-              # Create new data object with converted features
+            
+            # Create new data object with converted features
             converted_data = Data(
                 x=x,
                 edge_index=edge_index,
                 edge_attr=edge_attr,
                 y=y
             )
-              # Copy any additional attributes from the original data object
-            # PyTorch Geometric stores attributes in _store, so we need to access them properly
-            for key in data.keys():
+            
+            # Copy any additional attributes
+            for key, value in data.__dict__.items():
                 if key not in ['x', 'edge_index', 'edge_attr', 'y']:
-                    setattr(converted_data, key, getattr(data, key))
+                    setattr(converted_data, key, value)
             
             converted_data_list.append(converted_data)
-        
-        # If original dataset is MultiSolventDataset, preserve that structure
-        if isinstance(dataset, MultiSolventDataset):
-            converted_dataset = MultiSolventDataset(
-                converted_data_list, 
-                dataset.dataset_info, 
-                dataset.solvent_vocab
-            )
-            return converted_dataset
         
         # Create a new dataset-like object that preserves the original dataset's attributes
         class ConvertedDataset:
@@ -916,8 +710,7 @@ class DataPreprocessor:
         converted_dataset = ConvertedDataset(converted_data_list, dataset)
         return converted_dataset
 
-
-# Convenience functions
+# Convenience function for common data loading workflow
 def load_molecular_data(dataset_name: str = "ESOL", data_root: str = "data", 
                        split_type: str = "kfold", n_folds: int = 5, 
                        normalize_targets: bool = True, 
@@ -946,8 +739,7 @@ def load_molecular_data(dataset_name: str = "ESOL", data_root: str = "data",
     
     # Get dataset statistics
     stats = loader.get_dataset_statistics(dataset)
-    
-    # Convert integer features to float32 for PyTorch compatibility
+      # Convert integer features to float32 for PyTorch compatibility
     dataset = DataPreprocessor.convert_to_float(dataset)
     
     # Normalize targets if requested
@@ -966,64 +758,5 @@ def load_molecular_data(dataset_name: str = "ESOL", data_root: str = "data",
         'stats': stats,
         'norm_params': norm_params,
         'dataset_name': dataset_name,
-        'random_state': random_state
-    }
-
-
-def load_multi_solvent_molecular_data(dataset_configs: List[Dict[str, str]], 
-                                     data_root: str = "data",
-                                     handle_duplicates: str = 'remove',
-                                     split_type: str = "kfold", 
-                                     n_folds: int = 5,
-                                     normalize_by_solvent: bool = True,
-                                     random_state: int = 42) -> Dict[str, Any]:
-    """
-    Complete data loading workflow for multi-solvent molecular datasets.
-    
-    Args:
-        dataset_configs: List of dataset configurations
-        data_root: Root directory for data storage
-        handle_duplicates: Strategy for duplicate handling
-        split_type: Type of data splitting
-        n_folds: Number of folds for cross-validation
-        normalize_by_solvent: Whether to normalize targets separately by solvent
-        random_state: Random seed
-    
-    Returns:
-        Dictionary containing dataset, splits, and metadata
-    """
-    loader = MolecularDataLoader(data_root)
-    
-    # Load and concatenate datasets
-    dataset, solvent_vocab, duplicate_info = loader.load_moleculenet_datasets_by_solvent(
-        dataset_configs, handle_duplicates
-    )
-    
-    # Get dataset statistics
-    stats = dataset.get_dataset_statistics()
-    
-    # Convert integer features to float32 for PyTorch compatibility
-    dataset = DataPreprocessor.convert_to_float(dataset)
-    
-    # Normalize targets
-    norm_params = None
-    if normalize_by_solvent:
-        dataset, norm_params = DataPreprocessor.normalize_targets_by_solvent(dataset)
-    else:
-        dataset, norm_params = DataPreprocessor.normalize_targets(dataset)
-    
-    # Create splits
-    splits = loader.create_splits(
-        dataset, split_type=split_type, n_folds=n_folds, random_state=random_state
-    )
-    
-    return {
-        'dataset': dataset,
-        'splits': splits,
-        'stats': stats,
-        'norm_params': norm_params,
-        'solvent_vocab': solvent_vocab,
-        'duplicate_info': duplicate_info,
-        'dataset_configs': dataset_configs,
         'random_state': random_state
     }

@@ -10,7 +10,6 @@ from torch_geometric.data import Dataset, Data
 from sklearn.model_selection import KFold, train_test_split
 import pandas as pd
 import numpy as np
-import torch
 from typing import List, Tuple, Optional, Dict, Any
 from pathlib import Path
 import pickle
@@ -30,14 +29,12 @@ class MultiSolventDataset(Dataset):
         
         # Calculate features from first sample
         if data_list:
-            self._num_node_features = data_list[0].x.size(1)
-            self._num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
-        else:
-            self._num_node_features = 0
-            self._num_edge_features = 0
+            self.num_node_features = data_list[0].x.size(1)
+            self.num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
         
         # Store reverse vocab for lookup
-        self.id_to_solvent = {v: k for k, v in solvent_vocab.items()}    
+        self.id_to_solvent = {v: k for k, v in solvent_vocab.items()}
+    
     def len(self):
         return len(self.data_list)
     
@@ -49,16 +46,6 @@ class MultiSolventDataset(Dataset):
     
     def __iter__(self):
         return iter(self.data_list)
-    
-    @property
-    def num_node_features(self) -> int:
-        """Return the number of node features."""
-        return self._num_node_features
-    
-    @property
-    def num_edge_features(self) -> int:
-        """Return the number of edge features."""
-        return self._num_edge_features
     
     def get_dataset_statistics(self) -> Dict[str, Any]:
         """Get statistics broken down by solvent and source dataset."""
@@ -573,27 +560,14 @@ class CustomDataset(Dataset):
         self.data_list = data_list
         # Calculate features from first sample
         if data_list:
-            self._num_node_features = data_list[0].x.size(1)
-            self._num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
-        else:
-            self._num_node_features = 0
-            self._num_edge_features = 0
+            self.num_node_features = data_list[0].x.size(1)
+            self.num_edge_features = data_list[0].edge_attr.size(1) if data_list[0].edge_attr is not None else 0
     
     def len(self):
         return len(self.data_list)
     
     def get(self, idx):
         return self.data_list[idx]
-    
-    @property
-    def num_node_features(self) -> int:
-        """Return the number of node features."""
-        return self._num_node_features
-    
-    @property
-    def num_edge_features(self) -> int:
-        """Return the number of edge features."""
-        return self._num_edge_features
 
 
 class DataPreprocessor:
@@ -840,6 +814,7 @@ class DataPreprocessor:
             augmented_dataset.append(new_data)
         
         return augmented_dataset
+    
     @staticmethod
     def convert_to_float(dataset: Dataset) -> Dataset:
         """
@@ -868,29 +843,21 @@ class DataPreprocessor:
             
             # Keep targets as they are (should already be float)
             y = data.y
-              # Create new data object with converted features
+            
+            # Create new data object with converted features
             converted_data = Data(
                 x=x,
                 edge_index=edge_index,
                 edge_attr=edge_attr,
                 y=y
             )
-              # Copy any additional attributes from the original data object
-            # PyTorch Geometric stores attributes in _store, so we need to access them properly
-            for key in data.keys():
+            
+            # Copy any additional attributes
+            for key, value in data.__dict__.items():
                 if key not in ['x', 'edge_index', 'edge_attr', 'y']:
-                    setattr(converted_data, key, getattr(data, key))
+                    setattr(converted_data, key, value)
             
             converted_data_list.append(converted_data)
-        
-        # If original dataset is MultiSolventDataset, preserve that structure
-        if isinstance(dataset, MultiSolventDataset):
-            converted_dataset = MultiSolventDataset(
-                converted_data_list, 
-                dataset.dataset_info, 
-                dataset.solvent_vocab
-            )
-            return converted_dataset
         
         # Create a new dataset-like object that preserves the original dataset's attributes
         class ConvertedDataset:

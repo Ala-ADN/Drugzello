@@ -9,8 +9,7 @@ class Settings(BaseSettings):
     app_name: str = "MEGAN Inference API"
     version: str = "1.0.0"
     debug: bool = False
-    
-    # Model Settings
+      # Model Settings
     model_path: Optional[str] = None
     model_type: str = "megan"
     batch_size: int = 1
@@ -20,10 +19,14 @@ class Settings(BaseSettings):
     port: int = 8000
     workers: int = 1
     
+    # Data Settings
+    data_path: str = "data"
+    
     # MLflow Settings
     mlflow_tracking_uri: Optional[str] = None
     mlflow_experiment_name: str = "megan_inference"
-      # Logging
+    
+    # Logging
     log_level: str = "INFO"
     
     model_config = {
@@ -33,7 +36,9 @@ class Settings(BaseSettings):
     }
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)        # Set default model path if not provided
+        super().__init__(**kwargs)
+        
+        # Set default model path if not provided
         if not self.model_path:
             self.model_path = os.path.join(
                 os.path.dirname(__file__), 
@@ -41,6 +46,14 @@ class Settings(BaseSettings):
                 "models", 
                 "trained",
                 "best_model.pth"
+            )
+        
+        # Set default data path if not provided as absolute path
+        if not os.path.isabs(self.data_path):
+            self.data_path = os.path.join(
+                os.path.dirname(__file__),
+                "..",
+                self.data_path
             )
 
 # Global settings instance

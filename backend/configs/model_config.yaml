@@ -29,8 +29,45 @@ model:
       - "rdkit"
     max_features: 2048
 
+    # Solvent features configuration
+    solvent_features:
+      enabled: true
+      encoding_type: "categorical" # or "embedding"
+      embedding_dim: 16
+      num_solvents: 100 # maximum number of unique solvents
+
   # Target variable
   target:
     name: "solubility"
     scale: "log"
     units: "mol/L"
+
+# Multi-solvent dataset configuration
+dataset:
+  # Data loading configuration
+  multi_solvent:
+    enabled: true
+    duplicate_strategy: "remove" # options: "remove", "keep_first", "keep_last", "average"
+    normalize_by_solvent: true
+    concat_datasets: true
+
+  # Dataset sources
+  sources:
+    moleculenet:
+      - "ESOL"
+      - "FreeSolv"
+      - "Lipophilicity"
+    custom:
+      enabled: true
+      csv_columns:
+        smiles: "smiles"
+        target: "solubility"
+        solvent: "solvent"
+
+  # Data splits
+  splits:
+    type: "random" # or "kfold", "scaffold"
+    test_size: 0.2
+    val_size: 0.1
+    n_folds: 5
+    random_state: 42

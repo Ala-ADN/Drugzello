@@ -15,6 +15,7 @@ if backend_dir not in sys.path:
 from core.config import settings
 from api.models import HealthCheckResponse, ErrorResponse
 from api.endpoints.inference import router as inference_router
+from api.endpoints.datasets import router as datasets_router
 
 # Configure logging
 logging.basicConfig(level=getattr(logging, settings.log_level))
@@ -67,6 +68,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(inference_router, prefix="/api/v1", tags=["inference"])
+app.include_router(datasets_router, prefix="/api/v1", tags=["datasets"])
 
 @app.get("/", response_model=dict)
 async def root():

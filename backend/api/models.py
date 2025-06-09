@@ -172,3 +172,85 @@ class MultiSolventDatasetResponse(BaseModel):
     normalization_applied: bool = Field(..., description="Whether normalization was applied")
     splits_available: bool = Field(..., description="Whether data splits are available")
     processing_time_ms: float = Field(..., description="Processing time in milliseconds")
+
+class UncertaintyAnalysis(BaseModel):
+    """Uncertainty analysis results."""
+    
+    prediction_std: float = Field(
+        ..., 
+        description="Standard deviation of prediction across Monte Carlo samples"
+    )
+    uaa_score: float = Field(
+        ..., 
+        description="Uncertainty in Atomic Attribution score"
+    )
+    aau_scores: List[float] = Field(
+        ..., 
+        description="Atomic Attribution of Uncertainty scores for each atom"
+    )
+
+class ExplanationResults(BaseModel):
+    """Molecular interpretation and explanation results."""
+    
+    node_importances: List[float] = Field(
+        ..., 
+        description="Importance scores for each atom in the molecule"
+    )
+    edge_importances: List[float] = Field(
+        ..., 
+        description="Importance scores for each bond in the molecule"
+    )
+    interpretation: str = Field(
+        ..., 
+        description="Human-readable interpretation of the prediction"
+    )
+    rdkit_comparison: Dict[str, float] = Field(
+        ..., 
+        description="Comparison with RDKit baseline predictions"
+    )
+
+class EnhancedSolubilityPrediction(SolubilityPrediction):
+    """Enhanced solubility prediction with uncertainty and interpretability."""
+    
+    model_config = {"protected_namespaces": ()}
+    
+    uncertainty: Optional[UncertaintyAnalysis] = Field(
+        default=None,
+        description="Uncertainty quantification results"
+    )
+    explanations: Optional[ExplanationResults] = Field(
+        default=None,
+        description="Interpretability and explanation results"
+    )
+    model_type: str = Field(
+        default="megan",
+        description="Type of model used for prediction"
+    )
+
+class EnhancedInferenceRequest(MoleculeInferenceRequest):
+    """Enhanced inference request with interpretability options."""
+    
+    include_uncertainty: bool = Field(
+        default=False,
+        description="Whether to include uncertainty quantification"
+    )
+    include_explanations: bool = Field(
+        default=False,
+        description="Whether to include molecular interpretability"
+    )
+    uncertainty_samples: int = Field(
+        default=50,
+        description="Number of Monte Carlo samples for uncertainty estimation",
+        ge=10,
+        le=200
+    )
+
+class EnhancedInferenceResponse(BaseModel):
+    """Enhanced response model with interpretability features."""
+    
+    model_config = {"protected_namespaces": ()}
+    
+    smiles: str = Field(..., description="Input SMILES string")
+    prediction: EnhancedSolubilityPrediction
+    model_version: str = Field(..., description="Version of the model used")
+    processing_time_ms: float = Field(..., description="Processing time in milliseconds")

@@ -12,7 +12,7 @@ if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
 from core.model_loader import model_loader
-from api.models import SolubilityPrediction
+from api.models import SolubilityPrediction, EnhancedSolubilityPrediction, UncertaintyAnalysis, ExplanationResults
 
 logger = logging.getLogger(__name__)
 
@@ -54,8 +54,8 @@ class InferenceService:
             logger.error(f"Molecule preprocessing error: {e}")
             raise ValueError(f"Failed to preprocess molecule: {e}")
     
-    def predict_solubility(self, smiles: str) -> SolubilityPrediction:
-        """Predict solubility for a single molecule."""
+    def predict_solubility(self, smiles: str, include_uncertainty: bool = False, include_explanations: bool = False, uncertainty_samples: int = 50) -> EnhancedSolubilityPrediction:
+        """Predict solubility for a single molecule with optional interpretability."""
         start_time = time.time()
         
         try:
@@ -71,9 +71,13 @@ class InferenceService:
             if model is None:
                 raise RuntimeError("Model not loaded")
             
-            # Make prediction
+            # Make prediction with optional interpretability
             if hasattr(model, 'predict'):
-                prediction = model.predict(smiles)
+                prediction = model.predict(
+                    smiles, 
+                    include_uncertainty=include_uncertainty,
+                    include_explanations=include_explanations
+                )
             else:
                 # Fallback for different model interfaces
                 prediction = self._fallback_prediction(mol_data)
@@ -81,6 +85,7 @@ class InferenceService:
             # Extract solubility and confidence
             solubility = prediction.get('solubility', 0.0)
             confidence = prediction.get('confidence', 0.5)
+            model_type = prediction.get('model_type', 'unknown')
             
             # Ensure values are within expected ranges
             solubility = max(-10.0, min(10.0, float(solubility)))
@@ -90,11 +95,34 @@ class InferenceService:
             
             logger.info(f"Prediction completed in {processing_time:.2f}ms for SMILES: {smiles}")
             
-            return SolubilityPrediction(
+            # Build enhanced prediction object
+            enhanced_prediction = EnhancedSolubilityPrediction(
                 value=solubility,
                 confidence=confidence,
-                unit="log(mol/L)"
+                unit="log(mol/L)",
+                model_type=model_type
             )
+            
+            # Add uncertainty analysis if requested and available
+            if include_uncertainty and 'uncertainty' in prediction:
+                uncertainty_data = prediction['uncertainty']
+                enhanced_prediction.uncertainty = UncertaintyAnalysis(
+                    prediction_std=uncertainty_data.get('prediction_std', 0.0),
+                    uaa_score=uncertainty_data.get('uaa_score', 0.0),
+                    aau_scores=uncertainty_data.get('aau_scores', [])
+                )
+            
+            # Add explanations if requested and available
+            if include_explanations and 'explanations' in prediction:
+                explanation_data = prediction['explanations']
+                enhanced_prediction.explanations = ExplanationResults(
+                    node_importances=explanation_data.get('node_importances', []),
+                    edge_importances=explanation_data.get('edge_importances', []),
+                    interpretation=explanation_data.get('interpretation', 'No interpretation available'),
+                    rdkit_comparison=explanation_data.get('rdkit_comparison', {})
+                )
+            
+            return enhanced_prediction
             
         except Exception as e:
             logger.error(f"Prediction error for SMILES '{smiles}': {e}")
@@ -123,3 +151,14 @@ class InferenceService:
     def get_model_version(self) -> str:
         """Get model version."""
         return self.model_loader.get_version() or "unknown"
+    
+    def predict_solubility_simple(self, smiles: str) -> SolubilityPrediction:
+        """Simple solubility prediction for backward compatibility."""
+        enhanced_prediction = self.predict_solubility(smiles, include_uncertainty=False, include_explanations=False)
+        
+        # Return just the base prediction for compatibility
+        return SolubilityPrediction(
+            value=enhanced_prediction.value,
+            confidence=enhanced_prediction.confidence,
+            unit=enhanced_prediction.unit
+        )

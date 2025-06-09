@@ -16,6 +16,7 @@ from core.config import settings
 # Import MEGAN model classes
 try:
     from src.models.megan_architecture import MEGANCore
+    from src.models.megan_inference import MEGANInference
     from torch_geometric.data import Data
     MEGAN_AVAILABLE = True
     
@@ -35,29 +36,37 @@ class MEGANModelWrapper:
         self.device = device
         self.model_version = "1.0.0-pytorch"
         self.is_loaded = True
-        logger.info(f"Initialized MEGAN model on device: {device}")
+        
+        # Initialize the MEGAN inference module
+        self.inference_module = MEGANInference(model, device=device)
+        logger.info(f"Initialized MEGAN model with inference module on device: {device}")
     
-    def predict(self, smiles: str) -> dict:
-        """Prediction method for MEGAN model."""
+    def predict(self, smiles: str, include_uncertainty: bool = False, include_explanations: bool = False) -> dict:
+        """Prediction method for MEGAN model with comprehensive analysis."""
         try:
-            # This is a placeholder - actual implementation would need:
-            # 1. SMILES to molecular graph conversion
-            # 2. Model forward pass
-            # 3. Output processing
-            
-            # For now, return a mock prediction with model indication
-            mock_solubility = len(smiles) * -0.08  # Slightly different from mock
+            if include_uncertainty or include_explanations:
+                # Use full analysis with uncertainty quantification and interpretability
+                return self.inference_module.predict_with_uncertainty(
+                    smiles, 
+                    uncertainty_samples=50,
+                    include_explanations=include_explanations
+                )
+            else:
+                # Use simple prediction for compatibility
+                return self.inference_module.predict(smiles)
+                
+        except Exception as e:
+            logger.error(f"Error in MEGAN prediction: {e}")
+            # Fallback to mock prediction
+            mock_solubility = len(smiles) * -0.08
             mock_confidence = max(0.6, min(0.98, 1.0 - len(smiles) * 0.015))
             
-            logger.info(f"MEGAN model prediction for SMILES: {smiles}")
             return {
                 "solubility": mock_solubility,
                 "confidence": mock_confidence,
-                "model_type": "megan_pytorch"
+                "model_type": "megan_pytorch_fallback",
+                "error": str(e)
             }
-        except Exception as e:
-            logger.error(f"Error in MEGAN prediction: {e}")
-            raise
 
 class MockMEGANModel:
     """Mock MEGAN model for testing purposes."""
@@ -67,16 +76,41 @@ class MockMEGANModel:
         self.is_loaded = True
         logger.info("Initialized mock MEGAN model")
     
-    def predict(self, smiles: str) -> dict:
-        """Mock prediction method."""        # Simple mock logic based on molecule size
+    def predict(self, smiles: str, include_uncertainty: bool = False, include_explanations: bool = False) -> dict:
+        """Mock prediction method with optional uncertainty and explanations."""
+        # Simple mock logic based on molecule size
         mock_solubility = len(smiles) * -0.1  # Longer molecules = less soluble
         mock_confidence = max(0.5, min(0.95, 1.0 - len(smiles) * 0.02))
         
-        return {
+        result = {
             "solubility": mock_solubility,
             "confidence": mock_confidence,
             "model_type": "mock"
         }
+        
+        if include_uncertainty:
+            result.update({
+                "uncertainty": {
+                    "prediction_std": 0.1,
+                    "uaa_score": 0.15,
+                    "aau_scores": [0.05] * min(len(smiles), 10)  # Mock per-atom uncertainty
+                }
+            })
+        
+        if include_explanations:
+            result.update({
+                "explanations": {
+                    "node_importances": [0.1] * min(len(smiles), 10),  # Mock atom importances
+                    "edge_importances": [0.05] * max(0, min(len(smiles), 10) - 1),  # Mock bond importances
+                    "interpretation": f"Mock interpretation: This molecule with {len(smiles)} characters shows moderate solubility.",
+                    "rdkit_comparison": {
+                        "crippen_logp": mock_solubility * -0.5,
+                        "agreement_score": 0.7
+                    }
+                }
+            })
+        
+        return result
 
 class ModelLoader:
     """Handles loading and managing the MEGAN model."""

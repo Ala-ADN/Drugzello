@@ -1,0 +1,1267 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Modern Editor Container */
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.editor-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 120, 219, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 255, 219, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animated Background Particles */
+.particles-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(120, 219, 255, 0.6);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle-0 { top: 10%; left: 10%; animation-delay: 0s; }
+.particle-1 { top: 20%; left: 80%; animation-delay: 1s; background: rgba(255, 120, 219, 0.6); }
+.particle-2 { top: 60%; left: 30%; animation-delay: 2s; background: rgba(120, 255, 219, 0.6); }
+.particle-3 { top: 80%; left: 70%; animation-delay: 3s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+  25% { transform: translateY(-20px) rotate(90deg); opacity: 1; }
+  50% { transform: translateY(-10px) rotate(180deg); opacity: 0.7; }
+  75% { transform: translateY(-15px) rotate(270deg); opacity: 1; }
+}
+
+.left-panel, .right-panel {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 3;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.left-panel {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Panel Headers */
+.panel-header {
+  margin-bottom: 2rem;
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.dna-helix {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #78dbff, #ff78db);
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 1rem;
+  animation: helixRotate 4s linear infinite;
+}
+
+.dna-helix::before,
+.dna-helix::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(to bottom, #78dbff, transparent, #ff78db);
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  border-radius: 2px;
+}
+
+.dna-helix::after {
+  transform: translateX(-50%) translateY(-50%) rotate(60deg);
+}
+
+@keyframes helixRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.panel-title, .analysis-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+/* Specific styling for the right panel analysis title */
+.right-panel .analysis-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0 0.5rem 0;
+  position: relative;
+  z-index: 10;
+  visibility: visible;
+  opacity: 1;
+  padding-top: 35rem; /* Increase top padding further to ensure visibility */
+  margin-top: 0; /* Ensure no negative margin */
+}
+
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.title-gradient {
+  background: linear-gradient(135deg, #78dbff 0%, #64b5f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-accent {
+  color: #ff78db;
+  display: block;
+}
+
+.panel-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.1rem;
+  margin: 1rem 0 1.5rem 0;
+  line-height: 1.6;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  display: block;
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Modern Controls */
+.controls-section, .analysis-controls {
+  margin-bottom: 2rem;
+}
+
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+.modern-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.label-icon {
+  font-size: 1.2rem;
+}
+
+.select-wrapper {
+  position: relative;
+  display: block;
+}
+
+.analysis-controls {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.horizontal-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.horizontal-controls .select-wrapper {
+  flex: 1;
+}
+
+.horizontal-controls .predict-button {
+  flex: 0 0 auto;
+  min-width: 200px;
+  width: auto;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.select-wrapper select:focus {
+  outline: none;
+  border-color: #78dbff;
+  box-shadow: 0 0 0 3px rgba(120, 219, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.select-wrapper select option {
+  background: #1a1a2e;
+  color: white;
+  padding: 0.5rem;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
+/* Modern Button Styling */
+.predict-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, #78dbff 0%, #64b5f6 50%, #42a5f5 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(120, 219, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-height: 40px;
+}
+
+.predict-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(120, 219, 255, 0.5);
+  background: linear-gradient(135deg, #90e8ff 0%, #76c5f7 50%, #52b5f6 100%);
+}
+
+.predict-button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.predict-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 16px rgba(120, 219, 255, 0.2);
+}
+
+.predict-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.predict-button:hover::before {
+  left: 100%;
+}
+
+.button-icon {
+  font-size: 1.3rem;
+  animation: pulse 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-text {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Editor Wrapper */
+.editor-wrapper {
+  margin-bottom: 2rem;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px 12px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.editor-header h3 {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.editor-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-active {
+  color: #4ade80;
+}
+
+.status-waiting {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  margin-bottom: 1px;
+}
+
+.status-active .status-dot {
+  background: #4ade80;
+  animation: statusPulse 2s infinite;
+}
+
+.status-waiting .status-dot {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.editor-frame {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Error Display */
+.error {
+  color: #ff6b6b;
+  font-weight: 600;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.result {
+  background: rgba(39, 174, 96, 0.1);
+  border: 2px solid #27ae60;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.result h2 {
+  color: #27ae60;
+  margin: 0 0 1rem 0;
+}
+
+.result p {
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Virtual Laboratory */
+.lab-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  height: 800px; /* Increased height to accommodate the flask */
+  min-height: 800px;
+}
+
+.lab-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+.lab-title h3 {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.lab-title p {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Lab Content Area - contains both molecule preview and flask */
+.lab-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Molecule Preview - positioned above flask */
+.molecule-preview {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 180px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+/* Default glassmorphism styling for molecule preview when not showing actual molecule */
+.molecule-preview.has-fallback {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Molecule Placeholder Styling */
+.molecule-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: relative;
+}
+
+/* Hover effect for molecule preview container - only for placeholders */
+.molecule-preview.has-fallback:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(-50%) translateY(-4px);
+  box-shadow: 0 12px 48px rgba(255, 255, 255, 0.15);
+}
+
+/* When showing actual molecule content - transparent background, no effects */
+.molecule-preview.showing-molecule {
+  background: transparent !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  filter: none !important;
+}
+
+.molecule-preview.showing-molecule:hover {
+  background: transparent !important;
+  border: none !important;
+  transform: translateX(-50%) !important;
+  box-shadow: none !important;
+}
+
+/* Molecule ready state - glow animation applied to the preview container */
+.molecule-preview:has(.molecule-placeholder:not(.empty)) {
+  animation: moleculeGlow 3s ease-in-out infinite alternate;
+}
+
+/* Disable glow animation when showing actual molecule */
+.molecule-preview.showing-molecule:has(.molecule-placeholder:not(.empty)) {
+  animation: none !important;
+}
+
+/* Disable glow animation when dropping, vanished, or reappearing */
+.molecule-preview.dropping,
+.molecule-preview.vanished,
+.molecule-preview.reappearing {
+  animation: none !important;
+}
+
+/* Re-enable specific animations for each state */
+.molecule-preview.dropping {
+  animation: moleculeDrop 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+}
+
+.molecule-preview.reappearing {
+  animation: containerReappear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+/* Fallback for browsers without :has() support */
+.molecule-placeholder:not(.empty) {
+  animation: none;
+}
+
+.molecule-preview.has-molecule {
+  animation: moleculeGlow 3s ease-in-out infinite alternate;
+}
+
+/* Disable glow animation fallback when showing actual molecule */
+.molecule-preview.showing-molecule.has-molecule {
+  animation: none !important;
+}
+
+/* Molecule Icon - Matching lab-container white text style */
+.molecule-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+  opacity: 0.9;
+  animation: iconFloat 2s ease-in-out infinite;
+}
+
+.molecule-placeholder.empty .molecule-icon {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.molecule-placeholder:not(.empty) .molecule-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Molecule Status Text - Matching lab-container white text style */
+.molecule-status {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.molecule-placeholder.empty .molecule-status {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.molecule-placeholder:not(.empty) .molecule-status {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Molecule Hint/SMILES - Matching lab-container white text style */
+.molecule-hint,
+.molecule-smiles {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.molecule-placeholder.empty .molecule-hint {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.molecule-placeholder:not(.empty) .molecule-smiles {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Courier New', monospace;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Simplified Animations to match lab-container style with white borders */
+@keyframes moleculeGlow {
+  0% { 
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  100% { 
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-4px);
+  }
+}
+
+/* Molecule preview state variations */
+.molecule-preview.updated .molecule-placeholder:not(.empty) {
+  animation: moleculeUpdate 0.6s ease-out;
+}
+
+.molecule-preview.dropping .molecule-placeholder {
+  animation: moleculeDrop 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+}
+
+/* Ensure the dropping animation applies to the entire container as well */
+.molecule-preview.dropping {
+  animation: moleculeDrop 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+  transform-origin: center top;
+}
+
+.molecule-preview.vanished {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateX(-50%) translateY(280px) scale(0.3) !important;
+}
+
+.molecule-preview.vanished .molecule-placeholder {
+  opacity: 0;
+  transform: scale(0.3) translateY(100px);
+}
+
+.molecule-preview.reappearing .molecule-placeholder {
+  animation: moleculeReappear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Enhanced reappearing animation for the entire preview container */
+.molecule-preview.reappearing {
+  animation: containerReappear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes moleculeUpdate {
+  0% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+  100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes moleculeDrop {
+  0% { 
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+  70% { 
+    transform: translateX(-50%) translateY(380px) scale(0.6);
+    opacity: 0.3;
+  }
+  100% { 
+    transform: translateX(-50%) translateY(480px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes moleculeReappear {
+  0% { 
+    transform: translateX(-50%) translateY(300px) scale(0.3);
+    opacity: 0;
+  }
+  30% { 
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Container reappearance animation for smooth transition */
+@keyframes containerReappear {
+  0% { 
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Flask Container - positioned below molecule preview */
+.flask-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 320px;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+/* U-shaped Flask Styling */
+.u-shaped-flask {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.flask-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top: none;  border-radius: 0 0 120px 120px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Solvent Level inside Flask */
+.solvent-level {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-radius: 0 0 117px 117px;
+  transition: all 0.5s ease;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Flask with solvent styling */
+.flask-container.has-solvent .solvent-level {
+  height: 70%;
+  opacity: 1;
+}
+
+/* Surface wave effect using pseudo-element */
+.flask-container.has-solvent .solvent-level::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -30px;
+  right: -30px;
+  height: 30px;
+  background: inherit;
+  border-radius: 50px;
+  animation: surfaceWave 2.5s ease-in-out infinite;
+  opacity: 0.9;
+  filter: brightness(1.1);
+}
+
+/* Add a second wave layer for more complex movement */
+.flask-container.has-solvent .solvent-level::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -25px;
+  right: -25px;
+  height: 20px;
+  background: inherit;
+  border-radius: 40px;
+  animation: surfaceWave2 2s ease-in-out infinite reverse;
+  opacity: 0.6;
+  filter: brightness(0.95);
+}
+
+/* Different solvent colors */
+.flask-container.solvent-water .solvent-level {
+  background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 50%, #0288d1 100%);
+  box-shadow: inset 0 0 20px rgba(79, 195, 247, 0.3);
+}
+
+.flask-container.solvent-ethanol .solvent-level {
+  background: linear-gradient(180deg, #a5d6a7 0%, #66bb6a 50%, #388e3c 100%);
+  box-shadow: inset 0 0 20px rgba(165, 214, 167, 0.3);
+}
+
+.flask-container.solvent-dmso .solvent-level {
+  background: linear-gradient(180deg, #ffcc80 0%, #ffb74d 50%, #ff9800 100%);
+  box-shadow: inset 0 0 20px rgba(255, 204, 128, 0.3);
+}
+
+.flask-container.solvent-acetone .solvent-level {
+  background: linear-gradient(180deg, #f8bbd9 0%, #f48fb1 50%, #e91e63 100%);
+  box-shadow: inset 0 0 20px rgba(248, 187, 217, 0.3);
+}
+
+.flask-container.solvent-chloroform .solvent-level {
+  background: linear-gradient(180deg, #ce93d8 0%, #ba68c8 50%, #8e24aa 100%);
+  box-shadow: inset 0 0 20px rgba(206, 147, 216, 0.3);
+}
+
+/* Default solvent color for unknown solvents */
+.flask-container.has-solvent:not(.solvent-water):not(.solvent-ethanol):not(.solvent-dmso):not(.solvent-acetone):not(.solvent-chloroform) .solvent-level {
+  background: linear-gradient(180deg, #90caf9 0%, #64b5f6 50%, #2196f3 100%);
+  box-shadow: inset 0 0 20px rgba(144, 202, 249, 0.3);
+}
+
+/* Surface wave animation - creates prominent ripples at the liquid surface */
+@keyframes surfaceWave {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translateY(-5px) scaleX(1.08);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-2px) scaleX(0.95);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translateY(-6px) scaleX(1.05);
+    opacity: 0.95;
+  }
+}
+
+/* Second wave animation for layered effect */
+@keyframes surfaceWave2 {
+  0%, 100% {
+    transform: translateY(0) scaleX(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translateY(-3px) scaleX(1.03) rotate(1deg);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateY(-4px) scaleX(0.98) rotate(-1deg);
+    opacity: 0.5;
+  }
+}
+
+/* Enhanced flask glow when has solvent */
+.flask-container.has-solvent .flask-base {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Splash Animation - triggered when molecule hits solvent */
+.flask-container.splashing .solvent-level::before {
+  animation: splashWavePrimary 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.flask-container.splashing .solvent-level::after {
+  animation: splashWaveSecondary 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) 0.1s;
+}
+
+/* Dissolve Animation - triggered after splash */
+.flask-container.dissolving .solvent-level {
+  animation: dissolveEffect 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.flask-container.dissolving .solvent-level::before {
+  animation: dissolveSurface 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.flask-container.dissolving .solvent-level::after {
+  animation: dissolveSurface2 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Enhanced Splash Wave Animations */
+@keyframes splashWavePrimary {
+  0% {
+    transform: translateY(0) scaleX(1) scaleY(1);
+    opacity: 0.9;
+    border-radius: 50%;
+  }
+  50% {
+    transform: translateY(-35px) scaleX(2.2) scaleY(0.4);
+    opacity: 1;
+    border-radius: 90% 90% 10% 10%;
+  }
+  100% {
+    transform: translateY(-5px) scaleX(1.1) scaleY(0.95);
+    opacity: 1;
+    border-radius: 50%;
+  }
+}
+
+@keyframes splashWaveSecondary {
+  0% {
+    transform: translateY(0) scaleX(1) scaleY(1) rotate(0deg);
+    opacity: 0.6;
+    border-radius: 50%;
+  }
+  50% {
+    transform: translateY(-28px) scaleX(1.9) scaleY(0.5) rotate(-2deg);
+    opacity: 0.9;
+    border-radius: 85% 85% 15% 15%;
+  }
+  100% {
+    transform: translateY(-3px) scaleX(1.05) scaleY(0.95) rotate(0.5deg);
+    opacity: 0.8;
+    border-radius: 50%;
+  }
+}
+
+/* Dissolve Effect Animations */
+@keyframes dissolveEffect {
+  0% {
+    filter: brightness(1) hue-rotate(0deg);
+  }
+  40% {
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+  100% {
+    filter: brightness(1.1) hue-rotate(5deg);
+  }
+}
+
+@keyframes dissolveSurface {
+  0% {
+    transform: translateY(-5px) scaleX(1.08);
+    opacity: 1;
+    filter: brightness(1.1);
+  }
+  50% {
+    transform: translateY(-8px) scaleX(1.15);
+    opacity: 0.8;
+    filter: brightness(1.3);
+  }
+  100% {
+    transform: translateY(-5px) scaleX(1.08);
+    opacity: 0.9;
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes dissolveSurface2 {
+  0% {
+    transform: translateY(-3px) scaleX(1.03) rotate(1deg);
+    opacity: 0.8;
+    filter: brightness(0.95);
+  }
+  50% {
+    transform: translateY(-6px) scaleX(1.1) rotate(-2deg);
+    opacity: 0.6;
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: translateY(-3px) scaleX(1.03) rotate(1deg);
+    opacity: 0.6;
+    filter: brightness(0.95);
+  }
+}
+
+/* Splash particles - create around flask during splash */
+.flask-container.splashing::before {
+  content: '';
+  position: absolute;
+  top: -600px;
+  left: -80px;
+  right: -80px;
+  bottom: 0;
+  background: 
+    /* Large splash droplets */
+    radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.8) 3px, transparent 4px),
+    radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.6) 2.5px, transparent 3.5px),
+    radial-gradient(circle at 70% 82%, rgba(255, 255, 255, 0.7) 2px, transparent 3px),
+    /* Medium droplets */
+    radial-gradient(circle at 25% 75%, rgba(255, 255, 255, 0.5) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 75% 78%, rgba(255, 255, 255, 0.6) 1.8px, transparent 2.8px),
+    radial-gradient(circle at 40% 88%, rgba(255, 255, 255, 0.4) 1.2px, transparent 2.2px),
+    radial-gradient(circle at 60% 87%, rgba(255, 255, 255, 0.5) 1.4px, transparent 2.4px),
+    /* Small spray particles */
+    radial-gradient(circle at 20% 70%, rgba(255, 255, 255, 0.3) 0.8px, transparent 1.8px),
+    radial-gradient(circle at 80% 73%, rgba(255, 255, 255, 0.4) 0.6px, transparent 1.6px),
+    radial-gradient(circle at 35% 65%, rgba(255, 255, 255, 0.3) 0.7px, transparent 1.7px),
+    radial-gradient(circle at 65% 68%, rgba(255, 255, 255, 0.35) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 45% 92%, rgba(255, 255, 255, 0.25) 0.4px, transparent 1.4px),
+    radial-gradient(circle at 55% 91%, rgba(255, 255, 255, 0.3) 0.6px, transparent 1.6px);
+  animation: enhancedSplashParticles 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  pointer-events: none;
+  z-index: 15;
+}
+
+@keyframes enhancedSplashParticles {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) translateY(0);
+    filter: blur(1px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.6) translateY(-25px);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translateY(-5px);
+    filter: blur(1.5px);
+  }
+}
+
+/* Secondary splash effect for added realism */
+.flask-container.splashing::after {
+  content: '';
+  position: absolute;
+  top: -595px;
+  left: -60px;
+  right: -60px;
+  bottom: 0;
+  background: 
+    /* Rim splash effects */
+    radial-gradient(ellipse at 45% 83%, rgba(255, 255, 255, 0.4) 4px 2px, transparent 6px 3px),
+    radial-gradient(ellipse at 55% 84%, rgba(255, 255, 255, 0.5) 3px 1.5px, transparent 5px 2.5px),
+    /* Edge droplets */
+    radial-gradient(circle at 15% 78%, rgba(255, 255, 255, 0.3) 1px, transparent 2px),
+    radial-gradient(circle at 85% 79%, rgba(255, 255, 255, 0.35) 1.2px, transparent 2.2px),
+    /* Micro splashes */
+    radial-gradient(circle at 28% 72%, rgba(255, 255, 255, 0.25) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 72% 74%, rgba(255, 255, 255, 0.3) 0.6px, transparent 1.6px),
+    radial-gradient(circle at 38% 95%, rgba(255, 255, 255, 0.2) 0.4px, transparent 1.4px),
+    radial-gradient(circle at 62% 93%, rgba(255, 255, 255, 0.25) 0.5px, transparent 1.5px);
+  animation: secondarySplash 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) 0.2s;
+  pointer-events: none;
+  z-index: 14;
+}
+
+@keyframes secondarySplash {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+    filter: blur(1.5px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.3) rotate(1deg);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+    filter: blur(1.8px);
+  }
+}

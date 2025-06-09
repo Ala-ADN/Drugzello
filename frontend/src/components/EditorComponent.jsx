@@ -23,6 +23,8 @@ const EditorComponent = () => {
   const [isCheckingMolecule, setIsCheckingMolecule] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);  const [isSplashing, setIsSplashing] = useState(false);
   const [isDissolving, setIsDissolving] = useState(false);
+  // Add MolT5 state
+  const [includeMolt5, setIncludeMolt5] = useState(true);
 
   // Animation reset function
   const resetAllAnimations = useCallback(() => {
@@ -180,18 +182,20 @@ const EditorComponent = () => {
     let apiError = null;
 
     try {
-      const payload = { solvent: selectedSolvent };
-      if (selectedMolId) {
-        payload.molecule_id = selectedMolId;
-      } else {
-        const smiles = await editorRef.current?.getSmiles();
-        payload.smiles = smiles;
-      }
-      const res = await fetch(`${apiBase}/solubility`, {
+      const payload = {
+        smiles: currentMolecule?.smiles || (await editorRef.current?.getSmiles()) || '',
+        include_uncertainty: true,
+        include_explanations: true,
+        include_molt5: includeMolt5  // Add this
+      };
+
+      const res = await fetch(`${apiBase}/predict/enhanced`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
-      });      const data = await res.json();
+      });
+
+      const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Error');
       apiResult = data;
         // If animation is running, delay showing results until animation completes
@@ -440,10 +444,34 @@ const EditorComponent = () => {
               <div className="explanation-card">
                 <div className="explanation-header">
                   <span className="explanation-icon">🧠</span>
-                  <span className="explanation-label">AI Analysis</span>
+                  <span className="explanation-label">
+                    {result.prediction?.explanations?.molt5_interpretation ? 'MolT5 AI Analysis' : 'AI Analysis'}
+                  </span>
                 </div>
                 <div className="explanation-content">
-                  <p>{result.explanation}</p>
+                  {result.prediction?.explanations?.molt5_interpretation ? (
+                    <div className="molt5-full-analysis">
+                      <pre className="analysis-text">{result.prediction.explanations.molt5_interpretation.analysis}</pre>
+                      <div className="analysis-meta">
+                        <small>
+                          🎯 Confidence: {(result.prediction.explanations.molt5_interpretation.confidence * 100).toFixed(1)}% | 
+                          🤖 Model: {result.prediction.explanations.molt5_interpretation.model_version}
+                        </small>
+                      </div>
+                    </div>
+                  ) : result.prediction?.molt5_analysis ? (
+                    <div className="molt5-full-analysis">
+                      <pre className="analysis-text">{result.prediction.molt5_analysis.analysis}</pre>
+                      <div className="analysis-meta">
+                        <small>
+                          🎯 Confidence: {(result.prediction.molt5_analysis.confidence * 100).toFixed(1)}% | 
+                          🤖 Model: {result.prediction.molt5_analysis.model_version}
+                        </small>
+                      </div>
+                    </div>
+                  ) : (
+                    <p>No detailed analysis available. Enable MolT5 analysis for comprehensive molecular insights.</p>
+                  )}
                 </div>
               </div>
             </div>            <div className="modal-footer">

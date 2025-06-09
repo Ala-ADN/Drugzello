@@ -6,6 +6,7 @@ import logging
 import sys
 import os
 from contextlib import asynccontextmanager
+import asyncio
 
 # Add the backend directory to Python path
 backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +16,7 @@ if backend_dir not in sys.path:
 from core.config import settings
 from api.models import HealthCheckResponse, ErrorResponse
 from api.endpoints.inference import router as inference_router
+from api.endpoints.datasets import router as datasets_router
 
 # Configure logging
 logging.basicConfig(level=getattr(logging, settings.log_level))
@@ -29,24 +31,34 @@ inference_service = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan events for the FastAPI application."""
-    # Startup
-    logger.info(f"Starting {settings.app_name} v{settings.version}")
-    global startup_time, inference_service
-    startup_time = time.time()
-      # Initialize global inference service
-    from services.inference_service import InferenceService
-    inference_service = InferenceService()
-    # Pre-load the model to ensure it's available
-    model = inference_service.model_loader.get_model()  # This triggers model loading
-    if model:
-        logger.info(f"Model loaded successfully: {inference_service.get_model_version()}")
-    else:
-        logger.warning("Failed to load model during startup")
-    
-    yield
-    
-    # Shutdown
-    logger.info("Shutting down application")
+    logger.info("Starting application initialization")
+    try:
+        global startup_time, inference_service
+        startup_time = time.time()
+        
+        # Initialize service and preload models
+        logger.info("Initializing inference service and preloading models...")
+        from services.inference_service import InferenceService
+        inference_service = InferenceService()
+        
+        # Preload models in background
+        async def preload_models():
+            try:
+                inference_service._load_molt5_model()
+                inference_service._load_molt5_tokenizer()
+                logger.info("Models preloaded successfully")
+            except Exception as e:
+                logger.error(f"Error preloading models: {e}")
+                
+        asyncio.create_task(preload_models())
+        
+        yield
+        
+    except Exception as e:
+        logger.error(f"Startup error: {e}")
+        raise
+    finally:
+        logger.info("Startup complete")
 
 # Create FastAPI application
 app = FastAPI(
@@ -66,7 +78,10 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(inference_router, prefix="/api/v1", tags=["inference"])
+app.include_router(inference_router, tags=["inference"])
+app.include_router(datasets_router, prefix="/api/v1", tags=["datasets"])
+# Include datasets router again without prefix for frontend compatibility
+app.include_router(datasets_router, tags=["frontend"])
 
 @app.get("/", response_model=dict)
 async def root():
@@ -78,33 +93,35 @@ async def root():
         "health": "/health"
     }
 
+# Update health check to be more resilient
 @app.get("/health", response_model=HealthCheckResponse)
 async def health_check():
     """Health check endpoint."""
     try:
-        global inference_service
-        
-        # Use the global inference service if available, otherwise create new one
-        if inference_service is None:
-            from services.inference_service import InferenceService
-            inference_service = InferenceService()
-        
-        model_loaded = inference_service.is_model_loaded()
-        model_version = inference_service.get_model_version() if model_loaded else None
-        
         uptime = time.time() - startup_time
         
-        return HealthCheckResponse(
+        # Create immediate response
+        response = HealthCheckResponse(
             status="healthy",
-            model_loaded=model_loaded,
-            model_version=model_version,
+            model_loaded=False,
+            model_version=None,
             uptime_seconds=uptime
         )
+        
+        # Don't block on model checks
+        if inference_service is None:
+            response.status = "degraded"
+            logger.warning("Health check: Inference service not initialized")
+        
+        return response
+        
     except Exception as e:
         logger.error(f"Health check failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Service unhealthy"
+        return HealthCheckResponse(
+            status="degraded",
+            model_loaded=False,
+            model_version=None,
+            uptime_seconds=0
         )
 
 @app.exception_handler(Exception)

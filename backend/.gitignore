@@ -80,3 +80,6 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# molt5 cache files
+models/cache/

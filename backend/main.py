@@ -8,9 +8,8 @@ import logging
 import time
 from datetime import datetime
 
-from src.utils.config import load_config
-from src.models.trainer import ModelTrainer
-from src.utils.mlflow_integration import MLFlowLogger
+from core.config import settings
+from src.models.trainer import MEGANTrainer
 
 # Configure logging
 logging.basicConfig(
@@ -20,7 +19,17 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Load configuration
-config = load_config()
+config = {
+    "cors_origins": settings.cors_origins,
+    "model_path": settings.model_path,
+    "model_type": settings.model_type,
+    "batch_size": settings.batch_size,
+    "data_path": settings.data_path,
+    "mlflow_tracking_uri": settings.mlflow_tracking_uri,
+    "mlflow_experiment_name": settings.mlflow_experiment_name,
+    "environment": settings.environment,
+    "debug": settings.debug
+}
 
 # Initialize FastAPI app
 app = FastAPI(

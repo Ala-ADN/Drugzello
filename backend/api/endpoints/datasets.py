@@ -353,3 +353,26 @@ async def get_available_datasets():
     return {
         'available_datasets': available_datasets
     }
+
+# Mock data for frontend compatibility
+MOCK_MOLECULES = [
+    {"id": 1, "name": "Aspirin", "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O"},
+    {"id": 2, "name": "Caffeine", "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C"},
+    {"id": 3, "name": "Paracetamol", "smiles": "CC(=O)NC1=CC=C(C=C1)O"},
+    {"id": 4, "name": "Ibuprofen", "smiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O"},
+    {"id": 5, "name": "Ethanol", "smiles": "CCO"}
+]
+
+MOCK_SOLVENTS = ["water", "ethanol", "acetone", "dmso", "chloroform"]
+
+@router.get("/molecules")
+async def list_molecules():
+    """Get list of available molecules for the frontend."""
+    logger.info("Listing all molecules")
+    return MOCK_MOLECULES
+
+@router.get("/solvents")
+async def list_solvents():
+    """Get list of available solvents for the frontend."""
+    logger.info("Listing all solvents")
+    return MOCK_SOLVENTS

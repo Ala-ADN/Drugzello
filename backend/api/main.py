@@ -69,6 +69,8 @@ app.add_middleware(
 # Include routers
 app.include_router(inference_router, tags=["inference"])
 app.include_router(datasets_router, prefix="/api/v1", tags=["datasets"])
+# Include datasets router again without prefix for frontend compatibility
+app.include_router(datasets_router, tags=["frontend"])
 
 @app.get("/", response_model=dict)
 async def root():

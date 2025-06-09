@@ -1,23 +1,40 @@
-# Core dependencies for the ML project
-fastapi==0.115.0
-uvicorn==0.30.1
-pydantic==2.9.2
-pydantic-settings==2.5.2
-numpy>=1.26.0,<2.0  # loosen to satisfy all dependencies (pandas, matplotlib, mlflow, etc.)
-pandas==2.2.3
-scikit-learn==1.5.2
-torch==2.4.1
-torch-geometric==2.6.1
-torch-scatter==2.1.2
-rdkit==2025.3.2  # pinned to latest available release
-joblib==1.4.2
+# Core dependencies for the ML project - ordered by dependency hierarchy
+
+# Core Python utilities (no dependencies)
 PyYAML==6.0.2
 python-dotenv==1.0.1
-transformers==4.38.2  # Specific version for MolT5 compatibility
-sentencepiece==0.2.0  # Required for MolT5 tokenization
+joblib==1.4.2
 
-# MLflow for experiment tracking and model registry
+# Math and data foundations
+numpy>=1.26.0,<2.0
+
+# Data manipulation (depends on numpy)
+pandas==2.2.3
+
+# HTTP and API framework
+fastapi==0.115.0
+uvicorn==0.30.1
+
+# Data validation (no heavy dependencies)
+pydantic==2.9.2
+pydantic-settings==2.5.2
+
+# Machine Learning (depends on numpy)
+scikit-learn==1.5.2
+
+# PyTorch ecosystem (order matters for torch-geometric)
+torch==2.4.1
+torch-scatter==2.1.2
+torch-geometric==2.6.1
+
+# Chemistry (heavy dependency, install after torch)
+rdkit==2025.3.2
+
+# NLP (depends on torch)
+sentencepiece==0.2.0
+transformers==4.38.2
+
+# MLflow and cloud storage (install last due to many dependencies)
 mlflow==2.22.1
-# For S3 and Azure artifact storage (optional)
-boto3==1.35.0  # For S3 artifact storage
-azure-storage-blob==12.22.0  # For Azure blob storage
+boto3==1.35.0
+azure-storage-blob==12.22.0

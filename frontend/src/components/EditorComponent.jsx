@@ -24,7 +24,7 @@ const EditorComponent = () => {
   const [showResultModal, setShowResultModal] = useState(false);  const [isSplashing, setIsSplashing] = useState(false);
   const [isDissolving, setIsDissolving] = useState(false);
   // Add MolT5 state
-  const [includeMolt5, setIncludeMolt5] = useState(true);
+  const [includeMolt5] = useState(true);
 
   // Animation reset function
   const resetAllAnimations = useCallback(() => {

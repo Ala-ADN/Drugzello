@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Body
 import time
 import logging
 import sys
@@ -12,9 +12,12 @@ if backend_dir not in sys.path:
 from api.models import (
     MoleculeInferenceRequest, 
     MoleculeInferenceResponse, 
-    ErrorResponse
+    ErrorResponse,
+    MeganAttributionsRequest,
+    MeganAttributionsResponse
 )
 from services.inference_service import InferenceService
+from services import megan_xai
 
 logger = logging.getLogger(__name__)
 
@@ -122,4 +125,37 @@ async def get_model_info():
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to retrieve model information"
+        )
+
+@router.post(
+    "/megan/attributions/",
+    response_model=MeganAttributionsResponse,
+    summary="Get MEGAN XAI attributions and SVGs",
+    description="Return attributions and SVG visualizations for a molecule using the MEGAN model."
+)
+async def megan_attributions(request: MeganAttributionsRequest = Body(...)):
+    """
+    Get MEGAN model attributions and SVGs for a given SMILES string.
+    """
+    try:
+        result = megan_xai.get_all_attributions(request.smiles)
+        return MeganAttributionsResponse(**result)
+    except ValueError as e:
+        logger.warning(f"Validation error for SMILES '{request.smiles}': {e}")
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=ErrorResponse(
+                error="validation_error",
+                message=str(e),
+                details={"smiles": request.smiles}
+            ).dict()
+        )
+    except Exception as e:
+        logger.error(f"Unexpected error during MEGAN XAI attribution: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=ErrorResponse(
+                error="internal_server_error",
+                message="An unexpected error occurred during MEGAN XAI attribution"
+            ).dict()
         )

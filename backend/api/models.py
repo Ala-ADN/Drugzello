@@ -72,3 +72,28 @@ class HealthCheckResponse(BaseModel):
     model_loaded: bool = Field(..., description="Whether model is loaded")
     model_version: Optional[str] = Field(default=None, description="Model version")
     uptime_seconds: float = Field(..., description="Service uptime in seconds")
+
+class MeganAttributionsRequest(BaseModel):
+    """Request model for MEGAN XAI attributions."""
+    
+    smiles: str = Field(
+        ..., 
+        description="SMILES string representing the molecule",
+        example="CCO"
+    )
+
+class MeganAttributionsResponse(BaseModel):
+    """Response model for MEGAN XAI attributions and SVGs."""
+    
+    prediction: float
+    uncertainty: float
+    ml_weights: list[float]
+    atom_weights: list[float]
+    fpa_weights: list[float]
+    uaa_weights: list[float]
+    aau_weights: list[float]
+    svg_ml: str
+    svg_atomic: str
+    svg_fpa: str
+    svg_uaa: str
+    svg_aau: str

@@ -446,6 +446,36 @@ const EditorComponent = () => {
                   <p>{result.explanation}</p>
                 </div>
               </div>
+
+              {/* MEGAN XAI SVG Visualizations */}
+              <div className="attributions-card">
+                <div className="attributions-header">
+                  <span className="attributions-icon">🔍</span>
+                  <span className="attributions-label">Model Attributions</span>
+                </div>
+                <div className="attributions-content">
+                  <div className="svg-section">
+                    <div className="svg-label">ML Attributions</div>
+                    <div className="svg-container" dangerouslySetInnerHTML={{ __html: result.svg_ml }} />
+                  </div>
+                  <div className="svg-section">
+                    <div className="svg-label">Atomic Attributions</div>
+                    <div className="svg-container" dangerouslySetInnerHTML={{ __html: result.svg_atomic }} />
+                  </div>
+                  <div className="svg-section">
+                    <div className="svg-label">FPA Attributions</div>
+                    <div className="svg-container" dangerouslySetInnerHTML={{ __html: result.svg_fpa }} />
+                  </div>
+                  <div className="svg-section">
+                    <div className="svg-label">UAA Attributions</div>
+                    <div className="svg-container" dangerouslySetInnerHTML={{ __html: result.svg_uaa }} />
+                  </div>
+                  <div className="svg-section">
+                    <div className="svg-label">AAU Attributions</div>
+                    <div className="svg-container" dangerouslySetInnerHTML={{ __html: result.svg_aau }} />
+                  </div>
+                </div>
+              </div>
             </div>            <div className="modal-footer">
               <button className="modal-button primary" onClick={() => {
                 setShowResultModal(false);

@@ -16,7 +16,6 @@ from torch_geometric.utils import to_undirected
 from torch_geometric.transforms import ToUndirected
 
 from .megan_architecture import MEGANCore
-from ..utils.molecular_utils import smiles_to_graph
 
 logger = logging.getLogger(__name__)
 

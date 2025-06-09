@@ -13,6 +13,8 @@ rdkit==2025.3.2  # pinned to latest available release
 joblib==1.4.2
 PyYAML==6.0.2
 python-dotenv==1.0.1
+transformers==4.38.2  # Specific version for MolT5 compatibility
+sentencepiece==0.2.0  # Required for MolT5 tokenization
 
 # MLflow for experiment tracking and model registry
 mlflow==2.22.1

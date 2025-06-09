@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
 import re
 
 class MoleculeInferenceRequest(BaseModel):
@@ -189,6 +189,32 @@ class UncertaintyAnalysis(BaseModel):
         description="Atomic Attribution of Uncertainty scores for each atom"
     )
 
+class MolT5Interpretation(BaseModel):
+    """MolT5-based molecular interpretation results."""
+    
+    prompt: str = Field(
+        ..., 
+        description="The prompt used for MolT5 analysis"
+    )
+    analysis: str = Field(
+        ..., 
+        description="MolT5's detailed molecular analysis"
+    )
+    confidence: float = Field(
+        ..., 
+        description="Confidence score for the interpretation",
+        ge=0.0,
+        le=1.0
+    )
+    model_version: str = Field(
+        ..., 
+        description="Version of the MolT5 model used"
+    )
+    channel_idx: int = Field(
+        default=0,
+        description="The explanation channel used for analysis"
+    )
+
 class ExplanationResults(BaseModel):
     """Molecular interpretation and explanation results."""
     
@@ -208,6 +234,10 @@ class ExplanationResults(BaseModel):
         ..., 
         description="Comparison with RDKit baseline predictions"
     )
+    molt5_interpretation: Optional[MolT5Interpretation] = Field(
+        default=None,
+        description="MolT5-based molecular interpretation"
+    )
 
 class EnhancedSolubilityPrediction(SolubilityPrediction):
     """Enhanced solubility prediction with uncertainty and interpretability."""
@@ -221,6 +251,10 @@ class EnhancedSolubilityPrediction(SolubilityPrediction):
     explanations: Optional[ExplanationResults] = Field(
         default=None,
         description="Interpretability and explanation results"
+    )
+    molt5_analysis: Optional[MolT5Interpretation] = Field(  # Add this field
+        default=None,
+        description="MolT5 analysis when requested without full explanations"
     )
     model_type: str = Field(
         default="megan",
@@ -238,6 +272,10 @@ class EnhancedInferenceRequest(MoleculeInferenceRequest):
         default=False,
         description="Whether to include molecular interpretability"
     )
+    include_molt5: bool = Field(
+        default=False,
+        description="Whether to include MolT5-based molecular analysis"
+    )
     uncertainty_samples: int = Field(
         default=50,
         description="Number of Monte Carlo samples for uncertainty estimation",
@@ -254,3 +292,29 @@ class EnhancedInferenceResponse(BaseModel):
     prediction: EnhancedSolubilityPrediction
     model_version: str = Field(..., description="Version of the model used")
     processing_time_ms: float = Field(..., description="Processing time in milliseconds")
+
+class SolubilityPredictionRequest(BaseModel):
+    """Request model for solubility prediction."""
+    smiles: str = Field(
+        ...,
+        description="SMILES string representation of the molecule",
+        example="CCO"
+    )
+
+class SolubilityPredictionResponse(BaseModel):
+    """Response model for solubility prediction."""
+    smiles: str
+    prediction: Dict[str, Union[float, Dict, List[float]]] = Field(
+        ...,
+        description="Prediction results including value, confidence, and uncertainty metrics",
+        example={
+            "value": -0.3,
+            "confidence": 0.94,
+            "unit": "log(mol/L)",
+            "uncertainty": {
+                "prediction_std": 0.1,
+                "uaa_score": 0.15,
+                "aau_scores": [0.05, 0.05, 0.05]
+            }
+        }
+    )

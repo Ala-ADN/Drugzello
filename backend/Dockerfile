@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     cmake \
     libffi-dev \
     libssl-dev \
+    libxrender1 \
+    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching

@@ -14,7 +14,9 @@ from api.models import (
     MoleculeInferenceResponse, 
     EnhancedInferenceRequest,
     EnhancedInferenceResponse,
-    ErrorResponse
+    ErrorResponse,
+    SolubilityPredictionRequest,
+    SolubilityPredictionResponse
 )
 from services.inference_service import InferenceService
 
@@ -22,18 +24,28 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# Cache the inference service
+_inference_service = None
+
 def get_inference_service():
     """Get or create inference service instance."""
+    global _inference_service
+    
+    if _inference_service is not None:
+        return _inference_service
+        
     try:
         # Try to get the global instance from main.py
         import api.main as main_module
         if hasattr(main_module, 'inference_service') and main_module.inference_service is not None:
-            return main_module.inference_service
+            _inference_service = main_module.inference_service
+            return _inference_service
     except:
         pass
     
     # Fallback: create new instance
-    return InferenceService()
+    _inference_service = InferenceService()
+    return _inference_service
 
 @router.post(
     "/predict",
@@ -129,7 +141,7 @@ async def get_model_info():
     "/predict/enhanced",
     response_model=EnhancedInferenceResponse,
     summary="Predict molecule solubility with interpretability",
-    description="Predict the solubility of a molecule with optional uncertainty quantification and interpretability"
+    description="Predict the solubility of a molecule with optional uncertainty quantification, interpretability, and MolT5 analysis"
 )
 async def predict_molecule_solubility_enhanced(request: EnhancedInferenceRequest):
     """
@@ -138,9 +150,10 @@ async def predict_molecule_solubility_enhanced(request: EnhancedInferenceRequest
     - **smiles**: SMILES string representing the molecule
     - **include_uncertainty**: Whether to include uncertainty quantification
     - **include_explanations**: Whether to include molecular interpretability
+    - **include_molt5**: Whether to include MolT5-based molecular analysis
     - **uncertainty_samples**: Number of Monte Carlo samples for uncertainty estimation
     
-    Returns enhanced solubility prediction with optional uncertainty and explanations.
+    Returns enhanced solubility prediction with optional uncertainty, explanations, and MolT5 analysis.
     """
     start_time = time.time()
     
@@ -153,6 +166,7 @@ async def predict_molecule_solubility_enhanced(request: EnhancedInferenceRequest
             request.smiles,
             include_uncertainty=request.include_uncertainty,
             include_explanations=request.include_explanations,
+            include_molt5=request.include_molt5,
             uncertainty_samples=request.uncertainty_samples
         )
         

@@ -26,6 +26,7 @@ function App() {
   const [includeUncertainty, setIncludeUncertainty] = useState(true);
   const [includeExplanations, setIncludeExplanations] = useState(false);
   const [useEnhancedApi, setUseEnhancedApi] = useState(true);
+  const [includeMolt5, setIncludeMolt5] = useState(true); // Enable by default
   useEffect(() => {
     fetch(`${apiBase}/molecules`)
       .then(res => res.json())
@@ -171,7 +172,8 @@ function App() {
           payload = {
             smiles: selectedMol?.smiles || '',
             include_uncertainty: includeUncertainty,
-            include_explanations: includeExplanations
+            include_explanations: includeExplanations,
+            include_molt5: includeMolt5  // Add this line
           };
         } else {
           // For drawn molecules, extract SMILES from editor
@@ -179,7 +181,8 @@ function App() {
           payload = {
             smiles: smiles || '',
             include_uncertainty: includeUncertainty,
-            include_explanations: includeExplanations
+            include_explanations: includeExplanations,
+            include_molt5: includeMolt5  // Add this line
           };
         }
       } else {
@@ -257,6 +260,14 @@ function App() {
                       onChange={e => setIncludeExplanations(e.target.checked)}
                     />
                     Include Molecular Explanations
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={includeMolt5}
+                      onChange={e => setIncludeMolt5(e.target.checked)}
+                    />
+                    Include MolT5 AI Analysis 🧠
                   </label>
                 </>
               )}
@@ -439,10 +450,43 @@ function App() {
                   <div className="explanations-section">
                     <h3>Molecular Explanations</h3>
                     <div className="explanation-content">
-                      {result.prediction.explanations.human_readable && (
+                      {/* Remove the MEGAN interpretation display */}
+                      {/* {result.prediction.explanations.interpretation && (
                         <div className="explanation-item">
-                          <label>Analysis:</label>
-                          <p>{result.prediction.explanations.human_readable}</p>
+                          <label>MEGAN Analysis:</label>
+                          <p>{result.prediction.explanations.interpretation}</p>
+                        </div>
+                      )} */}
+                      
+                      {/* Keep only MolT5 Analysis Display */}
+                      {result.prediction.explanations.molt5_interpretation && (
+                        <div className="explanation-item molt5-analysis">
+                          <label>🧠 MolT5 AI Analysis:</label>
+                          <div className="molt5-content">
+                            <pre className="molt5-analysis-text">{result.prediction.explanations.molt5_interpretation.analysis}</pre>
+                            <div className="molt5-meta">
+                              <small>
+                                Confidence: {(result.prediction.explanations.molt5_interpretation.confidence * 100).toFixed(1)}% | 
+                                Model: {result.prediction.explanations.molt5_interpretation.model_version || 'MolT5'}
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Standalone MolT5 analysis (when explanations are disabled but MolT5 is enabled) */}
+                      {!result.prediction.explanations.molt5_interpretation && result.prediction.molt5_analysis && (
+                        <div className="explanation-item molt5-analysis">
+                          <label>🧠 MolT5 AI Analysis:</label>
+                          <div className="molt5-content">
+                            <pre className="molt5-analysis-text">{result.prediction.molt5_analysis.analysis}</pre>
+                            <div className="molt5-meta">
+                              <small>
+                                Confidence: {(result.prediction.molt5_analysis.confidence * 100).toFixed(1)}% | 
+                                Model: {result.prediction.molt5_analysis.model_version || 'MolT5'}
+                              </small>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>

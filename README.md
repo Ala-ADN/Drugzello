@@ -5,7 +5,7 @@ This project is a full-stack web application for molecular solubility prediction
 ## Project Structure
 
 - `main.py` — FastAPI backend (API for molecules, solvents, and solubility prediction)
-- `MEGAN.ipynb` — Notebook for MEGAN model and calculations (not yet integrated)
+- `MEGAN.ipynb` — Notebook for MEGAN model and calculations
 - `frontend/` — React Vite frontend
 
 ## Backend (FastAPI)
@@ -59,12 +59,3 @@ This project is a full-stack web application for molecular solubility prediction
 5. User initiates solubility check (API: `/solubility`)
 6. Backend mocks ML/MEGAN logic and returns a result
 7. Frontend visualizes and explains the result
-
-## Notes
-- The backend currently mocks all chemistry/model logic.
-- The MEGAN model and RDKit integration are not yet implemented.
-- The frontend is a placeholder template.
-
----
-
-Feel free to contribute or extend the project!

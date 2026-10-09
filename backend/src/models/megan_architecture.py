@@ -1,287 +1,210 @@
-"""
-MEGAN Model Architecture Components
-Contains the core neural network layers and model architecture for MEGAN.
+"""Differentiable MEGAN regression core: see docs/reproducing-megan.md.
+
+Implements the 2023 paper's multi-channel encoder/importance/readout structure.
+Residuals, LayerNorm and multi-head averaging are explicitly optional variants.
 """
 
+from typing import Optional
+
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import Tensor, nn
+from torch.nn import functional as F
 from torch_geometric.nn import global_add_pool
-from torch_geometric.utils import add_self_loops, softmax
-from torch_scatter import scatter
-from typing import Optional, Tuple, List
-from torch import Tensor
-import numpy as np
+from torch_geometric.utils import add_remaining_self_loops, scatter, softmax
+from torch_geometric.utils.smiles import x_map, e_map
+
+ARCHITECTURE_VERSION = "megan-regression-v2"
+EMBEDDED_ARCHITECTURE_VERSION = "megan-regression-embedded-v3"
+SUPPORTED_ARCHITECTURES = {ARCHITECTURE_VERSION, EMBEDDED_ARCHITECTURE_VERSION}
+
+
+class CategoricalEncoder(nn.Module):
+    """Separate lookup tables preserve category identity without imposing order."""
+
+    def __init__(self, sizes, embedding_dim):
+        super().__init__()
+        self.tables = nn.ModuleList([nn.Embedding(size, embedding_dim) for size in sizes])
+        for table in self.tables:
+            nn.init.xavier_uniform_(table.weight)
+
+    def forward(self, values):
+        if values.size(1) != len(self.tables):
+            raise ValueError("Categorical feature width does not match the PyG schema")
+        indices = values.long()
+        if not torch.equal(values, indices.to(values.dtype)):
+            raise ValueError("Categorical features must be integer indices")
+        for i, table in enumerate(self.tables):
+            if bool(((indices[:, i] < 0) | (indices[:, i] >= table.num_embeddings)).any()):
+                raise ValueError("Categorical feature index is outside its vocabulary")
+        return torch.cat([table(indices[:, i]) for i, table in enumerate(self.tables)], dim=1)
 
 
 class GATv2WithLogits(nn.Module):
-    """
-    Custom GATv2‐style attention layer that explicitly stores raw (pre‐softmax)
-    attention logits in `latest_logits`.
-    """
-    def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        edge_dim: int = 0,
-        heads: int = 1,
-        concat: bool = False,
-        use_edge_features: bool = False,
-        dropout: float = 0.0,
-        add_bias: bool = True,
-    ):
+    """Dynamic attention; edge_index[0] sends messages to edge_index[1]."""
+
+    def __init__(self, in_channels, out_channels, edge_dim=0, heads=1,
+                 concat=False, use_edge_features=False, dropout=0.0, add_bias=True):
         super().__init__()
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.edge_dim = edge_dim
-        self.heads = heads
-        self.concat = concat
-        self.use_edge_features = use_edge_features
-        self.dropout = dropout
-        
-        # Node feature projection
+        self.heads, self.out_channels = heads, out_channels
+        self.concat, self.dropout = concat, dropout
         self.lin_node = nn.Linear(in_channels, heads * out_channels, bias=False)
-        
-        # Edge feature projection (if using edge features)
-        if use_edge_features and edge_dim > 0:
-            self.lin_edge = nn.Linear(edge_dim, heads * out_channels, bias=False)
-        else:
-            self.lin_edge = None
-        
-        # Attention mechanism (à la GATv2)
+        self.lin_edge = (nn.Linear(edge_dim, heads * out_channels, bias=False)
+                         if use_edge_features and edge_dim > 0 else None)
+        # Separate query/target and source/message projections match GATv2.
+        self.lin_target = nn.Linear(in_channels, heads * out_channels, bias=False)
         self.att = nn.Parameter(torch.empty(1, heads, out_channels))
-        
-        # Output projection and bias
-        if concat and heads > 1:
-            self.out_proj = nn.Linear(heads * out_channels, out_channels, bias=add_bias)
-        else:
-            self.out_proj = None
-        
-        # Store latest attention logits for MEGAN explanation extraction
+        self.out_proj = (nn.Linear(heads * out_channels, out_channels, bias=False)
+                         if concat and heads > 1 else None)
+        self.bias = nn.Parameter(torch.zeros(out_channels)) if add_bias else None
         self.latest_logits = None
-        
         self.reset_parameters()
-    
+
     def reset_parameters(self):
         nn.init.xavier_uniform_(self.lin_node.weight)
+        nn.init.xavier_uniform_(self.lin_target.weight)
+        nn.init.xavier_uniform_(self.att)
         if self.lin_edge is not None:
             nn.init.xavier_uniform_(self.lin_edge.weight)
-        nn.init.xavier_uniform_(self.att)
         if self.out_proj is not None:
             nn.init.xavier_uniform_(self.out_proj.weight)
-            if self.out_proj.bias is not None:
-                nn.init.zeros_(self.out_proj.bias)
-    
-    def forward(
-        self, 
-        x: Tensor, 
-        edge_index: Tensor, 
-        edge_attr: Optional[Tensor] = None,
-        return_attention_weights: bool = False
-    ) -> Tensor:
-        """
-        Forward pass with attention computation.
-        """
-        H, C = self.heads, self.out_channels
-        N = x.size(0)
-        
-        # Project node features
-        x_proj = self.lin_node(x).view(N, H, C)  # [N, H, C]
-        
-        # Handle edge features if provided
-        if self.use_edge_features and edge_attr is not None and self.lin_edge is not None:
-            edge_proj = self.lin_edge(edge_attr).view(-1, H, C)  # [E, H, C]
-        else:
-            edge_proj = None
-        
-        # Get source and target node indices
-        row, col = edge_index[0], edge_index[1]
-        
-        # Prepare features for attention computation
-        x_i = x_proj[row]  # Source nodes [E, H, C]
-        x_j = x_proj[col]  # Target nodes [E, H, C]
-        
-        # Combine node and edge features (GATv2 style)
-        if edge_proj is not None:
-            alpha_input = x_i + x_j + edge_proj  # [E, H, C]
-        else:
-            alpha_input = x_i + x_j  # [E, H, C]
-        
-        # Apply non-linearity and compute attention scores
-        alpha_input = F.leaky_relu(alpha_input, negative_slope=0.2)
-        alpha = (alpha_input * self.att).sum(dim=-1)  # [E, H]
-        
-        # Store raw logits for MEGAN explanation
-        self.latest_logits = alpha.detach()
-        
-        # Apply softmax to get attention weights
-        alpha = softmax(alpha, col, num_nodes=N)  # [E, H]
+        if self.bias is not None:
+            nn.init.zeros_(self.bias)
+
+    def forward(self, x, edge_index, edge_attr=None, return_attention_weights=False):
+        n = x.size(0)
+        h = self.lin_node(x).view(n, self.heads, self.out_channels)
+        src, dst = edge_index
+        query = self.lin_target(x).view(n, self.heads, self.out_channels)
+        attention_input = query[dst] + h[src]
+        if self.lin_edge is not None:
+            if edge_attr is None:
+                raise ValueError("Bond features are required by this model")
+            attention_input = attention_input + self.lin_edge(edge_attr).view(-1, self.heads, self.out_channels)
+        # Nonlinearity BEFORE the attention vector distinguishes GATv2 from GAT.
+        attention_features = F.leaky_relu(attention_input, negative_slope=0.2)
+        logits = (attention_features * self.att).sum(-1)
+        self.latest_logits = logits  # Keep autograd: explanations are trained.
+        alpha = softmax(logits, dst, num_nodes=n)
         alpha = F.dropout(alpha, p=self.dropout, training=self.training)
-        
-        # Apply attention weights to target node features
-        out = x_j * alpha.unsqueeze(-1)  # [E, H, C]
-        out = scatter(out, col, dim=0, dim_size=N, reduce='sum')  # [N, H, C]
-        
-        # Concatenate or average heads
-        if self.concat and self.heads > 1:
-            out = out.view(N, H * C)
-            if self.out_proj is not None:
-                out = self.out_proj(out)
-        else:
-            out = out.mean(dim=1)  # Average across heads: [N, C]
-        
-        if return_attention_weights:
-            return out, (edge_index, alpha)
-        return out
+        messages = h[src] * alpha.unsqueeze(-1)
+        out = scatter(messages, dst, dim=0, dim_size=n, reduce="sum")
+        out = self.out_proj(out.flatten(1)) if self.out_proj is not None else out.mean(1)
+        if self.bias is not None:
+            out = out + self.bias
+        return (out, (edge_index, alpha)) if return_attention_weights else out
 
 
 class MEGANCore(nn.Module):
+    """Prediction plus aligned [E,K] edge and [N,K] node importance masks.
+
+    Default forward returns a prediction Tensor for existing training callers.
+    Use return_explanations=True for (prediction, edge_importances, node_importances).
+    Output edge explanations align with INPUT edges, excluding added self-loops.
     """
-    MEGAN (Multi‐Explanation Graph Attention Network) core architecture.
-    Implements L layers, each with K "explanation" heads, uses raw logits for
-    E^{im} and V^{im} as in the paper.
-    """
-    def __init__(
-        self,
-        in_channels: int,
-        hidden_channels: int = 60,
-        out_channels: int = 1,
-        edge_dim: int = 0,
-        num_layers: int = 4,
-        K: int = 2,
-        heads_gat: int = 1,
-        use_edge_features: bool = False,
-        add_self_loops: bool = True,
-        dropout: float = 0.1,
-        layer_norm: bool = True,
-        residual: bool = True,
-    ):
+
+    architecture_version = ARCHITECTURE_VERSION
+
+    def __init__(self, in_channels, hidden_channels=60, out_channels=1, edge_dim=0,
+                 num_layers=4, K=2, heads_gat=1, use_edge_features=False,
+                 add_self_loops=True, dropout=0.1, layer_norm=True, residual=True,
+                 feature_encoding="ordinal", embedding_dim=16):
         super().__init__()
-        self.K = K
-        self.num_layers = num_layers
-        self.add_self_loops = add_self_loops
-        self.use_edge_features = use_edge_features
-        self.residual = residual
-        
-        # Build attention layers
-        self.attn_layers = nn.ModuleList()
-        for layer_idx in range(self.num_layers):
-            curr_in = in_channels if layer_idx == 0 else hidden_channels
-            layer_k = nn.ModuleList([
-                GATv2WithLogits(
-                    in_channels=curr_in,
-                    out_channels=hidden_channels,
-                    edge_dim=edge_dim,
-                    heads=heads_gat,
-                    concat=False,
-                    use_edge_features=use_edge_features,
-                    dropout=dropout,
-                )
+        if min(in_channels, hidden_channels, num_layers, K, heads_gat) < 1:
+            raise ValueError("Architecture dimensions must be positive")
+        self.K, self.num_layers = K, num_layers
+        self.add_self_loops, self.residual = add_self_loops, residual
+        if feature_encoding not in ("ordinal", "embedding") or embedding_dim < 1:
+            raise ValueError("Require ordinal/embedding encoding and positive embedding_dim")
+        self.feature_encoding = feature_encoding
+        self.node_encoder = self.edge_encoder = None
+        if feature_encoding == "embedding":
+            if in_channels != len(x_map) or (use_edge_features and edge_dim != len(e_map)):
+                raise ValueError("Embedding models require the maintained PyG SMILES schema")
+            self.architecture_version = EMBEDDED_ARCHITECTURE_VERSION
+            self.node_encoder = CategoricalEncoder([len(v) for v in x_map.values()], embedding_dim)
+            in_channels = len(x_map) * embedding_dim
+            if use_edge_features:
+                self.edge_encoder = CategoricalEncoder([len(v) for v in e_map.values()], embedding_dim)
+                edge_dim = len(e_map) * embedding_dim
+        self.attn_layers = nn.ModuleList([
+            nn.ModuleList([
+                GATv2WithLogits(in_channels if l == 0 else hidden_channels,
+                               hidden_channels, edge_dim, heads_gat,
+                               use_edge_features=use_edge_features, dropout=dropout)
                 for _ in range(K)
-            ])
-            self.attn_layers.append(layer_k)
-        
-        # Layer normalization (optional)
-        self.layer_norms = nn.ModuleList()
-        if layer_norm:
-            for _ in range(num_layers):
-                self.layer_norms.append(nn.LayerNorm(hidden_channels))
-        
-        # Final prediction head
-        self.classifier = nn.Sequential(
-            nn.Linear(hidden_channels, hidden_channels // 2),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_channels // 2, out_channels)
+            ]) for l in range(num_layers)
+        ])
+        self.input_proj = (nn.Linear(in_channels, hidden_channels, bias=False)
+                           if residual and in_channels != hidden_channels else None)
+        self.layer_norms = nn.ModuleList([
+            nn.LayerNorm(hidden_channels) for _ in range(num_layers)
+        ] if layer_norm else [])
+        self.node_importance_mlp = nn.Sequential(
+            nn.Linear(hidden_channels, hidden_channels), nn.ReLU(),
+            nn.Linear(hidden_channels, K), nn.Sigmoid(),
         )
-        
-        # Store attention logits for explanation
+        self.classifier = nn.Sequential(
+            nn.Linear(K * hidden_channels, hidden_channels), nn.ReLU(),
+            nn.Dropout(dropout), nn.Linear(hidden_channels, out_channels),
+        )
         self.attention_logits = []
-    
-    def forward(self, x, edge_index, edge_attr=None, batch=None):
-        """
-        Forward pass through MEGAN layers.
-        
-        Args:
-            x: Node features [N, F]
-            edge_index: Edge connectivity [2, E]
-            edge_attr: Edge features [E, D] (optional)
-            batch: Batch assignment [N] (optional)
-        
-        Returns:
-            Graph-level prediction [B, out_channels]
-        """
-        # Add self loops if requested
-        if self.add_self_loops:
-            edge_index, edge_attr = add_self_loops(
-                edge_index, edge_attr, num_nodes=x.size(0)
-            )
-        
-        # Clear previous attention logits
-        self.attention_logits = []
-        
-        # Process through MEGAN layers
-        h = x
-        for layer_idx, layer_k in enumerate(self.attn_layers):
-            layer_outputs = []
-            layer_logits = []
-            
-            # Apply K attention heads in parallel
-            for k_idx, attn_k in enumerate(layer_k):
-                h_k = attn_k(h, edge_index, edge_attr)
-                layer_outputs.append(h_k)
-                
-                # Store attention logits for this head
-                if hasattr(attn_k, 'latest_logits') and attn_k.latest_logits is not None:
-                    layer_logits.append(attn_k.latest_logits.clone())
-            
-            # Combine outputs from K heads (average)
-            h_new = torch.stack(layer_outputs, dim=0).mean(dim=0)
-            
-            # Apply residual connection
-            if self.residual and h.size(-1) == h_new.size(-1):
-                h_new = h + h_new
-            
-            # Apply layer normalization
-            if layer_idx < len(self.layer_norms):
-                h_new = self.layer_norms[layer_idx](h_new)
-            
-            h = h_new
-            
-            # Store layer attention logits
-            if layer_logits:
-                self.attention_logits.append(layer_logits)
-        
-        # Global pooling for graph-level prediction
+        self.node_importances = self.edge_importances = self.batch_indices = None
+
+    def forward(self, x, edge_index, edge_attr=None, batch=None,
+                return_explanations=False, importance_mask: Optional[Tensor] = None):
         if batch is None:
-            # Single graph case
-            graph_repr = global_add_pool(h, torch.zeros(h.size(0), dtype=torch.long, device=h.device))
-        else:
-            # Batch case
-            graph_repr = global_add_pool(h, batch)
-        
-        # Final prediction
-        out = self.classifier(graph_repr)
-        
-        return out
-    
-    def get_explanations(self, layer_idx: int = -1) -> List[Tensor]:
-        """
-        Extract attention logits for explanation analysis.
-        
-        Args:
-            layer_idx: Which layer to extract (-1 for last layer)
-        
-        Returns:
-            List of attention logits for each explanation head
-        """
+            batch = torch.zeros(x.size(0), dtype=torch.long, device=x.device)
+        original_edges = edge_index.size(1)
+        if self.node_encoder is not None:
+            x = self.node_encoder(x)
+        if self.edge_encoder is not None:
+            if edge_attr is None:
+                raise ValueError("Embedding models require bond category indices")
+            # Encode physical bonds first; synthetic loops get ZERO embeddings.
+            edge_attr = self.edge_encoder(edge_attr)
+        # Molecular graphs have no self-loops; allowing input loops would reorder
+        # them in PyG and break the documented explanation alignment.
+        if bool((edge_index[0] == edge_index[1]).any()):
+            raise ValueError("Pass original molecular edges without self-loops")
+        effective_edges = edge_index
+        if self.add_self_loops:
+            effective_edges, edge_attr = add_remaining_self_loops(
+                edge_index, edge_attr, fill_value=0.0, num_nodes=x.size(0)
+            )
+        self.attention_logits = []
+        h = x
+        for l, channels in enumerate(self.attn_layers):
+            outputs = [F.elu(channel(h, effective_edges, edge_attr)) for channel in channels]
+            self.attention_logits.append([channel.latest_logits for channel in channels])
+            new_h = torch.stack(outputs).mean(0)
+            if self.residual:
+                new_h = new_h + (self.input_proj(h) if l == 0 and self.input_proj is not None else h)
+            h = self.layer_norms[l](new_h) if self.layer_norms else new_h
+        # Eq. 3: sum RAW logits across layers, then sigmoid (not softmax).
+        logits = torch.stack([
+            torch.stack([a.mean(-1) for a in layer], dim=-1)
+            for layer in self.attention_logits
+        ]).sum(0)
+        effective_importance = torch.sigmoid(logits)
+        # Mean pooling keeps the gate in [0,1], unlike degree-dependent sums.
+        edge_pool = scatter(effective_importance, effective_edges[1], dim=0,
+                            dim_size=x.size(0), reduce="mean")
+        node_importance = self.node_importance_mlp(h) * edge_pool
+        if importance_mask is not None:
+            if importance_mask.shape != node_importance.shape:
+                raise ValueError("importance_mask must have shape [nodes, channels]")
+            node_importance = node_importance * importance_mask
+        self.node_importances = node_importance
+        self.edge_importances = effective_importance[:original_edges]
+        self.batch_indices = batch
+        pooled = [global_add_pool(h * node_importance[:, k:k+1], batch) for k in range(self.K)]
+        prediction = self.classifier(torch.cat(pooled, dim=-1))
+        if return_explanations:
+            return prediction, self.edge_importances, node_importance
+        return prediction
+
+    def get_explanations(self, layer_idx=-1):
+        """Raw differentiable attention diagnostics; use forward for actual masks."""
         if not self.attention_logits:
             return []
-        
-        if layer_idx == -1:
-            layer_idx = len(self.attention_logits) - 1
-        
-        if 0 <= layer_idx < len(self.attention_logits):
-            return self.attention_logits[layer_idx]
-        
-        return []
+        return self.attention_logits[layer_idx]

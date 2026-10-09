@@ -2,8 +2,8 @@
 Configuration classes for MEGAN model training and hyperparameter management.
 """
 
-from dataclasses import dataclass, field, asdict
-from typing import List, Dict, Any, Optional
+from dataclasses import dataclass, asdict
+from typing import Dict, Any
 import yaml
 from pathlib import Path
 
@@ -23,6 +23,8 @@ class MEGANConfig:
     dropout: float = 0.1
     layer_norm: bool = True
     residual: bool = True
+    feature_encoding: str = "ordinal"
+    embedding_dim: int = 16
     
     # Training parameters
     learning_rate: float = 0.001
@@ -30,11 +32,13 @@ class MEGANConfig:
     batch_size: int = 32
     num_epochs: int = 200
     patience: int = 20  # Early stopping patience
+    training_schedule: str = "joint"
+    scheduler_metric: str = "total"
     
     # Loss function weights
     gamma_exp: float = 0.1      # Explanation loss weight
     beta_sparsity: float = 0.01  # Sparsity regularization
-    delta_decor: float = 0.05    # Decorrelation regularization
+    delta_decor: float = 0.0    # Decorrelation regularization
     
     # Data processing
     train_split: float = 0.8
@@ -136,163 +140,3 @@ class MEGANConfig:
                 setattr(config, key, value)
         
         return config
-
-
-@dataclass
-class SearchSpace:
-    """
-    Define hyperparameter search spaces for MEGAN hyperparameter optimization.
-    
-    This class allows for flexible hyperparameter tuning by specifying lists of
-    possible values for each hyperparameter. The search space can be customized
-    by providing specific values or left as None to use default ranges.
-    """
-    
-    # Architecture parameters
-    hidden_channels: Optional[List[int]] = None
-    num_layers: Optional[List[int]] = None
-    K: Optional[List[int]] = None
-    heads_gat: Optional[List[int]] = None
-    
-    # Training parameters
-    learning_rate: Optional[List[float]] = None
-    weight_decay: Optional[List[float]] = None
-    dropout: Optional[List[float]] = None
-    batch_size: Optional[List[int]] = None
-    
-    # Regularization parameters
-    gamma_exp: Optional[List[float]] = None
-    beta_sparsity: Optional[List[float]] = None
-    delta_decor: Optional[List[float]] = None
-    
-    # Boolean parameters
-    use_edge_features: Optional[List[bool]] = None
-    layer_norm: Optional[List[bool]] = None
-    residual: Optional[List[bool]] = None
-    
-    def __post_init__(self):
-        """Set default search spaces for None values."""
-        if self.hidden_channels is None:
-            self.hidden_channels = [32, 60, 80, 128]
-        
-        if self.num_layers is None:
-            self.num_layers = [2, 3, 4, 5]
-        
-        if self.K is None:
-            self.K = [2, 3, 4]
-        
-        if self.heads_gat is None:
-            self.heads_gat = [1, 2, 4]
-        
-        if self.learning_rate is None:
-            self.learning_rate = [0.0001, 0.0005, 0.001, 0.005]
-        
-        if self.weight_decay is None:
-            self.weight_decay = [1e-6, 1e-5, 1e-4, 1e-3]
-        
-        if self.dropout is None:
-            self.dropout = [0.0, 0.1, 0.2, 0.3]
-        
-        if self.batch_size is None:
-            self.batch_size = [16, 32, 64]
-        
-        if self.gamma_exp is None:
-            self.gamma_exp = [0.05, 0.1, 0.15, 0.2]
-        
-        if self.beta_sparsity is None:
-            self.beta_sparsity = [0.0, 0.01, 0.05, 0.1]
-        
-        if self.delta_decor is None:
-            self.delta_decor = [0.0, 0.05, 0.1, 0.2]
-        
-        if self.use_edge_features is None:
-            self.use_edge_features = [True, False]
-        
-        if self.layer_norm is None:
-            self.layer_norm = [True, False]
-        
-        if self.residual is None:
-            self.residual = [True, False]
-    
-    def get_param_combinations(self) -> List[Dict[str, Any]]:
-        """
-        Generate all possible parameter combinations from the search space.
-        
-        Returns:
-            List of dictionaries, each containing one parameter combination
-        """
-        from itertools import product
-        
-        # Get all parameter names and their possible values
-        param_names = []
-        param_values = []
-        
-        for field_name, field_value in asdict(self).items():
-            if field_value is not None:
-                param_names.append(field_name)
-                param_values.append(field_value)
-        
-        # Generate all combinations
-        combinations = []
-        for combination in product(*param_values):
-            param_dict = dict(zip(param_names, combination))
-            combinations.append(param_dict)
-        
-        return combinations
-    
-    def sample_random_config(self, random_seed: Optional[int] = None) -> Dict[str, Any]:
-        """
-        Sample a random configuration from the search space.
-        
-        Args:
-            random_seed: Random seed for reproducible sampling
-        
-        Returns:
-            Dictionary with sampled parameter values
-        """
-        import random
-        
-        if random_seed is not None:
-            random.seed(random_seed)
-        
-        config = {}
-        for field_name, field_value in asdict(self).items():
-            if field_value is not None:
-                config[field_name] = random.choice(field_value)
-        
-        return config
-
-
-# Predefined search spaces for common scenarios
-SEARCH_SPACES = {
-    "quick": SearchSpace(
-        hidden_channels=[32, 60],
-        num_layers=[2, 3],
-        K=[2, 3],
-        learning_rate=[0.001, 0.005],
-        dropout=[0.1, 0.2]
-    ),
-    
-    "comprehensive": SearchSpace(
-        hidden_channels=[32, 60, 80, 128],
-        num_layers=[2, 3, 4, 5],
-        K=[2, 3, 4],
-        heads_gat=[1, 2, 4],
-        learning_rate=[0.0001, 0.0005, 0.001, 0.005],
-        weight_decay=[1e-6, 1e-5, 1e-4],
-        dropout=[0.0, 0.1, 0.2, 0.3],
-        gamma_exp=[0.05, 0.1, 0.15],
-        beta_sparsity=[0.0, 0.01, 0.05],
-        delta_decor=[0.0, 0.05, 0.1]
-    ),
-    
-    "architecture_focus": SearchSpace(
-        hidden_channels=[32, 60, 80, 128, 256],
-        num_layers=[2, 3, 4, 5, 6],
-        K=[2, 3, 4, 5],
-        heads_gat=[1, 2, 4, 8],
-        use_edge_features=[True, False],
-        layer_norm=[True, False],
-        residual=[True, False]
-    )
-}

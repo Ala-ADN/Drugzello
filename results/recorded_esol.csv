@@ -1,0 +1,3 @@
+run_id,dataset,split_type,seed,fold_idx,epochs_recorded,validation_mae_standardized_at_best_total_loss,validation_mae_logS_derived,best_validation_total_loss
+169e433107624a058227f117ee4c0a92,ESOL,kfold,42,0,20,0.5572800040245056,1.1677867867195655,0.5588648683494992
+169e433107624a058227f117ee4c0a92,ESOL,kfold,42,1,20,0.6845464110374451,1.4344750357679732,0.8383558922343783

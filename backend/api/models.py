@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, Dict, Any, List, Union
+from typing import Optional, Dict, Any, List
 import re
 
 class MoleculeInferenceRequest(BaseModel):
@@ -29,18 +29,17 @@ class SolubilityPrediction(BaseModel):
     
     value: float = Field(
         ..., 
-        description="Predicted solubility value",
-        ge=-10.0,
-        le=10.0
+        description="Predicted aqueous logS; not clamped to a training range",
+        allow_inf_nan=False
     )
-    confidence: float = Field(
-        ..., 
-        description="Confidence score for the prediction",
+    confidence: Optional[float] = Field(
+        default=None,
+        description="Calibrated confidence when available; null for this model",
         ge=0.0,
         le=1.0
     )
     unit: str = Field(
-        default="log(mol/L)",
+        default="logS",
         description="Unit of the solubility prediction"
     )
 
@@ -74,104 +73,12 @@ class HealthCheckResponse(BaseModel):
     model_version: Optional[str] = Field(default=None, description="Model version")
     uptime_seconds: float = Field(..., description="Service uptime in seconds")
 
-class DatasetConfig(BaseModel):
-    """Configuration for a single dataset with solvent."""
-    
-    name: str = Field(..., description="Name of the MoleculeNet dataset", example="ESOL")
-    solvent: str = Field(..., description="Solvent name for this dataset", example="water")
 
-class MultiSolventDatasetRequest(BaseModel):
-    """Request model for loading multi-solvent datasets."""
-    
-    dataset_configs: List[DatasetConfig] = Field(
-        ..., 
-        description="List of dataset configurations",
-        example=[
-            {"name": "ESOL", "solvent": "water"},
-            {"name": "FreeSolv", "solvent": "water"},
-            {"name": "Lipophilicity", "solvent": "octanol"}        ]
-    )
-    handle_duplicates: str = Field(
-        default="remove",
-        description="Strategy for handling duplicates",
-        example="remove"
-    )
-    split_type: str = Field(
-        default="kfold", 
-        description="Type of data splitting",
-        example="kfold"
-    )
-    n_folds: int = Field(default=5, description="Number of folds for k-fold", ge=2, le=20)
-    normalize_by_solvent: bool = Field(
-        default=True, 
-        description="Whether to normalize targets separately by solvent"
-    )
-    random_state: int = Field(default=42, description="Random seed for reproducibility")
-    
-    @field_validator('handle_duplicates')
-    @classmethod
-    def validate_duplicate_strategy(cls, v):
-        valid_strategies = ['remove', 'keep_first', 'keep_last', 'average']
-        if v not in valid_strategies:
-            raise ValueError(f"handle_duplicates must be one of {valid_strategies}")
-        return v
-    
-    @field_validator('split_type')
-    @classmethod
-    def validate_split_type(cls, v):
-        valid_types = ['random', 'kfold', 'scaffold']
-        if v not in valid_types:
-            raise ValueError(f"split_type must be one of {valid_types}")
-        return v
 
-class CustomDatasetRequest(BaseModel):
-    """Request model for loading custom datasets from CSV."""
-    
-    csv_data: str = Field(..., description="CSV content as string")
-    smiles_col: str = Field(default="smiles", description="Name of SMILES column")
-    target_col: str = Field(default="solubility", description="Name of target column")
-    solvent_col: Optional[str] = Field(default=None, description="Name of solvent column")
 
-class DatasetStatistics(BaseModel):
-    """Dataset statistics response model."""
-    
-    num_samples: int = Field(..., description="Total number of samples")
-    num_node_features: int = Field(..., description="Number of node features")
-    num_edge_features: int = Field(..., description="Number of edge features")
-    target_mean: float = Field(..., description="Mean target value")
-    target_std: float = Field(..., description="Standard deviation of targets")
-    target_min: float = Field(..., description="Minimum target value")
-    target_max: float = Field(..., description="Maximum target value")
-    avg_nodes_per_graph: float = Field(..., description="Average nodes per molecule")
-    avg_edges_per_graph: float = Field(..., description="Average edges per molecule")
-    max_nodes_per_graph: int = Field(..., description="Maximum nodes per molecule")
-    max_edges_per_graph: int = Field(..., description="Maximum edges per molecule")
 
-class SolventInfo(BaseModel):
-    """Information about a solvent in the dataset."""
-    
-    name: str = Field(..., description="Solvent name")
-    id: int = Field(..., description="Solvent ID in vocabulary")
-    sample_count: int = Field(..., description="Number of samples for this solvent")
 
-class DuplicateInfo(BaseModel):
-    """Information about duplicate handling."""
-    
-    method: str = Field(..., description="Duplicate handling method used")
-    duplicates_found: int = Field(..., description="Number of duplicates found")
-    duplicates_removed: int = Field(..., description="Number of duplicates removed")
 
-class MultiSolventDatasetResponse(BaseModel):
-    """Response model for multi-solvent dataset operations."""
-    
-    dataset_id: str = Field(..., description="Unique identifier for this dataset")
-    total_samples: int = Field(..., description="Total number of samples in dataset")
-    solvents: List[SolventInfo] = Field(..., description="Information about solvents")
-    statistics: DatasetStatistics = Field(..., description="Dataset statistics")
-    duplicate_info: DuplicateInfo = Field(..., description="Duplicate handling information")
-    normalization_applied: bool = Field(..., description="Whether normalization was applied")
-    splits_available: bool = Field(..., description="Whether data splits are available")
-    processing_time_ms: float = Field(..., description="Processing time in milliseconds")
 
 class UncertaintyAnalysis(BaseModel):
     """Uncertainty analysis results."""
@@ -216,7 +123,11 @@ class MolT5Interpretation(BaseModel):
     )
 
 class ExplanationResults(BaseModel):
-    """Molecular interpretation and explanation results."""
+    """Learned masks aligned to RDKit atoms and bonds (no added self-loops)."""
+
+    node_importances_by_channel: List[List[float]] = Field(default_factory=list)
+    bond_importances_by_channel: List[List[float]] = Field(default_factory=list)
+    channel_labels: List[str] = Field(default_factory=list)
     
     node_importances: List[float] = Field(
         ..., 
@@ -292,29 +203,3 @@ class EnhancedInferenceResponse(BaseModel):
     prediction: EnhancedSolubilityPrediction
     model_version: str = Field(..., description="Version of the model used")
     processing_time_ms: float = Field(..., description="Processing time in milliseconds")
-
-class SolubilityPredictionRequest(BaseModel):
-    """Request model for solubility prediction."""
-    smiles: str = Field(
-        ...,
-        description="SMILES string representation of the molecule",
-        example="CCO"
-    )
-
-class SolubilityPredictionResponse(BaseModel):
-    """Response model for solubility prediction."""
-    smiles: str
-    prediction: Dict[str, Union[float, Dict, List[float]]] = Field(
-        ...,
-        description="Prediction results including value, confidence, and uncertainty metrics",
-        example={
-            "value": -0.3,
-            "confidence": 0.94,
-            "unit": "log(mol/L)",
-            "uncertainty": {
-                "prediction_std": 0.1,
-                "uaa_score": 0.15,
-                "aau_scores": [0.05, 0.05, 0.05]
-            }
-        }
-    )

@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "molecules": 1128,
+  "source_files_sha256_checked": 39,
+  "megan_checkpoint_sha256_checked": 40,
+  "baseline_artifact_sha256_checked": 35,
+  "validation_only_selection_recomputed": true,
+  "scaffold_disjointness_and_one_test_prediction_per_molecule_checked": true,
+  "all_fold_and_pooled_metrics_recomputed_with_direct_formulas": true,
+  "model_tracks_replayed": 9,
+  "held_out_predictions_replayed": 10152,
+  "max_absolute_prediction_replay_difference_logS": 0.0,
+  "channel_ablation_rows_replayed": 5640,
+  "deployment_checkpoint_sha256_checked": true,
+  "ordinal_first_30_epochs_reproduction": [
+    {
+      "fold_idx": 0,
+      "epochs_compared": 30,
+      "all_training_and_validation_losses_identical": true,
+      "validation_mae_max_absolute_difference": 0.0
+    },
+    {
+      "fold_idx": 1,
+      "epochs_compared": 30,
+      "all_training_and_validation_losses_identical": true,
+      "validation_mae_max_absolute_difference": 0.0
+    },
+    {
+      "fold_idx": 2,
+      "epochs_compared": 30,
+      "all_training_and_validation_losses_identical": true,
+      "validation_mae_max_absolute_difference": 0.0
+    },
+    {
+      "fold_idx": 3,
+      "epochs_compared": 30,
+      "all_training_and_validation_losses_identical": true,
+      "validation_mae_max_absolute_difference": 0.0
+    },
+    {
+      "fold_idx": 4,
+      "epochs_compared": 30,
+      "all_training_and_validation_losses_identical": true,
+      "validation_mae_max_absolute_difference": 0.0
+    }
+  ]
+}

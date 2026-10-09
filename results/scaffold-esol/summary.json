@@ -1,0 +1,12 @@
+{
+  "metric_unit": "logS",
+  "test_selection": "never used for checkpoint selection",
+  "fold_count": 5,
+  "test_mae_mean": 0.9635577206358643,
+  "test_mae_std": 0.1533867264801656,
+  "pooled_test": {
+    "mae": 0.9785407194009064,
+    "rmse": 1.2202358629897618,
+    "r2": 0.6609159386600327
+  }
+}

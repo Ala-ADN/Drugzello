@@ -1,0 +1,2682 @@
+[
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_joint_32",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 118,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 139,
+    "validation": {
+      "mae": 0.735170591024705,
+      "rmse": 0.94330798218941,
+      "r2": 0.7790212617735199
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -1.3076739482915514,
+        -3.8149482164887054
+      ],
+      "fidelity_star_logS": -2.5613110823901284,
+      "channel_polarity_fraction": [
+        0.08641975308641975,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05713355214074042,
+      "mean_edge_importance": 0.19316208801502077
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "af42d2000815b7fa14d09a7cbcd387febdf205913f14d2d92969190f53bf78d6",
+    "seconds": 63.05529097099952
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_joint_64",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 79,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 100,
+    "validation": {
+      "mae": 0.5365116360746784,
+      "rmse": 0.6891720433665129,
+      "r2": 0.8820497748817492
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -1.3083202582865094,
+        -3.849271727487346
+      ],
+      "fidelity_star_logS": -2.5787959928869277,
+      "channel_polarity_fraction": [
+        0.012345679012345678,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.0389592824139878,
+      "mean_edge_importance": 0.2616964417162238
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "2fa44ed2ce071fa71cb8e2a1b6c79e6e51be1989ea624366ab0ac0d4f1cbb8c7",
+    "seconds": 83.0962475160004
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_joint_weak_aux",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.01,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 92,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 113,
+    "validation": {
+      "mae": 0.7927503600532626,
+      "rmse": 1.0071001649890678,
+      "r2": 0.7481228301326699
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.8019827725000463,
+        1.3961503737435366
+      ],
+      "fidelity_star_logS": 2.099066573121792,
+      "channel_polarity_fraction": [
+        1.0,
+        0.9135802469135802
+      ],
+      "both_channels_correct_fraction": 0.9135802469135802,
+      "mean_node_importance": 0.09237940900112539,
+      "mean_edge_importance": 0.20450108136670278
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "db9211e45d0071bcfd8a4f159fe2b566e3e0bb1fa472a135a087042fb2504ed0",
+    "seconds": 63.279544898000495
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_split_32",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 140,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 150,
+    "validation": {
+      "mae": 0.6177471419911326,
+      "rmse": 0.7981889765557979,
+      "r2": 0.8417823528325982
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.7240972618845647,
+        -3.9224166620500163
+      ],
+      "fidelity_star_logS": -2.3232569619672905,
+      "channel_polarity_fraction": [
+        0.14814814814814814,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05048430283788385,
+      "mean_edge_importance": 0.17511977134900178
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "aaca53fac079d911f5f00790eb3d754b1655d3011f99b8d7b208f3f0738d30a8",
+    "seconds": 130.5318350869993
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_split_64",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 124,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 145,
+    "validation": {
+      "mae": 0.5113070025856112,
+      "rmse": 0.6740003083055248,
+      "r2": 0.8871858278003933
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -1.5074877609918402,
+        -4.2638649771562065
+      ],
+      "fidelity_star_logS": -2.8856763690740235,
+      "channel_polarity_fraction": [
+        0.04938271604938271,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.042831602452478836,
+      "mean_edge_importance": 0.29005802446124646
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "6bfd3ca48118c3a4b46f57037f3af31840244292bf5df173415c2476bed398ea",
+    "seconds": 223.92383234699992
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_split_slow",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.2,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 135,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 150,
+    "validation": {
+      "mae": 0.7480108487753221,
+      "rmse": 0.9738224457097451,
+      "r2": 0.7644934277414448
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.3061199131237324,
+        -2.026508187930376
+      ],
+      "fidelity_star_logS": -0.8601941374033215,
+      "channel_polarity_fraction": [
+        0.5679012345679012,
+        0.16049382716049382
+      ],
+      "both_channels_correct_fraction": 0.12345679012345678,
+      "mean_node_importance": 0.0481598945231883,
+      "mean_edge_importance": 0.12222068320370713
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "e332029bc46de186970f7086ceed58bb7eef08ecb5700031f16ff31292423110",
+    "seconds": 153.19298497899945
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "embedding_split_strong_aux",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.5,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 78,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 99,
+    "validation": {
+      "mae": 0.5928241559016851,
+      "rmse": 0.8054477634449417,
+      "r2": 0.8388915829970505
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.2186443649536436,
+        0.28448308473418027
+      ],
+      "fidelity_star_logS": 1.7515637248439118,
+      "channel_polarity_fraction": [
+        1.0,
+        0.6790123456790124
+      ],
+      "both_channels_correct_fraction": 0.6790123456790124,
+      "mean_node_importance": 0.03942860507267896,
+      "mean_edge_importance": 0.2049647094180682
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "a5927c84f3f1003e81f4a7a2edb43785c423f8c2bb269f1834de4507398da787",
+    "seconds": 144.88297396300004
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "ordinal_long",
+    "seed": 42,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "ordinal",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 59,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-v2",
+    "epochs_run": 80,
+    "validation": {
+      "mae": 0.8231577770209607,
+      "rmse": 1.0563935420979385,
+      "r2": 0.7228627227608051
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.7437902069617852,
+        -1.9614067355946523
+      ],
+      "fidelity_star_logS": -0.6088082643164333,
+      "channel_polarity_fraction": [
+        1.0,
+        0.04938271604938271
+      ],
+      "both_channels_correct_fraction": 0.04938271604938271,
+      "mean_node_importance": 0.03568623936074772,
+      "mean_edge_importance": 0.18366931341253512
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "ce6bd1835a6ba1aaf6ad12b182ebc3df78dc8c40394f754d66611b3e8fef10b7",
+    "seconds": 27.19582137799989
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_joint_32",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 51,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 72,
+    "validation": {
+      "mae": 0.5247551696053867,
+      "rmse": 0.6649379321458537,
+      "r2": 0.8719155122130219
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -1.138742152461806,
+        -3.5945365112365737
+      ],
+      "fidelity_star_logS": -2.3666393318491905,
+      "channel_polarity_fraction": [
+        0.04597701149425287,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.04955657281707032,
+      "mean_edge_importance": 0.16659484329451935
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "01d9f07a04e84ecedb688649784a933e54d3b1a641dcb087eb0891ea89d06410",
+    "seconds": 29.365641186000175
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_joint_64",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 43,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 64,
+    "validation": {
+      "mae": 0.5297192705088648,
+      "rmse": 0.6840332390023045,
+      "r2": 0.8644533681515082
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.42477249394077754,
+        -2.5480676460983074
+      ],
+      "fidelity_star_logS": -1.0616475760787645,
+      "channel_polarity_fraction": [
+        1.0,
+        0.011494252873563218
+      ],
+      "both_channels_correct_fraction": 0.011494252873563218,
+      "mean_node_importance": 0.04628433534839936,
+      "mean_edge_importance": 0.41233074611865733
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "21c514c0609d2173402889c3d194f842d0194811b90f64b5be24888ea7d716ee",
+    "seconds": 46.980046239999865
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_joint_weak_aux",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.01,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 50,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 71,
+    "validation": {
+      "mae": 0.556088827122217,
+      "rmse": 0.7165671229959137,
+      "r2": 0.8512530479238269
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -2.2741144547759724,
+        -4.610692062888698
+      ],
+      "fidelity_star_logS": -3.4424032588323352,
+      "channel_polarity_fraction": [
+        0.06896551724137931,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.112288595971335,
+      "mean_edge_importance": 0.2569543880814299
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "d943ea18000228d1fce3b446d0f9a44f4b17cf642cc797553df4bd6a2f85c7d7",
+    "seconds": 43.9402609939998
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_split_32",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 58,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 79,
+    "validation": {
+      "mae": 0.4565066797979947,
+      "rmse": 0.6002585170627742,
+      "r2": 0.8956215169622633
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.38944556452855,
+        -1.0044122427319282
+      ],
+      "fidelity_star_logS": 0.6925166608983111,
+      "channel_polarity_fraction": [
+        1.0,
+        0.1724137931034483
+      ],
+      "both_channels_correct_fraction": 0.1724137931034483,
+      "mean_node_importance": 0.05015915018947233,
+      "mean_edge_importance": 0.20918712729586983
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "efe6d550508f96c0a65ccecaf21be11aeac58d9b9907768822b3691679e40f5c",
+    "seconds": 64.93090102099995
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_split_64",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 87,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 108,
+    "validation": {
+      "mae": 0.4969388410962861,
+      "rmse": 0.6479607895115024,
+      "r2": 0.8783725026287881
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.39189517854455613,
+        -2.8053059629483252
+      ],
+      "fidelity_star_logS": -1.2067053922018844,
+      "channel_polarity_fraction": [
+        0.6666666666666666,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.04615033095153646,
+      "mean_edge_importance": 0.3705705969410168
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "78655ebfca7d33316d2587814bea49ae95b717058c21afcf8cdc2ddd97b341b5",
+    "seconds": 160.72372375800023
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_split_slow",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.2,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 103,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 124,
+    "validation": {
+      "mae": 0.4879544521200246,
+      "rmse": 0.6198606531012646,
+      "r2": 0.8886930050426975
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.7304961708696689,
+        -5.00334655790932
+      ],
+      "fidelity_star_logS": -2.8669213643894946,
+      "channel_polarity_fraction": [
+        0.21839080459770116,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.04638303404147921,
+      "mean_edge_importance": 0.1530076592365854
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "7f0b01e2bbe071851a9b85abfe60f62dd1b3606ccd8dfb4bd5f4f4bc47453e51",
+    "seconds": 140.11633113300013
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "embedding_split_strong_aux",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.5,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 62,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 83,
+    "validation": {
+      "mae": 0.5217399432741362,
+      "rmse": 0.6717764872787325,
+      "r2": 0.8692673943895958
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.8646832878302595,
+        -0.4458590043817189
+      ],
+      "fidelity_star_logS": 1.209412141724271,
+      "channel_polarity_fraction": [
+        1.0,
+        0.21839080459770116
+      ],
+      "both_channels_correct_fraction": 0.21839080459770116,
+      "mean_node_importance": 0.03847499654361042,
+      "mean_edge_importance": 0.3405957557708124
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "ecc206bd0429e72ad29bc0d7cdcfdf5ea0c9b1e0bc2051b6ce4540a9830d3fd1",
+    "seconds": 113.79389092599922
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "ordinal_long",
+    "seed": 43,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "ordinal",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 43,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 123,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-v2",
+    "epochs_run": 144,
+    "validation": {
+      "mae": 0.5782011034844936,
+      "rmse": 0.7437598144446196,
+      "r2": 0.839749372751752
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.712932070787713,
+        -0.015104328413433819
+      ],
+      "fidelity_star_logS": 1.3489138711871402,
+      "channel_polarity_fraction": [
+        1.0,
+        0.5632183908045977
+      ],
+      "both_channels_correct_fraction": 0.5632183908045977,
+      "mean_node_importance": 0.04970971215643385,
+      "mean_edge_importance": 0.24150174961937124
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "dd66a976b8dbfe07e9a42e55ab9ff675916208351c67157029ebb551deec17fe",
+    "seconds": 44.06783714199992
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_joint_32",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 93,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 114,
+    "validation": {
+      "mae": 0.6782655992006,
+      "rmse": 0.9075374129807413,
+      "r2": 0.7677929217373846
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.6850144973473293,
+        -0.769542586667161
+      ],
+      "fidelity_star_logS": 0.9577359553400844,
+      "channel_polarity_fraction": [
+        1.0,
+        0.16842105263157894
+      ],
+      "both_channels_correct_fraction": 0.16842105263157894,
+      "mean_node_importance": 0.04991133266818137,
+      "mean_edge_importance": 0.19392813582945917
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "e09884b8e7d7464fe4c98504554b0c6b0297f86717b95b5cc1685fb93c318ad0",
+    "seconds": 48.172897801000545
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_joint_64",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 85,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 106,
+    "validation": {
+      "mae": 0.6769708620874505,
+      "rmse": 0.8701069087354567,
+      "r2": 0.7865522345864261
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.643190291195669,
+        0.6382112727420794
+      ],
+      "fidelity_star_logS": 2.1407007819688744,
+      "channel_polarity_fraction": [
+        1.0,
+        0.8947368421052632
+      ],
+      "both_channels_correct_fraction": 0.8947368421052632,
+      "mean_node_importance": 0.04448071050179491,
+      "mean_edge_importance": 0.19524718840561975
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "31998f3c64c27627a871a255862e7b52d6ef7ce15f0ca7e250ba7e140d0d09a7",
+    "seconds": 66.39486018600019
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_joint_weak_aux",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.01,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 57,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 78,
+    "validation": {
+      "mae": 0.8380681590030068,
+      "rmse": 1.085610935566045,
+      "r2": 0.6677271953132948
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        1.5501465697699617,
+        -0.45266488044043174
+      ],
+      "fidelity_star_logS": 0.5487408446647651,
+      "channel_polarity_fraction": [
+        0.9052631578947369,
+        0.29473684210526313
+      ],
+      "both_channels_correct_fraction": 0.22105263157894736,
+      "mean_node_importance": 0.08577631901761588,
+      "mean_edge_importance": 0.20455567517981424
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "046989509e44165d367194218ab3f3d92bb1a3f3438b5f10d037a8bc2f69e86f",
+    "seconds": 44.13030026399974
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_split_32",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 92,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 113,
+    "validation": {
+      "mae": 0.6682677833657515,
+      "rmse": 0.8748777043223898,
+      "r2": 0.7842051497419055
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.7157137469679772,
+        -2.6196842908397824
+      ],
+      "fidelity_star_logS": -0.9519852719359027,
+      "channel_polarity_fraction": [
+        0.8736842105263158,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.0524293665668945,
+      "mean_edge_importance": 0.2702945930905686
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "b3886e7b6d4818b79c881bbb5a677356ac3f317650f616e1586814b62236838b",
+    "seconds": 95.47243351900033
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_split_64",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 77,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 98,
+    "validation": {
+      "mae": 0.712528321617528,
+      "rmse": 0.9390280422247814,
+      "r2": 0.7513986388762697
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.4193826170380426,
+        -0.2655918099345193
+      ],
+      "fidelity_star_logS": 1.576895403551762,
+      "channel_polarity_fraction": [
+        0.9789473684210527,
+        0.4421052631578947
+      ],
+      "both_channels_correct_fraction": 0.42105263157894735,
+      "mean_node_importance": 0.045986348576180856,
+      "mean_edge_importance": 0.15046954243274602
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "019d3e2d14a02c51f5e7f2178b83d7acf6148b49be8dbb22a157e06fc9978de2",
+    "seconds": 136.92746136000005
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_split_slow",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.2,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 52,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 73,
+    "validation": {
+      "mae": 0.7452641574960006,
+      "rmse": 1.0098901821566122,
+      "r2": 0.7124623766171472
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.26593524921603207,
+        -3.506709543784416
+      ],
+      "fidelity_star_logS": -1.886322396500225,
+      "channel_polarity_fraction": [
+        0.4421052631578947,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.056117335405500714,
+      "mean_edge_importance": 0.22536209277260186
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "3d835d70832f1a859b4b390bb0f0c8c5977a15e7cefe693594d10edb92b43aa5",
+    "seconds": 76.20618934200047
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "embedding_split_strong_aux",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.5,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 39,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 60,
+    "validation": {
+      "mae": 0.7019663195861013,
+      "rmse": 0.9193010855359546,
+      "r2": 0.7617340820558594
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.411702064742271,
+        0.5592600045072246
+      ],
+      "fidelity_star_logS": 1.9854810346247482,
+      "channel_polarity_fraction": [
+        1.0,
+        0.8421052631578947
+      ],
+      "both_channels_correct_fraction": 0.8421052631578947,
+      "mean_node_importance": 0.04612455991819021,
+      "mean_edge_importance": 0.17599942147786254
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "c5f6309fb093e3b73ab6ccff4001e8b00992896d59b7376e9a86b5b74ef876c9",
+    "seconds": 76.5658031590001
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "ordinal_long",
+    "seed": 44,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "ordinal",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 44,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 62,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-v2",
+    "epochs_run": 83,
+    "validation": {
+      "mae": 0.9744751127142656,
+      "rmse": 1.2380299787389408,
+      "r2": 0.5678756881911569
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.1245467478352337,
+        -3.415030890374768
+      ],
+      "fidelity_star_logS": -1.7697888191050006,
+      "channel_polarity_fraction": [
+        0.28421052631578947,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.04435478378582047,
+      "mean_edge_importance": 0.12343650552474371
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "b741b3cac2248304865cb44cf17e555cd87ac2d7c38a2d195ca0a75c4db1f0c0",
+    "seconds": 27.619865871000002
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_joint_32",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 96,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 117,
+    "validation": {
+      "mae": 0.5350848309537197,
+      "rmse": 0.7100526523367751,
+      "r2": 0.8829291364095619
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        4.4628462726851295,
+        1.3550732165674022
+      ],
+      "fidelity_star_logS": 2.9089597446262667,
+      "channel_polarity_fraction": [
+        1.0,
+        0.8829787234042553
+      ],
+      "both_channels_correct_fraction": 0.8829787234042553,
+      "mean_node_importance": 0.04902188560729103,
+      "mean_edge_importance": 0.18847916041967505
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "b17e7e572149de81850669c78708d808f85074b96efc93ac000b27230201103f",
+    "seconds": 52.70783059200039
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_joint_64",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 46,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 67,
+    "validation": {
+      "mae": 0.5806883700350498,
+      "rmse": 0.756305062889543,
+      "r2": 0.8671805341619188
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.03762940631094038,
+        -3.4316664376725727
+      ],
+      "fidelity_star_logS": -1.6970185156808155,
+      "channel_polarity_fraction": [
+        0.5,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.056510698775900446,
+      "mean_edge_importance": 0.26768762581498573
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "4a6fd27467f450fbc4616dd4125414847cb5303007fac2c815d975d364837f04",
+    "seconds": 51.34573749500032
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_joint_weak_aux",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.01,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 56,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 77,
+    "validation": {
+      "mae": 0.6586846176614153,
+      "rmse": 0.8156439952366442,
+      "r2": 0.8455211596970615
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        4.329754797215889,
+        0.9108446775848481
+      ],
+      "fidelity_star_logS": 2.6202997374003685,
+      "channel_polarity_fraction": [
+        1.0,
+        0.7021276595744681
+      ],
+      "both_channels_correct_fraction": 0.7021276595744681,
+      "mean_node_importance": 0.10967106443371395,
+      "mean_edge_importance": 0.23339844170269095
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "9b685cd2d44c848b7d22296beeba8ba8cc2cc7b930557fc1bb40f20ac3e603b6",
+    "seconds": 41.72227355999985
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_split_32",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 68,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 89,
+    "validation": {
+      "mae": 0.5683703841047084,
+      "rmse": 0.7482874313830888,
+      "r2": 0.8699816604992381
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        4.1329813646342215,
+        1.1654620714208055
+      ],
+      "fidelity_star_logS": 2.6492217180275137,
+      "channel_polarity_fraction": [
+        1.0,
+        0.8617021276595744
+      ],
+      "both_channels_correct_fraction": 0.8617021276595744,
+      "mean_node_importance": 0.04442405501259667,
+      "mean_edge_importance": 0.19705636272030322
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "1c5c872b94a209fef50ed614bb454e2379271eafd73923625fc7748f2abdc243",
+    "seconds": 77.53126575100032
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_split_64",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 41,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 62,
+    "validation": {
+      "mae": 0.6031639525230895,
+      "rmse": 0.8164829242608684,
+      "r2": 0.8452032184585465
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.9763265415405268,
+        -4.096279049299687
+      ],
+      "fidelity_star_logS": -2.5363027954201076,
+      "channel_polarity_fraction": [
+        0.2765957446808511,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05579635823340225,
+      "mean_edge_importance": 0.2770453356220633
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "9e80ea3fa312376825f4941d022093ad7275398e06fa3f3d2066db61bc9f51bf",
+    "seconds": 82.02600738799993
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_split_slow",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.2,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 71,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 92,
+    "validation": {
+      "mae": 0.6100536077580554,
+      "rmse": 0.7617320914147357,
+      "r2": 0.8652675462780446
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.9021619377691938,
+        -5.471151976026955
+      ],
+      "fidelity_star_logS": -3.1866569568980734,
+      "channel_polarity_fraction": [
+        0.3191489361702128,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05949617040572,
+      "mean_edge_importance": 0.18664373650324156
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "f3f30f62fc83cfb81a421b3e22537f5e98167bf75028b7cdf9d90c40c79b86d7",
+    "seconds": 88.93360752100034
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "embedding_split_strong_aux",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.5,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 122,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 143,
+    "validation": {
+      "mae": 0.5843928151942314,
+      "rmse": 0.7371717023275421,
+      "r2": 0.8738157864452791
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.829434078775466,
+        -0.5639808069794281
+      ],
+      "fidelity_star_logS": 1.1327266358980197,
+      "channel_polarity_fraction": [
+        0.9574468085106383,
+        0.1595744680851064
+      ],
+      "both_channels_correct_fraction": 0.14893617021276595,
+      "mean_node_importance": 0.04114115644641991,
+      "mean_edge_importance": 0.24518199438349647
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "39ffdea9206369ac0556ddff795106e830e829d353482d52615af4285e86ac74",
+    "seconds": 184.4202685780001
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "ordinal_long",
+    "seed": 45,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "ordinal",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 45,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 64,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-v2",
+    "epochs_run": 85,
+    "validation": {
+      "mae": 0.7292679104399173,
+      "rmse": 0.909984658318356,
+      "r2": 0.8077192289781869
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.7095629776654206,
+        0.26078529010743823
+      ],
+      "fidelity_star_logS": 1.9851741338864282,
+      "channel_polarity_fraction": [
+        1.0,
+        0.776595744680851
+      ],
+      "both_channels_correct_fraction": 0.776595744680851,
+      "mean_node_importance": 0.044042836975291294,
+      "mean_edge_importance": 0.15231754168053158
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "7dd202d7eb07a75c6f0c905ebcbcda70c369bac0cacf08e65e654450f6dba81f",
+    "seconds": 28.249474233
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_joint_32",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 83,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 104,
+    "validation": {
+      "mae": 0.5912126366128313,
+      "rmse": 0.7756648817544736,
+      "r2": 0.8476732410679896
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        4.033246900896461,
+        0.6465711001398466
+      ],
+      "fidelity_star_logS": 2.339909000518155,
+      "channel_polarity_fraction": [
+        1.0,
+        0.7127659574468085
+      ],
+      "both_channels_correct_fraction": 0.7127659574468085,
+      "mean_node_importance": 0.049305405741438914,
+      "mean_edge_importance": 0.15898519427214708
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "d0c93fb36ebb039d0f171fca8add600e39569a9940b8b0ba455eaadb73b8fcea",
+    "seconds": 46.994782386000225
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_joint_64",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 95,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 116,
+    "validation": {
+      "mae": 0.5304348151734535,
+      "rmse": 0.7068207777513953,
+      "r2": 0.8735128059555823
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.3578910998028297,
+        -3.676470146137697
+      ],
+      "fidelity_star_logS": -1.6592895231674338,
+      "channel_polarity_fraction": [
+        0.6170212765957447,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05633732976443436,
+      "mean_edge_importance": 0.2917614011036537
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "c3e7c8d7875dce69af571872b3083b29bcd05dc6bcd793617d2d59b067df428a",
+    "seconds": 87.75196479099941
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_joint_weak_aux",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.01,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 135,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 150,
+    "validation": {
+      "mae": 0.660475344099897,
+      "rmse": 0.8319018990840075,
+      "r2": 0.8247846402384751
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        1.0036161752366584,
+        -2.095627595508548
+      ],
+      "fidelity_star_logS": -0.5460057101359451,
+      "channel_polarity_fraction": [
+        0.9042553191489362,
+        0.14893617021276595
+      ],
+      "both_channels_correct_fraction": 0.14893617021276595,
+      "mean_node_importance": 0.08715754398020126,
+      "mean_edge_importance": 0.2907317614782491
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "cb3a61233a6d095493b37467628225e12a32e475502a89b7fbd9b514bc290fa8",
+    "seconds": 74.58426713500012
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_split_32",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 95,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 116,
+    "validation": {
+      "mae": 0.5181490233603944,
+      "rmse": 0.6763155527825889,
+      "r2": 0.8841951648397621
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        4.140339763956707,
+        0.9001186741292955
+      ],
+      "fidelity_star_logS": 2.5202292190430016,
+      "channel_polarity_fraction": [
+        1.0,
+        0.8404255319148937
+      ],
+      "both_channels_correct_fraction": 0.8404255319148937,
+      "mean_node_importance": 0.04558612471241404,
+      "mean_edge_importance": 0.1802976425598394
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "2d9cd91a024a2f2cfcc623ce078c73be3d768a209e6f96cd9811d197c169ee39",
+    "seconds": 99.79299824899954
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_split_64",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 91,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 112,
+    "validation": {
+      "mae": 0.5912624331230812,
+      "rmse": 0.7549815619600576,
+      "r2": 0.8556886018795672
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.690842878176468,
+        -3.3935848210180515
+      ],
+      "fidelity_star_logS": -1.3513709714207918,
+      "channel_polarity_fraction": [
+        0.7872340425531915,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.05579598184857738,
+      "mean_edge_importance": 0.27479272778271513
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "284b7e030777f9920c7edf89c3643b7cfdcc93a0bf7986d2829b040d5588c510",
+    "seconds": 147.7215847030002
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_split_slow",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 2,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.2,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.0005,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 139,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 150,
+    "validation": {
+      "mae": 0.6636143174577267,
+      "rmse": 0.8354323844,
+      "r2": 0.8232943013534467
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.7949560813193677,
+        0.2358228258424384
+      ],
+      "fidelity_star_logS": 2.015389453580903,
+      "channel_polarity_fraction": [
+        1.0,
+        0.6276595744680851
+      ],
+      "both_channels_correct_fraction": 0.6276595744680851,
+      "mean_node_importance": 0.04681622999366251,
+      "mean_edge_importance": 0.20710443145243293
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "2deb75595076467e7efba49a7942db255551e2f175aa51b32752a5802a604cff",
+    "seconds": 131.36052713500067
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "embedding_split_strong_aux",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "split",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.5,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 81,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-embedded-v3",
+    "epochs_run": 102,
+    "validation": {
+      "mae": 0.6075564838470296,
+      "rmse": 0.7966928254565323,
+      "r2": 0.8393022649544912
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.512517612120562,
+        0.152741501547463
+      ],
+      "fidelity_star_logS": 1.832629556834013,
+      "channel_polarity_fraction": [
+        1.0,
+        0.5638297872340425
+      ],
+      "both_channels_correct_fraction": 0.5638297872340425,
+      "mean_node_importance": 0.03870187479362253,
+      "mean_edge_importance": 0.15892327451641275
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "94e29cff85259d52bb2d0f1d71932efb4be1a85251fd22731e33616cbb438ff1",
+    "seconds": 97.34828610299974
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "ordinal_long",
+    "seed": 46,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "ordinal",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 46,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "best_epoch": 72,
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e",
+    "architecture_version": "megan-regression-v2",
+    "epochs_run": 93,
+    "validation": {
+      "mae": 0.8051899291099386,
+      "rmse": 1.006852005016368,
+      "r2": 0.7433393902054901
+    },
+    "validation_explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.8463684339803756,
+        -0.9783474935640196
+      ],
+      "fidelity_star_logS": 0.9340104702081783,
+      "channel_polarity_fraction": [
+        0.9361702127659575,
+        0.0425531914893617
+      ],
+      "both_channels_correct_fraction": 0.0425531914893617,
+      "mean_node_importance": 0.02923430813875898,
+      "mean_edge_importance": 0.32704141471807346
+    },
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "checkpoint_sha256": "cd9142ecbb7446d46a49c0d360e70e26d3c2e9055a52b5528839f953556d1b36",
+    "seconds": 30.689660832999834
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "experiments/legacy-esol/data_info.json": "edebafae03233af4388e7af5cd6b0c7077a78e03334a4e9451ffde8261ad8493",
+  "experiments/legacy-esol/config.yaml": "44f695c9b46351447007883c250deb96e7fad44d3fa66ed8c3c1ce87753bfd3a",
+  "experiments/legacy-esol/fold_results.json": "d8cfd50169550b48665cb03deafc3709375444caf15a1de494aff71d74b01d89",
+  "experiments/legacy-esol/training_summary.json": "1848fe09b2bce4117ed867968093f4b6060b21d5db5e8d182761673b8c8b0522"
+}

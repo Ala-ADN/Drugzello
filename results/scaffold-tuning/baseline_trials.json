@@ -1,0 +1,422 @@
+[
+  {
+    "fold_idx": 0,
+    "candidate_id": "descriptor_svr_c10",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6157395632978291,
+      "rmse": 0.809814362644525,
+      "r2": 0.8371400032937243
+    },
+    "artifact_sha256": "ac3e80a3906d79bc35936e4cc8921ae68fcf1f537ee45fc4b92c92dfd3593114"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "descriptor_svr_c100",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6819393657939717,
+      "rmse": 0.8645664131844779,
+      "r2": 0.814373407896581
+    },
+    "artifact_sha256": "a75908ad18861d2684ebb82aa24e8ca0321b0b8a969cb7114c2c2433a9fbe51c"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "descriptor_svr_c100_gamma001",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6465400112294338,
+      "rmse": 0.8130649850512264,
+      "r2": 0.8358299280804209
+    },
+    "artifact_sha256": "fe007c89f88f4f1841819eaae381b3223312950884808b4aa508f78458ab8b6a"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "descriptor_hgb_leaf10",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5930596316971486,
+      "rmse": 0.7780777492036357,
+      "r2": 0.8496548358985752
+    },
+    "artifact_sha256": "465ec1ffbeb1618ac563a448652819f472feda1b43914d2fe3aa7d300b6958cf"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "descriptor_hgb_leaf20",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6069418466672438,
+      "rmse": 0.7851753397814344,
+      "r2": 0.8468994418836073
+    },
+    "artifact_sha256": "368a94c46fa4ccd3441a3127c9aa6fadf18978a3f281b75dc86d7b954e5970f9"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "combined_rf_leaf1",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.5578981627983709,
+      "rmse": 0.7148081416905607,
+      "r2": 0.8731114447335866
+    },
+    "artifact_sha256": "6f1cfc9098341d2a2f754fa5c5c336a610f2663881371c5c8c2bb06d7f0b0bbb"
+  },
+  {
+    "fold_idx": 0,
+    "candidate_id": "combined_rf_leaf2",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.540123103626096,
+      "rmse": 0.7071730273877541,
+      "r2": 0.8758076494243077
+    },
+    "artifact_sha256": "33986f4b3a7117f94d576d91c36ec332f897576e7b30cf2ff1ad73c91e89ab15"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "descriptor_svr_c10",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5098183917314066,
+      "rmse": 0.6928755671434336,
+      "r2": 0.8609263627198036
+    },
+    "artifact_sha256": "68d4ee710a1a1bfcf45f6ede9286a10bbfaf71b1512c6a0d7d4e3bbbebcf9806"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "descriptor_svr_c100",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6159595168960947,
+      "rmse": 0.8298323435944099,
+      "r2": 0.8005127999056879
+    },
+    "artifact_sha256": "3f79c3f82e0e90b85891ce6902b883891c9da51fe68ed9219b266bebea3ae5e3"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "descriptor_svr_c100_gamma001",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5335227396672945,
+      "rmse": 0.657207146203208,
+      "r2": 0.8748765031295849
+    },
+    "artifact_sha256": "df336a32108c2dd777960887229ffe03214c7a0fdc07e461347d981488c98023"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "descriptor_hgb_leaf10",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5005903800015401,
+      "rmse": 0.6316227437973514,
+      "r2": 0.8844287424746256
+    },
+    "artifact_sha256": "d6de6fe19864db6e10ccb769ddd5826d98fd11049000ea20b5ccd474b556a36b"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "descriptor_hgb_leaf20",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.497340750628351,
+      "rmse": 0.6316073009748425,
+      "r2": 0.8844343937106414
+    },
+    "artifact_sha256": "e006f1e3b756edc8177c7fc7cbf26de29d2a2633be6d49c91ff1916106db1022"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "combined_rf_leaf1",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.46978911043263727,
+      "rmse": 0.6229218078605545,
+      "r2": 0.8875909209542988
+    },
+    "artifact_sha256": "26682e3984d59367cd112fd97d3849d6428bfb9c1fcc7771a5b3151a5868b339"
+  },
+  {
+    "fold_idx": 1,
+    "candidate_id": "combined_rf_leaf2",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.4659270673706444,
+      "rmse": 0.6087062979527623,
+      "r2": 0.8926628871733701
+    },
+    "artifact_sha256": "bd425588e83fc87272c0b5b75e76f835f72bbf227202ff7ce94763e937053ee6"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "descriptor_svr_c10",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.8625560201654422,
+      "rmse": 1.2232532089858057,
+      "r2": 0.5781295545622271
+    },
+    "artifact_sha256": "ca4a9248db707171ae7ed2bc7c7c7e94a6a5ce3b4e70b0851977bbbe9a22ea9e"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "descriptor_svr_c100",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 1.0313483527455776,
+      "rmse": 1.4128079798501538,
+      "r2": 0.4372536944606886
+    },
+    "artifact_sha256": "eadcf506ee6e68d100d050c05820fd4fa087eeeacd6cc3b1a309282d537a6e28"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "descriptor_svr_c100_gamma001",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7574540040697345,
+      "rmse": 1.041940657104634,
+      "r2": 0.6939218388121584
+    },
+    "artifact_sha256": "2cdb78b9c2a5d3244be074ab7c6dc52927b3ef5242667b23b0ee689e077e1e5f"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "descriptor_hgb_leaf10",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.8044640389488912,
+      "rmse": 1.0651488088547292,
+      "r2": 0.6801348346885954
+    },
+    "artifact_sha256": "edf9c45bd0b29d4749902f686ff0cd8a94aee47ac5b00ad144f8c3eed39ea5e4"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "descriptor_hgb_leaf20",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7914750130538192,
+      "rmse": 1.0731640965018676,
+      "r2": 0.6753027254499485
+    },
+    "artifact_sha256": "1ca048f62496b156d636e5adeec4325567c54b2b38f337775185824e0b8dfc66"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "combined_rf_leaf1",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.7926392579171785,
+      "rmse": 1.0616129197743671,
+      "r2": 0.6822549712891742
+    },
+    "artifact_sha256": "a83f0da3c6dfb205046f8204863a7f4ba1faf10fa908f8b70c7172b1dffa36d8"
+  },
+  {
+    "fold_idx": 2,
+    "candidate_id": "combined_rf_leaf2",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.7934510032840908,
+      "rmse": 1.0645059851445717,
+      "r2": 0.6805207992882558
+    },
+    "artifact_sha256": "a28820ef8781cdd11f3b4a90c81205bc1ea5ecfc4a433a2f2217c09c52405972"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "descriptor_svr_c10",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6028639107056506,
+      "rmse": 0.769460022014325,
+      "r2": 0.8625198980627268
+    },
+    "artifact_sha256": "2e69b016335321096f8a6a814e683928b809895f1fb233ac13976ffab9ab841a"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "descriptor_svr_c100",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6509787397456427,
+      "rmse": 0.8474857080976544,
+      "r2": 0.8332244082121811
+    },
+    "artifact_sha256": "49edcda9e101d397ea2874801963fc3e27cab38a3d4ca03b669350517c63add9"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "descriptor_svr_c100_gamma001",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6298000252924538,
+      "rmse": 0.8002269422314973,
+      "r2": 0.8513057883354069
+    },
+    "artifact_sha256": "0cf54e36384cb46844ac7567ffaf6266021ef12e618b8cb2e0d18927394f35a9"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "descriptor_hgb_leaf10",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5988135686304641,
+      "rmse": 0.7534572756626695,
+      "r2": 0.8681788833577748
+    },
+    "artifact_sha256": "d3fda0466f02d3a27099b25dbd4758566df9ec91443f1f6c7d0c9cc8bf72f6f7"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "descriptor_hgb_leaf20",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.5917794782025991,
+      "rmse": 0.7515770698821408,
+      "r2": 0.8688359652795787
+    },
+    "artifact_sha256": "b8e4a2996cc08cc1e0aac8160095a875c5cfac65a48d512a72d7792c7777c34c"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "combined_rf_leaf1",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.581306180820229,
+      "rmse": 0.7124169214585487,
+      "r2": 0.8821482116867843
+    },
+    "artifact_sha256": "4e080bc8220e1f6bd863a4449b9a1e6110e5c7c3f3172e0042e951c263d4883b"
+  },
+  {
+    "fold_idx": 3,
+    "candidate_id": "combined_rf_leaf2",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.5896114599613865,
+      "rmse": 0.721310376191691,
+      "r2": 0.8791874409662568
+    },
+    "artifact_sha256": "f6df11b2a7d32f93e8e47e88a563de8f85386fe804fa8c8b5252374eff6e0483"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "descriptor_svr_c10",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7223497136019918,
+      "rmse": 1.0088109384757002,
+      "r2": 0.7423396975902452
+    },
+    "artifact_sha256": "dcda6204ae0ea9a49bde8d8298dd8e1de7bf4c236d6296dfbd745cbda7340588"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "descriptor_svr_c100",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7396969603676689,
+      "rmse": 1.0659210335167544,
+      "r2": 0.7123409703393804
+    },
+    "artifact_sha256": "0bdcb8041cdd650c43f3db4fa733e845b61240b12c64fd5cf6c7777ef426faab"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "descriptor_svr_c100_gamma001",
+    "family": "descriptor_svr",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.6852968380420982,
+      "rmse": 0.8536142078468797,
+      "r2": 0.8155191814312179
+    },
+    "artifact_sha256": "abeae38dfcb08f9b20d0c6d2f9a70d22c60b19cedb41ce650fec06610445339e"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "descriptor_hgb_leaf10",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7093870250983804,
+      "rmse": 0.8945678124327016,
+      "r2": 0.7973929830410955
+    },
+    "artifact_sha256": "601fb3d2986f3d58ae0b3107272c06721b076b296b2d3cb48bda9f7564c9bae4"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "descriptor_hgb_leaf20",
+    "family": "descriptor_hgb",
+    "feature_set": "descriptors",
+    "validation": {
+      "mae": 0.7439052183555575,
+      "rmse": 0.9288937455496658,
+      "r2": 0.781545988406747
+    },
+    "artifact_sha256": "d6d0ff69ea9f4b7c6fd6f5300ed0359d3523a3a1deb84a44d2e1d789814b24bc"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "combined_rf_leaf1",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.655745068375281,
+      "rmse": 0.7985187607344598,
+      "r2": 0.8385648152252365
+    },
+    "artifact_sha256": "f519c8a5c5e2bfe48c16fb9acfec96319279e7d13379707dfd46ee5588306221"
+  },
+  {
+    "fold_idx": 4,
+    "candidate_id": "combined_rf_leaf2",
+    "family": "descriptor_morgan_rf",
+    "feature_set": "combined",
+    "validation": {
+      "mae": 0.6454925671012702,
+      "rmse": 0.7847499820560433,
+      "r2": 0.8440840390153774
+    },
+    "artifact_sha256": "e2449a2ed0b22cdd931396bcc6b5459b4ffefb566ea6598ffcc99ecd0e73b271"
+  }
+]

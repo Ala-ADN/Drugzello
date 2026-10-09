@@ -1,0 +1,342 @@
+[
+  {
+    "fold_idx": 0,
+    "seed": 42,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 30,
+      "patience": 10,
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 10
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 29,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 730,
+    "validation_size": 81,
+    "test_size": 317,
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.9572752750381954,
+    "test": {
+      "mae": 1.1850673358899186,
+      "rmse": 1.4027985237572569,
+      "r2": 0.4073806659494552
+    },
+    "mean_baseline_test": {
+      "mae": 2.0687653578330387,
+      "rmse": 2.3973053024110786,
+      "r2": -0.7307403057054402
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.31885630942641363,
+        -0.48595527809409655
+      ],
+      "fidelity_star_logS": -0.08354948433384159,
+      "mean_node_importance": 0.030458015035768136,
+      "mean_edge_importance": 0.09074157994116301
+    },
+    "checkpoint_sha256": "361b812d72d1207c6895fb3a36231e2078cedd998103f74106224a1309692d0f",
+    "morgan_random_forest_test": {
+      "mae": 1.8556102235234933,
+      "rmse": 2.1211706829232715,
+      "r2": -0.35499111615528856
+    }
+  },
+  {
+    "fold_idx": 1,
+    "seed": 43,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 30,
+      "patience": 10,
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 10
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 22,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 787,
+    "validation_size": 87,
+    "test_size": 254,
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.8489995009272933,
+    "test": {
+      "mae": 0.7832877720434834,
+      "rmse": 1.0539877520799235,
+      "r2": 0.47062201990415475
+    },
+    "mean_baseline_test": {
+      "mae": 1.1578264469605384,
+      "rmse": 1.4623820252143906,
+      "r2": -0.019099115878758344
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.0554522391378485,
+        0.21877529257544534
+      ],
+      "fidelity_star_logS": 1.137113765856647,
+      "mean_node_importance": 0.04698644228606762,
+      "mean_edge_importance": 0.13512086857070604
+    },
+    "checkpoint_sha256": "2cf1001fd43ebb5b8ccd385ed2be93fdd1292b2753922851cbc338c8c0ae2b91",
+    "morgan_random_forest_test": {
+      "mae": 1.8882560934277537,
+      "rmse": 2.2384041703809716,
+      "r2": -1.387656002672661
+    }
+  },
+  {
+    "fold_idx": 2,
+    "seed": 44,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 30,
+      "patience": 10,
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 10
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 24,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 847,
+    "validation_size": 95,
+    "test_size": 186,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 1.0090695372142664,
+    "test": {
+      "mae": 1.0879988234530213,
+      "rmse": 1.2826254518994096,
+      "r2": 0.7377905783042331
+    },
+    "mean_baseline_test": {
+      "mae": 2.338566091719456,
+      "rmse": 2.913457891424449,
+      "r2": -0.35290118301053974
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        0.4763663411088871,
+        -2.715218572891444
+      ],
+      "fidelity_star_logS": -1.1194261158912777,
+      "mean_node_importance": 0.057799126049045656,
+      "mean_edge_importance": 0.14011030705662664
+    },
+    "checkpoint_sha256": "adffa5d44b9eb11ab920132c84c03d721bd04749637b843e875e1c2b13ece207",
+    "morgan_random_forest_test": {
+      "mae": 1.6249201261049455,
+      "rmse": 2.0626964393954164,
+      "r2": 0.32186021656660524
+    }
+  },
+  {
+    "fold_idx": 3,
+    "seed": 45,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 30,
+      "patience": 10,
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 10
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 26,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 848,
+    "validation_size": 94,
+    "test_size": 186,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.876910154510276,
+    "test": {
+      "mae": 0.9392964641253153,
+      "rmse": 1.1833770379116302,
+      "r2": 0.6185353168635404
+    },
+    "mean_baseline_test": {
+      "mae": 1.5750973818579106,
+      "rmse": 1.9924692782687108,
+      "r2": -0.08141235656582513
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.9001274101073333,
+        -0.4858537058961632
+      ],
+      "fidelity_star_logS": 1.2071368521055845,
+      "mean_node_importance": 0.037048262961481115,
+      "mean_edge_importance": 0.14087147282545667
+    },
+    "checkpoint_sha256": "2d08a27e17f26bcd35270458e6dbbef857b3e630396feef2acb205dbf22f60fb",
+    "morgan_random_forest_test": {
+      "mae": 1.2122243810745146,
+      "rmse": 1.4826857940720952,
+      "r2": 0.40116618913006286
+    }
+  },
+  {
+    "fold_idx": 4,
+    "seed": 46,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 30,
+      "patience": 10,
+      "gamma_exp": 0.1,
+      "beta_sparsity": 0.01,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 10
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 27,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 849,
+    "validation_size": 94,
+    "test_size": 185,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.8617043846587005,
+    "test": {
+      "mae": 0.8221382076675827,
+      "rmse": 1.0581144669802274,
+      "r2": 0.7160946201507031
+    },
+    "mean_baseline_test": {
+      "mae": 1.686302683652323,
+      "rmse": 2.1635184545427895,
+      "r2": -0.18694207677419605
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        2.534139847083795,
+        -0.6496047609772087
+      ],
+      "fidelity_star_logS": 0.9422675430532926,
+      "mean_node_importance": 0.028359114170740322,
+      "mean_edge_importance": 0.25737855159904033
+    },
+    "checkpoint_sha256": "55c300509539925ad7c7af614083ed4c56f4635df30e26d2773a2b536dec6a9e",
+    "morgan_random_forest_test": {
+      "mae": 1.2568176439852818,
+      "rmse": 1.705602112535041,
+      "r2": 0.2623272032981616
+    }
+  }
+]

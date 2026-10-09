@@ -52,7 +52,8 @@ class Settings(BaseSettings):
                 "..", 
                 "models", 
                 "trained",
-                "best_model.pth"
+                "scaffold",
+                "model.pth"
             )
         
         # Set default data path if not provided as absolute path

@@ -1,0 +1,20 @@
+{
+  "local_checkpoint": "backend/models/trained/scaffold/model.pth",
+  "checkpoint_sha256": "7ec50f56f525c380d68ae81685a4778250171d66452fae37261fccf41f41c7e5",
+  "checkpoint_bytes": 68077,
+  "format": "drugzello-megan-v2",
+  "architecture_version": "megan-regression-v2",
+  "feature_schema": "pyg-2.6.1-smiles-float-no-explicit-H-v1",
+  "purpose": "all-data deployment refit",
+  "training_rows": 1128,
+  "epochs": 27,
+  "seed": 42,
+  "normalization": {
+    "method": "standard",
+    "mean": -3.050101949509682,
+    "std": 2.095511732497428,
+    "fit_partition": "train"
+  },
+  "independent_test_score": null,
+  "remote_release": null
+}

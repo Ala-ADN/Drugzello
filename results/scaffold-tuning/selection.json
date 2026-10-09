@@ -1,0 +1,57 @@
+{
+  "megan": {
+    "0": {
+      "accuracy": "embedding_split_64",
+      "fidelity_constrained": "embedding_split_strong_aux",
+      "fidelity_constraint_satisfied": true
+    },
+    "1": {
+      "accuracy": "embedding_split_32",
+      "fidelity_constrained": "embedding_split_32",
+      "fidelity_constraint_satisfied": false
+    },
+    "2": {
+      "accuracy": "embedding_split_32",
+      "fidelity_constrained": "embedding_joint_64",
+      "fidelity_constraint_satisfied": true
+    },
+    "3": {
+      "accuracy": "embedding_joint_32",
+      "fidelity_constrained": "embedding_joint_32",
+      "fidelity_constraint_satisfied": true
+    },
+    "4": {
+      "accuracy": "embedding_split_32",
+      "fidelity_constrained": "embedding_split_32",
+      "fidelity_constraint_satisfied": true
+    }
+  },
+  "baselines": {
+    "0": {
+      "descriptor_svr": "descriptor_svr_c10",
+      "descriptor_morgan_rf": "combined_rf_leaf2",
+      "descriptor_hgb": "descriptor_hgb_leaf10"
+    },
+    "1": {
+      "descriptor_svr": "descriptor_svr_c10",
+      "descriptor_morgan_rf": "combined_rf_leaf2",
+      "descriptor_hgb": "descriptor_hgb_leaf20"
+    },
+    "2": {
+      "descriptor_svr": "descriptor_svr_c100_gamma001",
+      "descriptor_morgan_rf": "combined_rf_leaf1",
+      "descriptor_hgb": "descriptor_hgb_leaf20"
+    },
+    "3": {
+      "descriptor_svr": "descriptor_svr_c10",
+      "descriptor_morgan_rf": "combined_rf_leaf1",
+      "descriptor_hgb": "descriptor_hgb_leaf20"
+    },
+    "4": {
+      "descriptor_svr": "descriptor_svr_c100_gamma001",
+      "descriptor_morgan_rf": "combined_rf_leaf2",
+      "descriptor_hgb": "descriptor_hgb_leaf10"
+    }
+  },
+  "search_provenance_sha256": "b16e20da93a8033504d6caf0afca1d65220cad8e4c487f0e1ece9e25b88a3e8e"
+}

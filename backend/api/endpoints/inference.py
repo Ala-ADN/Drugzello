@@ -14,9 +14,7 @@ from api.models import (
     MoleculeInferenceResponse, 
     EnhancedInferenceRequest,
     EnhancedInferenceResponse,
-    ErrorResponse,
-    SolubilityPredictionRequest,
-    SolubilityPredictionResponse
+    ErrorResponse
 )
 from services.inference_service import InferenceService
 

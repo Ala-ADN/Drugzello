@@ -1,0 +1,40 @@
+# Frozen before this search. These are controlled variants, not a full grid.
+base:
+  hidden_channels: 32
+  num_layers: 3
+  K: 2
+  heads_gat: 1
+  use_edge_features: true
+  dropout: 0.1
+  layer_norm: true
+  residual: true
+  feature_encoding: embedding
+  embedding_dim: 16
+  training_schedule: joint
+  scheduler_metric: total
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  batch_size: 64
+  num_epochs: 150
+  patience: 20
+  gamma_exp: 0.1
+  beta_sparsity: 0.01
+  delta_decor: 0.0
+  log_interval: 25
+candidates:
+  - id: ordinal_long
+    overrides: {feature_encoding: ordinal}
+  - id: embedding_joint_32
+    overrides: {}
+  - id: embedding_split_32
+    overrides: {training_schedule: split}
+  - id: embedding_joint_64
+    overrides: {hidden_channels: 64}
+  - id: embedding_split_64
+    overrides: {hidden_channels: 64, training_schedule: split}
+  - id: embedding_split_slow
+    overrides: {hidden_channels: 64, num_layers: 2, training_schedule: split, learning_rate: 0.0005, dropout: 0.2}
+  - id: embedding_joint_weak_aux
+    overrides: {hidden_channels: 64, num_layers: 2, learning_rate: 0.0005, gamma_exp: 0.01}
+  - id: embedding_split_strong_aux
+    overrides: {hidden_channels: 64, training_schedule: split, gamma_exp: 0.5}

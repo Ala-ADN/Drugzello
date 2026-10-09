@@ -1,12 +1,23 @@
-# React + Vite
+# Drugzello demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The React/Vite frontend uses `src/components/EditorComponent.jsx` for molecular
+drawing and calls the trained aqueous-solubility API. `App.jsx` is its entry wrapper.
+There is one maintained screen; model results, learned masks and MC dropout spread
+come from the API. MolT5 generation is not supported.
 
-Currently, two official plugins are available:
+```bash
+npm ci
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Start the backend separately using the [root instructions](../README.md). Vite
+proxies local API calls; set `VITE_API_URL` for a separate API host.
 
-## Expanding the ESLint configuration
+```bash
+npm run lint
+npm run build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The molecular editor brings substantial browser dependencies. `.npmrc` retains
+legacy peer resolution for the existing Ketcher dependency tree. `node_modules/`
+and `dist/` are generated and ignored; reinstall with `npm ci` after cleanup.

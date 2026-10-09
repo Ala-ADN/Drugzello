@@ -1,75 +1,44 @@
-# Drugzello ML Backend
+# Drugzello backend
 
-This is the machine learning backend for the Drugzello solubility prediction project.
+Start with the [root research README](../README.md) for installation, results and
+training commands.
 
-## Project Structure
+| Purpose | Entry point |
+| --- | --- |
+| Single-configuration scaffold experiment | `scripts/train_model.py` |
+| Validation-only search and outer evaluation | `scripts/tune_model.py` |
+| Presets | `configs/scaffold_esol.yaml`, `configs/scaffold_search.yaml` |
+| Molecular graphs and scaffold groups | `src/data/` |
+| MEGAN, losses and experiment export | `src/models/` |
+| Trained-model API | `api/main.py` (`main.py` is its Uvicorn alias) |
+| Deterministic tests | `tests/research/` |
 
-- `configs/`: Configuration files for different environments and components
-- `data/`: Data storage and organization
-  - `raw/`: Original, immutable datasets
-  - `processed/`: Cleaned and transformed data
-  - `features/`: Feature engineering outputs
-  - `external/`: External reference data
-- `models/`: Model artifacts and registry
-  - `trained/`: Saved model files
-  - `experiments/`: Experiment tracking
-  - `registry/`: Production model registry
-- `src/`: Source code modules
-  - `data/`: Data processing utilities
-  - `models/`: Model implementations
-  - `features/`: Feature engineering
-  - `utils/`: Common utilities
-  - `monitoring/`: Model monitoring and drift detection
-- `scripts/`: Executable scripts for training, evaluation, etc.
-- `tests/`: Test suite
-- `requirements/`: Dependency management
-- `docs/`: Documentation
+From this directory, with the research environment active:
 
-## Getting Started
+```bash
+MEGAN_MODEL_PATH=models/trained/scaffold-tuned/model.pth uvicorn main:app --reload
+python -m pytest -q
+```
 
-### Local Development
+Missing or incompatible weights return HTTP 503. The API supports aqueous logS
+prediction, learned atom/bond masks and uncalibrated MC dropout spread. It does not
+serve multi-dataset training, arbitrary solvents or generated MolT5 explanations.
 
-1. Install dependencies: `pip install -r requirements/development.txt`
-2. Configure environment: Copy `.env.example` to `.env` and update settings
-3. Run the development server: `uvicorn main:app --reload`
-4. Access API documentation at http://localhost:8000/docs
+`requirements/base.txt` supplies model/API dependencies; `research.txt` adds tests
+and plotting; `notebook.txt` adds notebook tooling. Install `tracking.txt` only for
+optional MLflow logging or replaying the archived experiment source.
 
-### Docker Development
+Generated fold artifacts are compressed locally in
+`models/trained/scaffold-tuned/folds.tar.gz`. The inference refit remains directly
+loadable as `models/trained/scaffold-tuned/model.pth`. The
+[result replay helper](../results/scaffold-tuning/verify_results.py) unpacks fold
+artifacts into a temporary directory and removes it on exit. To resume the original
+search or run its raw evaluation CLI, first unpack the archive here:
 
-1. Build and start services: `docker-compose up -d`
-2. Access API at http://localhost:8000
-3. Access MLflow UI at http://localhost:5000
+```bash
+tar -xzf models/trained/scaffold-tuned/folds.tar.gz -C models/trained/scaffold-tuned
+```
 
-### Azure Deployment
-
-1. Ensure prerequisites are installed (Azure CLI, Docker)
-2. Copy `.env.azure` to `.env` and update with your Azure settings
-3. Deploy using the provided scripts in the `azure` directory:
-   
-   For Container Apps (recommended for production):
-   ```bash
-   # For Linux/macOS
-   chmod +x azure/deploy_container_apps.sh
-   ./azure/deploy_container_apps.sh
-   
-   # For Windows
-   .\azure\deploy_container_apps.bat
-   ```
-   
-   For ARM template-based deployment:
-   ```bash
-   # For Linux/macOS
-   chmod +x azure/deploy-azure.sh
-   ./azure/deploy-azure.sh
-     # For Windows
-   .\azure\deploy-azure.bat
-   ```
-
-4. Alternative deployment methods:
-   - Azure DevOps Pipeline: Use the `azure-pipelines.yml` file
-   - Terraform: Use the configuration in the `terraform` directory
-   - ARM Template: Use the template in `azure/arm-template.json`
-
-See `docs/azure_deployment_guide.md` for detailed deployment instructions.
-3. Run tests: `pytest tests/`
-4. Train model: `python scripts/train_model.py`
+The retained experiment reports contain exact source snapshots and checksums.
+Obsolete cloud deployment scaffolding, duplicate loaders, manual debug scripts and
+unmaintained tests were removed; earlier tracked versions remain in Git history.

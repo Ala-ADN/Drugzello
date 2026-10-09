@@ -1,0 +1,12 @@
+{
+  "candidate_id": "embedding_split_32",
+  "selector": "fidelity_constrained",
+  "rule": "validation-selection mode, ties by mean validation MAE",
+  "epochs": 93,
+  "training_rows": 1128,
+  "seed": 42,
+  "independent_test_score": null,
+  "architecture_version": "megan-regression-embedded-v3",
+  "checkpoint_sha256": "34c93a7cf8bd9f52c77955f040ded83de5d237ad058bccfd190efae25f668248",
+  "remote_release": null
+}

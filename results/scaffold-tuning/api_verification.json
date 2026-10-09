@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "checkpoint_sha256": "34c93a7cf8bd9f52c77955f040ded83de5d237ad058bccfd190efae25f668248",
+  "ready_http_status": 200,
+  "learned_mask_alignment_checked": true,
+  "deterministic_inference_restored_after_mc_dropout": true,
+  "invalid_inputs_and_unsupported_options_return_422": true,
+  "examples": [
+    {
+      "smiles": "CCO",
+      "deterministic_prediction_logS": 0.7847135882081444,
+      "mc_dropout_std_logS": 0.23582397945861727,
+      "mc_samples": 10,
+      "atoms": 3,
+      "bonds": 2,
+      "model_version": "megan-regression-embedded-v3:model",
+      "confidence": null
+    },
+    {
+      "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+      "deterministic_prediction_logS": -2.0611717248301877,
+      "mc_dropout_std_logS": 0.2106593991415688,
+      "mc_samples": 10,
+      "atoms": 13,
+      "bonds": 13,
+      "model_version": "megan-regression-embedded-v3:model",
+      "confidence": null
+    }
+  ],
+  "scope": "API integration check, not an accuracy or uncertainty calibration benchmark"
+}

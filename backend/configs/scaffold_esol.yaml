@@ -1,0 +1,19 @@
+# A modest CPU experiment preset; not the paper's original benchmark settings.
+hidden_channels: 32
+num_layers: 3
+K: 2
+heads_gat: 1
+use_edge_features: true
+dropout: 0.1
+layer_norm: true
+residual: true
+learning_rate: 0.001
+weight_decay: 0.00001
+batch_size: 64
+num_epochs: 30
+patience: 10
+gamma_exp: 0.1
+beta_sparsity: 0.01
+delta_decor: 0.0
+random_seed: 42
+log_interval: 10

@@ -23,8 +23,6 @@ const EditorComponent = () => {
   const [isCheckingMolecule, setIsCheckingMolecule] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);  const [isSplashing, setIsSplashing] = useState(false);
   const [isDissolving, setIsDissolving] = useState(false);
-  // Add MolT5 state
-  const [includeMolt5] = useState(true);
 
   // Animation reset function
   const resetAllAnimations = useCallback(() => {
@@ -186,7 +184,7 @@ const EditorComponent = () => {
         smiles: currentMolecule?.smiles || (await editorRef.current?.getSmiles()) || '',
         include_uncertainty: true,
         include_explanations: true,
-        include_molt5: includeMolt5  // Add this
+        include_molt5: false
       };
 
       const res = await fetch(`${apiBase}/predict/enhanced`, {
@@ -196,7 +194,7 @@ const EditorComponent = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'Error');
+      if (!res.ok) throw new Error(data.detail?.message || (typeof data.detail === 'string' ? data.detail : 'Prediction unavailable'));
       apiResult = data;
         // If animation is running, delay showing results until animation completes
       if ((currentMolecule?.smiles || selectedMolId) && selectedSolvent) {
@@ -435,7 +433,7 @@ const EditorComponent = () => {
                   <span className="result-label">Predicted Solubility</span>
                   <div className="result-badge">
                     <span className="solubility-value">
-                      {result.solubility}
+                      {result.prediction?.value?.toFixed(3)} logS
                     </span>
                   </div>
                 </div>
@@ -445,33 +443,13 @@ const EditorComponent = () => {
                 <div className="explanation-header">
                   <span className="explanation-icon">🧠</span>
                   <span className="explanation-label">
-                    {result.prediction?.explanations?.molt5_interpretation ? 'MolT5 AI Analysis' : 'AI Analysis'}
+                    MEGAN explanation channels
                   </span>
                 </div>
                 <div className="explanation-content">
-                  {result.prediction?.explanations?.molt5_interpretation ? (
-                    <div className="molt5-full-analysis">
-                      <pre className="analysis-text">{result.prediction.explanations.molt5_interpretation.analysis}</pre>
-                      <div className="analysis-meta">
-                        <small>
-                          🎯 Confidence: {(result.prediction.explanations.molt5_interpretation.confidence * 100).toFixed(1)}% | 
-                          🤖 Model: {result.prediction.explanations.molt5_interpretation.model_version}
-                        </small>
-                      </div>
-                    </div>
-                  ) : result.prediction?.molt5_analysis ? (
-                    <div className="molt5-full-analysis">
-                      <pre className="analysis-text">{result.prediction.molt5_analysis.analysis}</pre>
-                      <div className="analysis-meta">
-                        <small>
-                          🎯 Confidence: {(result.prediction.molt5_analysis.confidence * 100).toFixed(1)}% | 
-                          🤖 Model: {result.prediction.molt5_analysis.model_version}
-                        </small>
-                      </div>
-                    </div>
-                  ) : (
-                    <p>No detailed analysis available. Enable MolT5 analysis for comprehensive molecular insights.</p>
-                  )}
+                  <p>{result.prediction?.explanations?.interpretation}</p>
+                  <p>MC dropout spread: {result.prediction?.uncertainty?.prediction_std?.toFixed(3)} logS (uncalibrated)</p>
+                  <p>Model: {result.model_version}</p>
                 </div>
               </div>
             </div>            <div className="modal-footer">

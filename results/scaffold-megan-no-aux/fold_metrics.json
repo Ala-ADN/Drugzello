@@ -1,0 +1,362 @@
+[
+  {
+    "fold_idx": 0,
+    "seed": 42,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.0,
+      "beta_sparsity": 0.0,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 132,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 730,
+    "validation_size": 81,
+    "test_size": 317,
+    "normalization": {
+      "method": "standard",
+      "mean": -3.4702041083104804,
+      "std": 2.027017971307103,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.5683675187376785,
+    "test": {
+      "mae": 0.6237315465975259,
+      "rmse": 0.7959468514427616,
+      "r2": 0.8092109901993978
+    },
+    "mean_baseline_test": {
+      "mae": 2.0687653578330387,
+      "rmse": 2.3973053024110786,
+      "r2": -0.7307403057054402
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.6016263662233384,
+        -1.9681292698136466
+      ],
+      "fidelity_star_logS": -1.2848778180184937,
+      "channel_polarity_fraction": [
+        0.15457413249211358,
+        0.04100946372239748
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.1412463642017962,
+      "mean_edge_importance": 0.4376381938367873
+    },
+    "checkpoint_sha256": "23213a388b2204e07376b75a59f911611dd2bb7d9c9f8766181556e1220ca645"
+  },
+  {
+    "fold_idx": 1,
+    "seed": 43,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.0,
+      "beta_sparsity": 0.0,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 123,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 787,
+    "validation_size": 87,
+    "test_size": 254,
+    "normalization": {
+      "method": "standard",
+      "mean": -3.054331639604087,
+      "std": 2.2783826559147844,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.45354356089360776,
+    "test": {
+      "mae": 0.6974750499087056,
+      "rmse": 0.87037104505275,
+      "r2": 0.6390029826147468
+    },
+    "mean_baseline_test": {
+      "mae": 1.1578264469605384,
+      "rmse": 1.4623820252143906,
+      "r2": -0.019099115878758344
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        -0.6951996296171707,
+        -3.645427457490983
+      ],
+      "fidelity_star_logS": -2.1703135435540775,
+      "channel_polarity_fraction": [
+        0.15354330708661418,
+        0.0
+      ],
+      "both_channels_correct_fraction": 0.0,
+      "mean_node_importance": 0.17127732263601628,
+      "mean_edge_importance": 0.37284636072763655
+    },
+    "checkpoint_sha256": "b048f0bb0186a05e41b352490973beb514bfd400f8b726391ca06fcdff9b9c16"
+  },
+  {
+    "fold_idx": 2,
+    "seed": 44,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.0,
+      "beta_sparsity": 0.0,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 75,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 847,
+    "validation_size": 95,
+    "test_size": 186,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.7501582053095244,
+      "std": 1.9128124941939868,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.7068269357237397,
+    "test": {
+      "mae": 0.5871971743081206,
+      "rmse": 0.7593091293089255,
+      "r2": 0.908106280921512
+    },
+    "mean_baseline_test": {
+      "mae": 2.338566091719456,
+      "rmse": 2.913457891424449,
+      "r2": -0.35290118301053974
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.2456664500071355,
+        -1.209258961355734
+      ],
+      "fidelity_star_logS": 1.0182037443257008,
+      "channel_polarity_fraction": [
+        0.9623655913978495,
+        0.13978494623655913
+      ],
+      "both_channels_correct_fraction": 0.13978494623655913,
+      "mean_node_importance": 0.11372425729378326,
+      "mean_edge_importance": 0.3533336668869758
+    },
+    "checkpoint_sha256": "23836b96fbc1bc351eaeda89620b449ee4506184b54ffffa677be0965e02d8e2"
+  },
+  {
+    "fold_idx": 3,
+    "seed": 45,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.0,
+      "beta_sparsity": 0.0,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 80,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 848,
+    "validation_size": 94,
+    "test_size": 186,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858820754344979,
+      "std": 2.0924486491793224,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.5493769375266091,
+    "test": {
+      "mae": 0.7399399037002236,
+      "rmse": 0.9275409349840139,
+      "r2": 0.7656449961593759
+    },
+    "mean_baseline_test": {
+      "mae": 1.5750973818579106,
+      "rmse": 1.9924692782687108,
+      "r2": -0.08141235656582513
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        1.9161299360923392,
+        -0.0011223272288887912
+      ],
+      "fidelity_star_logS": 0.9575038044317256,
+      "channel_polarity_fraction": [
+        0.8817204301075269,
+        0.44623655913978494
+      ],
+      "both_channels_correct_fraction": 0.43548387096774194,
+      "mean_node_importance": 0.23834756860004763,
+      "mean_edge_importance": 0.48127037862424954
+    },
+    "checkpoint_sha256": "cf28b6ce16799289ac95fb2fe58b3f66a36769ce46ad1fbe70cdeffa34e21213"
+  },
+  {
+    "fold_idx": 4,
+    "seed": 46,
+    "config": {
+      "hidden_channels": 32,
+      "num_layers": 3,
+      "K": 2,
+      "heads_gat": 1,
+      "use_edge_features": true,
+      "dropout": 0.1,
+      "layer_norm": true,
+      "residual": true,
+      "feature_encoding": "embedding",
+      "embedding_dim": 16,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "batch_size": 64,
+      "num_epochs": 150,
+      "patience": 20,
+      "training_schedule": "joint",
+      "scheduler_metric": "total",
+      "gamma_exp": 0.0,
+      "beta_sparsity": 0.0,
+      "delta_decor": 0.0,
+      "train_split": 0.8,
+      "val_split": 0.1,
+      "test_split": 0.1,
+      "random_seed": 42,
+      "save_model": true,
+      "model_save_path": "models/trained",
+      "log_interval": 25
+    },
+    "selection_partition": "validation",
+    "selection_metric": "mae",
+    "best_epoch": 99,
+    "split_policy": "bemis-murcko-no-chirality-acyclic-together-v1",
+    "train_size": 849,
+    "validation_size": 94,
+    "test_size": 185,
+    "normalization": {
+      "method": "standard",
+      "mean": -2.858058892596333,
+      "std": 2.093822505436031,
+      "fit_partition": "train"
+    },
+    "validation_mae_logS": 0.5996867198870806,
+    "test": {
+      "mae": 0.6621179400263606,
+      "rmse": 0.8667775846404795,
+      "r2": 0.8094874188581125
+    },
+    "mean_baseline_test": {
+      "mae": 1.686302683652323,
+      "rmse": 2.1635184545427895,
+      "r2": -0.18694207677419605
+    },
+    "explanations": {
+      "signed_channel_ablation_mean_logS": [
+        3.7596628085406234,
+        1.1820095435637357
+      ],
+      "fidelity_star_logS": 2.4708361760521793,
+      "channel_polarity_fraction": [
+        0.9837837837837838,
+        0.8864864864864865
+      ],
+      "both_channels_correct_fraction": 0.8702702702702703,
+      "mean_node_importance": 0.16199908450346096,
+      "mean_edge_importance": 0.5206384723334541
+    },
+    "checkpoint_sha256": "35c71b2618411d01fc577b192084ccef8cfa94ea89b30b4023a961b4432dfb88"
+  }
+]

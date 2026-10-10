@@ -1,0 +1,6 @@
+metric,comparison,mean_difference,ci95_low,ci95_high,molecules,scaffolds
+mask_chemical_auc,prediction_only_minus_joint_auxiliary,0.08940222401239699,0.03315284375828896,0.17904290891295577,747,212
+mask_vs_negative_atomic_logp_spearman,prediction_only_minus_joint_auxiliary,0.00781813322259081,-0.1480050089165934,0.11294380324073323,1104,269
+top_minus_random_deletion_logS,prediction_only_minus_joint_auxiliary,0.0051753689916408125,-0.13181921672553842,0.10321281338768835,1128,269
+fixed_channel_polarity_chemical_auc,prediction_only_minus_joint_auxiliary,-0.060234748623718776,-0.09656949250219912,-0.03151254155905905,747,212
+signed_atom_effect_chemical_auc,prediction_only_minus_joint_auxiliary,-0.045249530770194064,-0.09955239944622932,0.00693440530984785,747,212

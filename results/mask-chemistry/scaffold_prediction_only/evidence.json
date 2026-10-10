@@ -1,0 +1,13 @@
+{
+  "protocol_sha256": "caa244befc0eee04509cacf1dcc6d846c78ea41ed576b1dedc4d4ff5d3782255",
+  "split_manifest_sha256": "3c6bb1d69203a3b7df35e9a104df914d996979cfa69478e291d7de2240994ed7",
+  "original_predictions_sha256": "2668de954feaf00c87d8c71330caaa2850458390ee10f466fe61bbc8305a75cc",
+  "runner_sha256": "9e35f83ee448526a7575e942f16780344672e5d35692f0177f3d5385207b207a",
+  "evaluation_source_sha256": "0362ebcc47970e8d64b3e38df1043a0dfddbd88b040a0fb98f5c5e1bd8fc6c62",
+  "runtime": {
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4"
+  },
+  "encoder_unchanged": true,
+  "checkpoint_selection": "previously frozen inner-validation selection"
+}

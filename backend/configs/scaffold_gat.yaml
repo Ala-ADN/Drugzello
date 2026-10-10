@@ -1,0 +1,11 @@
+# Fixed prediction-only control; no search or explanation objectives.
+hidden_channels: 32
+num_layers: 3
+heads: 1
+embedding_dim: 16
+dropout: 0.1
+learning_rate: 0.001
+weight_decay: 0.00001
+batch_size: 64
+num_epochs: 150
+patience: 20

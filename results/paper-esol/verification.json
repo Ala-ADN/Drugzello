@@ -1,0 +1,8 @@
+{
+  "predictions_replayed": 1127,
+  "checkpoint_hashes_verified": 5,
+  "max_absolute_prediction_error_logS": 0.0,
+  "train_only_scalers_verified": true,
+  "upstream_sources_verified": true,
+  "split_type": "random_kfold"
+}

@@ -1,0 +1,17 @@
+{
+  "predictions_replayed": 1128,
+  "max_absolute_prediction_error_logS": 0.0,
+  "checkpoint_hashes_verified": 5,
+  "train_only_scalers_verified": true,
+  "all_recorded_metrics_verified": true,
+  "splits_match_scaffold_tuning": true,
+  "configuration_changes": [
+    "gamma_exp",
+    "beta_sparsity"
+  ],
+  "training_methods_match_original_AST": true,
+  "source_files_verified": 28,
+  "source_archive_sha256": "96d01ac4ad201bf42faf382790c506d178c48d3b7333ce26e37832d503f18343",
+  "research_tests_passed": 33,
+  "excluded_test": "Previously stalled API TestClient startup test"
+}

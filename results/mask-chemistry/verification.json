@@ -1,0 +1,44 @@
+{
+  "paper_random_prediction_only": {
+    "atom_records_verified": 1127,
+    "chemical_auc_recomputed_with_sklearn": true,
+    "atomic_logp_rank_correlation_recomputed_with_scipy": true,
+    "source_hashes_verified": true,
+    "checkpoint_hashes_match_original_experiments": true,
+    "maximum_original_prediction_replay_error_logS": 1.207392136493013e-06,
+    "artifact_hashes": {
+      "summary.json": "b240dcaa181664bcc0693eb5854373eab29411801c2f6f1876540e7b2ba6fbcf",
+      "evidence.json": "ccf6277163890fffd4e9f213f0d12d055927da063b59f0997ddff8654a82ab1d",
+      "molecule_metrics.csv": "11ae3869784a88e406b28d1108d91f9ffe5f2403eac086934be1405472e42de3",
+      "atom_masks.json.gz": "369bed275db3d02bbaa25e2637d8ff8307670c77a6f7432090bdce29a96d35d4"
+    }
+  },
+  "scaffold_prediction_only": {
+    "atom_records_verified": 1128,
+    "chemical_auc_recomputed_with_sklearn": true,
+    "atomic_logp_rank_correlation_recomputed_with_scipy": true,
+    "source_hashes_verified": true,
+    "checkpoint_hashes_match_original_experiments": true,
+    "maximum_original_prediction_replay_error_logS": 8.843201690922342e-07,
+    "artifact_hashes": {
+      "summary.json": "1ef173b473713f880fb7753ddd24eaf949d0730604090341da82e16e18988293",
+      "evidence.json": "2d6d5c7c9fc4e78e89dcd1ae3be76fdac388c919e1a8d748d95dbaa1164a142b",
+      "molecule_metrics.csv": "660e04000b69f2e97247daf2ae11328d0592b805a32d51a3c0727371238cb3f3",
+      "atom_masks.json.gz": "6808af88a92e2d91a4b46bf9c5951e2d7f1528b0bca27ef0fc33b38e523de256"
+    }
+  },
+  "scaffold_joint_auxiliary": {
+    "atom_records_verified": 1128,
+    "chemical_auc_recomputed_with_sklearn": true,
+    "atomic_logp_rank_correlation_recomputed_with_scipy": true,
+    "source_hashes_verified": true,
+    "checkpoint_hashes_match_original_experiments": true,
+    "maximum_original_prediction_replay_error_logS": 7.371554211488274e-07,
+    "artifact_hashes": {
+      "summary.json": "5c213eb38686d01d66681aa8715eb76012022f244a2455eb862413a914003e2c",
+      "evidence.json": "2ee30d81bba8edfde907bf4d5a34da4cc26fbed07a8cea9a386b48c69044af5c",
+      "molecule_metrics.csv": "c2d855970ffcce5a0568b063fc486c84f4a991df4c1688fa66cfce19bd523f8f",
+      "atom_masks.json.gz": "e5aa586029bcd36024431dcb434ba5fe4e8edb0f8a3ccdac4d700445036a2f30"
+    }
+  }
+}

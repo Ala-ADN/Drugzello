@@ -56,6 +56,30 @@ def test_embedding_category_relabeling_and_gradients(molecules):
         model(x, g.edge_index, g.edge_attr)
 
 
+def test_no_aux_preset_changes_only_loss_weights_and_keeps_mask_gradients(molecules):
+    backend = Path(__file__).resolve().parents[2]
+    config = MEGANConfig.load(backend / "configs/scaffold_megan_no_aux.yaml")
+    original = next(c["config"] for c in tuning.read_candidates(backend / "configs/scaffold_search.yaml")
+                    if c["id"] == "embedding_joint_32")
+    changed = {key for key, value in config.to_dict().items() if value != original[key]}
+    assert changed == {"gamma_exp", "beta_sparsity"}
+    assert config.gamma_exp == config.beta_sparsity == config.delta_decor == 0
+    torch.manual_seed(42)
+    model = MEGANCore(**model_kwargs(molecules, config))
+    batch = Batch.from_data_list([molecules[0], molecules[-1]])
+    output = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+    loss = MEGANLoss(config.gamma_exp, config.beta_sparsity, config.delta_decor)(output, batch.y.view(-1, 1), model)
+    expected = torch.nn.functional.mse_loss(output, batch.y.view(-1, 1))
+    torch.testing.assert_close(loss["total"], expected, rtol=0, atol=0)
+    parameters = tuple(model.parameters())
+    actual_grad = torch.autograd.grad(loss["total"], parameters, retain_graph=True)
+    expected_grad = torch.autograd.grad(expected, parameters, retain_graph=True)
+    for actual, expected_value in zip(actual_grad, expected_grad):
+        torch.testing.assert_close(actual, expected_value, rtol=0, atol=0)
+    mask_grad = torch.autograd.grad(loss["total"], model.node_importance_mlp[0].weight)[0]
+    assert mask_grad.abs().sum() > 0
+
+
 def test_split_step_updates_explanation_before_prediction(molecules):
     torch.manual_seed(42)
     model = MEGANCore(9, hidden_channels=8, num_layers=1, edge_dim=3,

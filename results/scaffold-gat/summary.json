@@ -1,0 +1,14 @@
+{
+  "model": "gat_only",
+  "metric_unit": "logS",
+  "fold_count": 5,
+  "selection_partition": "inner validation only",
+  "configuration_selection": "fixed; no search",
+  "test_mae_mean": 0.6021462229858776,
+  "test_mae_std": 0.07410457731758316,
+  "pooled_test": {
+    "mae": 0.5940829817116257,
+    "rmse": 0.7803353434299428,
+    "r2": 0.8613300490550213
+  }
+}

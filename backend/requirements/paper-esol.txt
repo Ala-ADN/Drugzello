@@ -1,0 +1,13 @@
+# Isolated original KGCNN benchmark runtime; do not install into the PyTorch env.
+tensorflow-cpu==2.12.0
+tensorflow-addons==0.20.0
+keras==2.12.0
+numpy==1.23.5
+scipy==1.10.1
+scikit-learn==1.2.2
+pandas==1.5.3
+rdkit==2022.9.5
+matplotlib==3.7.5
+PyYAML==6.0.2
+requests==2.32.3
+networkx==2.8.8

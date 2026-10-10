@@ -1,0 +1,137 @@
+[
+  {
+    "fold_idx": 0,
+    "seed": 42,
+    "epochs": 400,
+    "checkpoint_selection": "fixed final epoch",
+    "train_size": 901,
+    "test_size": 226,
+    "parameter_count": 206834,
+    "normalization": {
+      "mean": [
+        -3.0550943396226415
+      ],
+      "std": [
+        2.0705175145367587
+      ],
+      "fit_partition": "train"
+    },
+    "test": {
+      "mae": 0.4757812228600074,
+      "rmse": 0.6855505223757309,
+      "r2": 0.9021907259619053
+    },
+    "checkpoint_sha256": "cac5da21439543f1bc4a3cfa6d9c88906ab4ec2d7870430cc3fda04c18553549",
+    "checkpoint_format": "complete ordered NumPy weight arrays",
+    "checkpoint_weight_count": 70,
+    "seconds": 471.21695643600015
+  },
+  {
+    "fold_idx": 1,
+    "seed": 43,
+    "epochs": 400,
+    "checkpoint_selection": "fixed final epoch",
+    "train_size": 901,
+    "test_size": 226,
+    "parameter_count": 206834,
+    "normalization": {
+      "mean": [
+        -2.9882852386237513
+      ],
+      "std": [
+        2.1079748248105705
+      ],
+      "fit_partition": "train"
+    },
+    "test": {
+      "mae": 0.413168639841201,
+      "rmse": 0.5821512221572697,
+      "r2": 0.9173522467633667
+    },
+    "checkpoint_sha256": "fe6114f0c88eba22b92af4b0d2fcb1a082a964b2742c6f1ce4c46b3b627154fd",
+    "checkpoint_format": "complete ordered NumPy weight arrays",
+    "checkpoint_weight_count": 70,
+    "seconds": 465.2738917300003
+  },
+  {
+    "fold_idx": 2,
+    "seed": 44,
+    "epochs": 400,
+    "checkpoint_selection": "fixed final epoch",
+    "train_size": 902,
+    "test_size": 225,
+    "parameter_count": 206834,
+    "normalization": {
+      "mean": [
+        -3.029073170731707
+      ],
+      "std": [
+        2.120635931785132
+      ],
+      "fit_partition": "train"
+    },
+    "test": {
+      "mae": 0.4122126963623365,
+      "rmse": 0.5864733488422571,
+      "r2": 0.9130318230849706
+    },
+    "checkpoint_sha256": "0013e50b086697c7c8c9f1e9700c963ad7c61afb0a88819b1422c0c65e5f7b59",
+    "checkpoint_format": "complete ordered NumPy weight arrays",
+    "checkpoint_weight_count": 70,
+    "seconds": 400.3690742260005
+  },
+  {
+    "fold_idx": 3,
+    "seed": 45,
+    "epochs": 400,
+    "checkpoint_selection": "fixed final epoch",
+    "train_size": 902,
+    "test_size": 225,
+    "parameter_count": 206834,
+    "normalization": {
+      "mean": [
+        -3.0763869179600887
+      ],
+      "std": [
+        2.0759060682980066
+      ],
+      "fit_partition": "train"
+    },
+    "test": {
+      "mae": 0.477823681505339,
+      "rmse": 0.6590738301788401,
+      "r2": 0.907697880733814
+    },
+    "checkpoint_sha256": "623fd8892083b325a24de2e1ab906c3ab35fe9d0589cce947f9fce181f3a928a",
+    "checkpoint_format": "complete ordered NumPy weight arrays",
+    "checkpoint_weight_count": 70,
+    "seconds": 396.30666245499924
+  },
+  {
+    "fold_idx": 4,
+    "seed": 46,
+    "epochs": 400,
+    "checkpoint_selection": "fixed final epoch",
+    "train_size": 902,
+    "test_size": 225,
+    "parameter_count": 206834,
+    "normalization": {
+      "mean": [
+        -3.1111419068736144
+      ],
+      "std": [
+        2.0997565458701453
+      ],
+      "fit_partition": "train"
+    },
+    "test": {
+      "mae": 0.43298319627708853,
+      "rmse": 0.5898589401027705,
+      "r2": 0.9181047209410298
+    },
+    "checkpoint_sha256": "2c3559836e7c6762c15c4bd839ecbb7014952cc0c086e4669ca550ee741e4743",
+    "checkpoint_format": "complete ordered NumPy weight arrays",
+    "checkpoint_weight_count": 70,
+    "seconds": 314.56396209599916
+  }
+]

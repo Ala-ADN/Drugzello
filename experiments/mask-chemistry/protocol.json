@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "seed": 20261010,
+  "evaluation": "frozen out-of-fold checkpoints; no retraining or test-dependent channel selection",
+  "cohorts": ["paper_random_prediction_only", "scaffold_prediction_only", "scaffold_joint_auxiliary"],
+  "positive_proxy": "nitrogen or oxygen atoms",
+  "negative_proxy": "neutral carbon atoms whose heavy-atom neighbours are all carbon",
+  "secondary_proxy": "negative RDKit Wildman-Crippen atomic logP contribution",
+  "channel_orientation": "sign of mean full-minus-channel-removed prediction on training molecules only; auxiliary control additionally evaluated with prespecified [-1,+1]",
+  "mask_score": "sum of channel-sign times node mask divided by its within-molecule channel mean",
+  "chemical_metrics": ["within-molecule polar-versus-nonpolar AUC", "within-molecule Spearman against negative atomic logP"],
+  "controls": ["within-molecule shuffled atom scores", "one parameter-randomized model per fold with seed 1042+fold", "matched-cardinality random readout deletions"],
+  "deletion_fraction": 0.25,
+  "random_repeats": 100,
+  "bootstrap_repeats": 2000,
+  "bootstrap_unit": "Bemis-Murcko scaffold clusters, including the shared empty scaffold",
+  "deletion": "remove selected atoms' contributions at final weighted pooling; keep molecular graph and encoder fixed",
+  "scope": "node masks; edge masks exported for audit, not independently chemically validated",
+  "interpretation": "exploratory heuristic agreement and readout faithfulness; no chemical causality or ground-truth attribution accuracy claims"
+}

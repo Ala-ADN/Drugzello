@@ -1,0 +1,15 @@
+{
+  "protocol_sha256": "caa244befc0eee04509cacf1dcc6d846c78ea41ed576b1dedc4d4ff5d3782255",
+  "split_manifest_sha256": "540366ee0f26f550edf72ddfae38d5a92ba20f3a62f12be00c24357a834dc7d0",
+  "graph_cache_sha256": "812e75d3ec37f2972a0c97a1fdcfb642cce19aa94d6b8be2c183f7c4d8db608b",
+  "original_predictions_sha256": "8950479be4cc50ae1f2aaa083617bcf71d643f0929f2b7e8731d5b722a86949f",
+  "runner_sha256": "fe81a2af97ae7b6cb35d8cd3bf3907eb385ce57d5e21569338f1e6cada28e49e",
+  "evaluation_source_sha256": "0362ebcc47970e8d64b3e38df1043a0dfddbd88b040a0fb98f5c5e1bd8fc6c62",
+  "runtime": {
+    "tensorflow": "2.12.0",
+    "numpy": "1.23.5"
+  },
+  "upstream_sources_verified": true,
+  "checkpoint_selection": "previously frozen final epoch 400",
+  "encoder_unchanged": true
+}

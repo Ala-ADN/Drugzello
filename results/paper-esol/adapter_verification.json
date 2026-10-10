@@ -1,0 +1,24 @@
+{
+  "retained_rows": 1127,
+  "native_upstream_tensor_values_and_partitions_match": true,
+  "native_input_dtypes": [
+    "<dtype: 'float32'>",
+    "<dtype: 'int64'>",
+    "<dtype: 'int64'>"
+  ],
+  "adapter_input_dtypes": [
+    "<dtype: 'float32'>",
+    "<dtype: 'float32'>",
+    "<dtype: 'int64'>"
+  ],
+  "dtype_note": "Bond numbers are cast to the declared float32 model input; native dataset retains int64. Bond features are disabled.",
+  "native_vs_adapter_model_max_absolute_prediction_difference": 0.0,
+  "permuted_row_order_tested": [
+    43,
+    2,
+    10,
+    0
+  ],
+  "all_labels_match_native_preprocessing": true,
+  "effective_optimizer_class": "keras.optimizers.legacy.adam.Adam"
+}

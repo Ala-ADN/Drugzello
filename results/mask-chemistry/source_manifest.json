@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "bfa4135496284ac5683ec04b2d56dc71612eacbcb883bf468eb97b2fa1ae48ab",
+  "source_files_sha256": {
+    "Makefile": "141a7466734e228cff791737d0c58215891c7d538d57f223a6a1e0697a3c6a4f",
+    "experiments/mask-chemistry/protocol.json": "caa244befc0eee04509cacf1dcc6d846c78ea41ed576b1dedc4d4ff5d3782255",
+    "backend/src/evaluation/__init__.py": "e025169e42ff663c2f7680c26a2cfc4766f374d0d8f3d2488da2930772168d29",
+    "backend/src/evaluation/masks.py": "0362ebcc47970e8d64b3e38df1043a0dfddbd88b040a0fb98f5c5e1bd8fc6c62",
+    "backend/scripts/evaluate_mask_chemistry.py": "9e35f83ee448526a7575e942f16780344672e5d35692f0177f3d5385207b207a",
+    "backend/scripts/evaluate_paper_masks.py": "fe81a2af97ae7b6cb35d8cd3bf3907eb385ce57d5e21569338f1e6cada28e49e",
+    "backend/scripts/summarize_mask_chemistry.py": "2a0f0f48061ab74c99a271eb2de2ccd90838f8a11643c73dedb2ad46958f8338",
+    "backend/scripts/plot_mask_chemistry.py": "24834d3dcf0c0759ce5198d705fb9e4c3c48e28a2de58a00975441925aee944b",
+    "backend/tests/research/test_mask_chemistry.py": "b78568e231a997836157be3acdb62158fa471fc18d12343bed48ffee546f582a"
+  },
+  "new_diagnostic_tests_passed": 4,
+  "broader_suite": {
+    "passed": 39,
+    "failed": 1,
+    "deselected": 1,
+    "failure": "Missing notebooks/megan_pytorch.ipynb referenced by existing notebook test",
+    "deselection": "Previously stalled API TestClient startup test"
+  }
+}

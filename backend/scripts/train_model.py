@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 import sys
 
@@ -11,6 +12,7 @@ from src.data.data_loader import MolecularDataLoader
 from src.data.graphs import GraphDataset
 from src.data.scaffold import scaffold_folds
 from src.models.experiment import run_experiment, write_json
+from src.models.tuning import validate_data
 from src.utils.config import MEGANConfig
 
 
@@ -21,6 +23,7 @@ def parse_arguments():
     parser.add_argument("--config", default="default")
     parser.add_argument("--config-file")
     parser.add_argument("--split-type", choices=["scaffold"], default="scaffold")
+    parser.add_argument("--splits", help="Reuse an exact scaffold manifest instead of generating folds")
     parser.add_argument("--n-folds", type=int, default=5)
     parser.add_argument("--validation-fraction", type=float, default=0.1)
     parser.add_argument("--epochs", type=int)
@@ -48,10 +51,16 @@ def main():
     config.random_seed = args.seed
     raw = MolecularDataLoader(args.data_root).load_esol_dataset()
     dataset = GraphDataset([graph for graph in raw])
-    manifest = scaffold_folds([g.smiles for g in dataset], args.n_folds,
-                              args.validation_fraction, args.seed)
-    raw_path = Path(raw.raw_paths[0])
-    manifest["dataset"] = {"name": "ESOL", "raw_csv_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest()}
+    if args.splits:
+        manifest = json.loads(Path(args.splits).read_text())
+        validate_data(dataset, args.data_root, manifest)
+        if manifest["seed"] != args.seed or manifest["n_folds"] != args.n_folds:
+            raise ValueError("Seed/fold arguments must agree with the supplied manifest")
+    else:
+        manifest = scaffold_folds([g.smiles for g in dataset], args.n_folds,
+                                  args.validation_fraction, args.seed)
+        raw_path = Path(raw.raw_paths[0])
+        manifest["dataset"] = {"name": "ESOL", "raw_csv_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest()}
     summaries, aggregate = run_experiment(dataset, config, manifest, args.save_dir,
                                          args.results_dir, args.device, args.refit,
                                          not args.skip_random_forest)

@@ -1,0 +1,9 @@
+{
+  "predictions_replayed": 1128,
+  "max_absolute_prediction_error_logS": 0.0,
+  "fold_checkpoint_hashes_verified": 5,
+  "splits_match_scaffold_tuning": true,
+  "train_only_scalers_verified": true,
+  "source_files_verified": 28,
+  "source_archive_sha256": "d3d8913caf5df6a4fc659687b6c234f3b17c881ad5471016261b03d44c133cc6"
+}

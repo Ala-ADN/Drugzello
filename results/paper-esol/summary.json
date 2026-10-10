@@ -1,0 +1,15 @@
+{
+  "metric_unit": "logS",
+  "fold_count": 5,
+  "epochs": 400,
+  "protocol": "original random five-fold; fixed final epoch; no inner validation",
+  "test_mae_mean": 0.4423938873691945,
+  "test_mae_std": 0.029063946649419976,
+  "test_rmse_mean": 0.6206215727313736,
+  "test_rmse_std": 0.0430969911688596,
+  "pooled_test": {
+    "mae": 0.4423975804374845,
+    "rmse": 0.6221409692906463,
+    "r2": 0.9118508538081092
+  }
+}

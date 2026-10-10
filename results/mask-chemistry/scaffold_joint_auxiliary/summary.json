@@ -1,0 +1,281 @@
+{
+  "cohort": "scaffold_joint_auxiliary",
+  "molecules": 1128,
+  "folds": [
+    {
+      "fold_idx": 0,
+      "checkpoint_sha256": "af42d2000815b7fa14d09a7cbcd387febdf205913f14d2d92969190f53bf78d6",
+      "randomization_seed": 1042,
+      "channel_orientation_partition": "train",
+      "train_channel_mean_effect_logS": [
+        1.2140596669868962,
+        -3.3475356497584956
+      ],
+      "channel_signs": [
+        1.0,
+        -1.0
+      ],
+      "training_channel_sign_consistency": [
+        0.8972602739726028,
+        1.0
+      ],
+      "test_size": 317,
+      "max_prediction_replay_error_logS": 6.054387604592648e-07
+    },
+    {
+      "fold_idx": 1,
+      "checkpoint_sha256": "01d9f07a04e84ecedb688649784a933e54d3b1a641dcb087eb0891ea89d06410",
+      "randomization_seed": 1043,
+      "channel_orientation_partition": "train",
+      "train_channel_mean_effect_logS": [
+        1.0736553239284294,
+        -3.1300490586468155
+      ],
+      "channel_signs": [
+        1.0,
+        -1.0
+      ],
+      "training_channel_sign_consistency": [
+        0.9567979669631512,
+        0.9987293519695044
+      ],
+      "test_size": 254,
+      "max_prediction_replay_error_logS": 5.550694108791276e-07
+    },
+    {
+      "fold_idx": 2,
+      "checkpoint_sha256": "e09884b8e7d7464fe4c98504554b0c6b0297f86717b95b5cc1685fb93c318ad0",
+      "randomization_seed": 1044,
+      "channel_orientation_partition": "train",
+      "train_channel_mean_effect_logS": [
+        -1.8632718945095648,
+        -1.0178892478976869
+      ],
+      "channel_signs": [
+        -1.0,
+        -1.0
+      ],
+      "training_channel_sign_consistency": [
+        0.9905548996458088,
+        0.8122786304604487
+      ],
+      "test_size": 186,
+      "max_prediction_replay_error_logS": 7.371554211488274e-07
+    },
+    {
+      "fold_idx": 3,
+      "checkpoint_sha256": "b17e7e572149de81850669c78708d808f85074b96efc93ac000b27230201103f",
+      "randomization_seed": 1045,
+      "channel_orientation_partition": "train",
+      "train_channel_mean_effect_logS": [
+        -2.9595790884498987,
+        0.9382431923177995
+      ],
+      "channel_signs": [
+        -1.0,
+        1.0
+      ],
+      "training_channel_sign_consistency": [
+        0.9976415094339622,
+        0.8419811320754716
+      ],
+      "test_size": 186,
+      "max_prediction_replay_error_logS": 3.510009261020741e-07
+    },
+    {
+      "fold_idx": 4,
+      "checkpoint_sha256": "d0c93fb36ebb039d0f171fca8add600e39569a9940b8b0ba455eaadb73b8fcea",
+      "randomization_seed": 1046,
+      "channel_orientation_partition": "train",
+      "train_channel_mean_effect_logS": [
+        -2.6039723252748153,
+        -0.02063980557269102
+      ],
+      "channel_signs": [
+        -1.0,
+        -1.0
+      ],
+      "training_channel_sign_consistency": [
+        0.9964664310954063,
+        0.5005889281507656
+      ],
+      "test_size": 185,
+      "max_prediction_replay_error_logS": 6.121630686806157e-07
+    }
+  ],
+  "metric_intervals": {
+    "atom_count": {
+      "mean": 13.289893617021276,
+      "ci95": [
+        10.961416412539815,
+        17.810415248618785
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "polar_atoms": {
+      "mean": 2.4273049645390072,
+      "ci95": [
+        1.869988746780705,
+        3.5138125353798753
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "nonpolar_atoms": {
+      "mean": 6.800531914893617,
+      "ci95": [
+        5.715202266025771,
+        9.26355785823377
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "deleted_atom_count": {
+      "mean": 3.675531914893617,
+      "ci95": [
+        3.075244447289998,
+        4.810130509920101
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "mask_chemical_auc": {
+      "mean": 0.7170503387274229,
+      "ci95": [
+        0.5459999603175847,
+        0.7921509795071502
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    },
+    "random_weights_chemical_auc": {
+      "mean": 0.6009429322028813,
+      "ci95": [
+        0.4704421209350902,
+        0.7378468179271792
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    },
+    "mask_minus_random_weights_auc": {
+      "mean": 0.11610740652454166,
+      "ci95": [
+        -0.025005274859148212,
+        0.26588642637657667
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    },
+    "permuted_mask_chemical_auc": {
+      "mean": 0.5012193327579861,
+      "ci95": [
+        0.4987915794279244,
+        0.5036078114624751
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    },
+    "mask_vs_negative_atomic_logp_spearman": {
+      "mean": 0.13376079987305997,
+      "ci95": [
+        0.06826006047555304,
+        0.28024165036754595
+      ],
+      "molecule_count": 1104,
+      "scaffold_count": 269
+    },
+    "signed_atom_effect_chemical_auc": {
+      "mean": 0.9309092372843244,
+      "ci95": [
+        0.9065546771520315,
+        0.976821558191196
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    },
+    "signed_atom_effect_vs_negative_atomic_logp_spearman": {
+      "mean": 0.32781623037651597,
+      "ci95": [
+        0.23029603222503708,
+        0.4293015821650007
+      ],
+      "molecule_count": 1104,
+      "scaffold_count": 269
+    },
+    "mask_vs_absolute_atom_effect_spearman": {
+      "mean": 0.5486134246773984,
+      "ci95": [
+        0.47480967082483155,
+        0.6897990090598574
+      ],
+      "molecule_count": 1116,
+      "scaffold_count": 269
+    },
+    "trained_vs_random_mask_spearman": {
+      "mean": 0.16709972514338714,
+      "ci95": [
+        -0.05449840734892416,
+        0.35998623170212984
+      ],
+      "molecule_count": 1116,
+      "scaffold_count": 269
+    },
+    "top_mask_deletion_abs_logS": {
+      "mean": 1.0314595832752398,
+      "ci95": [
+        0.810080137840789,
+        1.5465245440706148
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "bottom_mask_deletion_abs_logS": {
+      "mean": 0.511766745033096,
+      "ci95": [
+        0.4137189409239071,
+        0.619033531031729
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "random_deletion_abs_logS": {
+      "mean": 0.7093640269549788,
+      "ci95": [
+        0.5919274671032828,
+        0.9138401837117888
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "top_minus_random_deletion_logS": {
+      "mean": 0.3220955554374447,
+      "ci95": [
+        0.19555337742808265,
+        0.6544708180779583
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "top_minus_bottom_deletion_logS": {
+      "mean": 0.51969283800374,
+      "ci95": [
+        0.3331903961606379,
+        1.0051349734271746
+      ],
+      "molecule_count": 1128,
+      "scaffold_count": 269
+    },
+    "fixed_channel_polarity_chemical_auc": {
+      "mean": 0.5258961926242822,
+      "ci95": [
+        0.34559778087554854,
+        0.8971862426282419
+      ],
+      "molecule_count": 747,
+      "scaffold_count": 212
+    }
+  },
+  "bootstrap_unit": "scaffold clusters",
+  "bootstrap_repeats": 2000
+}

@@ -19,18 +19,18 @@ across five folds**, not a confidence interval or variation across independent
 training-seed repetitions. Fold means weight folds equally; pooled metrics weight
 molecules equally. Test sizes are unequal.
 
-| Model / prespecified comparison | Fold-mean MAE ± SD | Pooled MAE | Pooled RMSE | Pooled R² |
-| --- | ---: | ---: | ---: | ---: |
-| Earlier ordinal MEGAN, at most 30 epochs | 0.9636 ± 0.1534 | 0.9785 | 1.2202 | 0.6609 |
-| MEGAN: minimum validation MAE selector | 0.6651 ± 0.0979 | 0.6613 | 0.8465 | 0.8368 |
-| MEGAN: validation channel-polarity constraint | 0.6759 ± 0.1041 | 0.6768 | 0.8672 | 0.8288 |
-| Fixed ordinal, joint updates, longer training | 0.8761 ± 0.1533 | 0.8846 | 1.0958 | 0.7265 |
-| Fixed embeddings, joint updates, 32 units | 0.7282 ± 0.1346 | 0.7467 | 0.9541 | 0.7927 |
-| Fixed embeddings, split updates, 32 units | 0.6641 ± 0.0865 | 0.6660 | 0.8578 | 0.8324 |
-| 12 RDKit descriptors + SVR | 0.7141 ± 0.0731 | 0.7260 | 0.9702 | 0.7857 |
-| 12 RDKit descriptors + Morgan + random forest | **0.6182 ± 0.0669** | **0.6077** | **0.8069** | **0.8517** |
-| 12 RDKit descriptors + histogram gradient boosting | 0.6695 ± 0.0747 | 0.6592 | 0.8734 | 0.8263 |
-| Training-mean predictor | 1.7653 ± 0.4080 | 1.7640 | 2.2178 | -0.1201 |
+| Model / prespecified comparison                    |  Fold-mean MAE ± SD | Pooled MAE | Pooled RMSE |  Pooled R² |
+| -------------------------------------------------- | ------------------: | ---------: | ----------: | ---------: |
+| Earlier ordinal MEGAN, at most 30 epochs           |     0.9636 ± 0.1534 |     0.9785 |      1.2202 |     0.6609 |
+| MEGAN: minimum validation MAE selector             |     0.6651 ± 0.0979 |     0.6613 |      0.8465 |     0.8368 |
+| MEGAN: validation channel-polarity constraint      |     0.6759 ± 0.1041 |     0.6768 |      0.8672 |     0.8288 |
+| Fixed ordinal, joint updates, longer training      |     0.8761 ± 0.1533 |     0.8846 |      1.0958 |     0.7265 |
+| Fixed embeddings, joint updates, 32 units          |     0.7282 ± 0.1346 |     0.7467 |      0.9541 |     0.7927 |
+| Fixed embeddings, split updates, 32 units          |     0.6641 ± 0.0865 |     0.6660 |      0.8578 |     0.8324 |
+| 12 RDKit descriptors + SVR                         |     0.7141 ± 0.0731 |     0.7260 |      0.9702 |     0.7857 |
+| 12 RDKit descriptors + Morgan + random forest      | **0.6182 ± 0.0669** | **0.6077** |  **0.8069** | **0.8517** |
+| 12 RDKit descriptors + histogram gradient boosting |     0.6695 ± 0.0747 |     0.6592 |      0.8734 |     0.8263 |
+| Training-mean predictor                            |     1.7653 ± 0.4080 |     1.7640 |      2.2178 |    -0.1201 |
 
 [Download comparison.csv](comparison.csv), [per-fold metrics](fold_metrics.csv),
 [all 1,128 held-out predictions](predictions.csv), and [the plot as PDF](fold_mae.pdf).
@@ -38,12 +38,12 @@ molecules equally. Test sizes are unequal.
 ![Per-fold MAE and fold-mean population spread](fold_mae.png)
 
 | Fold | Test molecules | MEGAN MAE selector | MEGAN polarity constraint | Descriptor SVR | Descriptor + Morgan RF | Descriptor HGB |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0 | 317 | 0.6927 | 0.7501 | 0.8027 | 0.5550 | 0.5849 |
-| 1 | 254 | 0.5477 | 0.5477 | 0.7388 | 0.5646 | 0.6611 |
-| 2 | 186 | 0.6165 | 0.6129 | 0.6098 | 0.6609 | 0.6538 |
-| 3 | 186 | 0.8378 | 0.8378 | 0.7703 | 0.7291 | 0.8090 |
-| 4 | 185 | 0.6309 | 0.6309 | 0.6490 | 0.5815 | 0.6384 |
+| ---- | -------------: | -----------------: | ------------------------: | -------------: | ---------------------: | -------------: |
+| 0    |            317 |             0.6927 |                    0.7501 |         0.8027 |                 0.5550 |         0.5849 |
+| 1    |            254 |             0.5477 |                    0.5477 |         0.7388 |                 0.5646 |         0.6611 |
+| 2    |            186 |             0.6165 |                    0.6129 |         0.6098 |                 0.6609 |         0.6538 |
+| 3    |            186 |             0.8378 |                    0.8378 |         0.7703 |                 0.7291 |         0.8090 |
+| 4    |            185 |             0.6309 |                    0.6309 |         0.6490 |                 0.5815 |         0.6384 |
 
 Longer ordinal training improved MAE from 0.9636 to 0.8761. At 32 hidden units,
 changing ordinal inputs to learned embeddings with joint updates reached 0.7282;
@@ -67,12 +67,12 @@ outer test have disjoint scaffolds within each fold. Every molecule is tested on
 This is a specific scaffold policy, not a universal definition of molecular novelty.
 
 | Fold | Training rows | Validation rows | Test rows | Training seed |
-| --- | ---: | ---: | ---: | ---: |
-| 0 | 730 | 81 | 317 | 42 |
-| 1 | 787 | 87 | 254 | 43 |
-| 2 | 847 | 95 | 186 | 44 |
-| 3 | 848 | 94 | 186 | 45 |
-| 4 | 849 | 94 | 185 | 46 |
+| ---- | ------------: | --------------: | --------: | ------------: |
+| 0    |           730 |              81 |       317 |            42 |
+| 1    |           787 |              87 |       254 |            43 |
+| 2    |           847 |              95 |       186 |            44 |
+| 3    |           848 |              94 |       186 |            45 |
+| 4    |           849 |              94 |       185 |            46 |
 
 Split seed is 42. Targets are standardized using training rows only. For each
 candidate and fold, inner validation MAE selects the epoch; cloned weights are
@@ -88,16 +88,16 @@ scheduler. Base learning rate is 0.001, dropout 0.1, three layers and auxiliary
 weight 0.1; deviations follow below. Each categorical field has its own embedding table with 16-dimensional vectors,
 yielding 144 atom-input and 48 bond-input dimensions.
 
-| Candidate ID | Encoding | Hidden units | Layers | Updates | Other overrides |
-| --- | --- | ---: | ---: | --- | --- |
-| `ordinal_long` | Ordinal | 32 | 3 | Joint | Same model as the earlier run, longer budget/patience |
-| `embedding_joint_32` | Embeddings | 32 | 3 | Joint | Base |
-| `embedding_split_32` | Embeddings | 32 | 3 | Split | Base |
-| `embedding_joint_64` | Embeddings | 64 | 3 | Joint | Base |
-| `embedding_split_64` | Embeddings | 64 | 3 | Split | Base |
-| `embedding_split_slow` | Embeddings | 64 | 2 | Split | LR 0.0005, dropout 0.2 |
-| `embedding_joint_weak_aux` | Embeddings | 64 | 2 | Joint | LR 0.0005, auxiliary weight 0.01 |
-| `embedding_split_strong_aux` | Embeddings | 64 | 3 | Split | Auxiliary weight 0.5 |
+| Candidate ID                 | Encoding   | Hidden units | Layers | Updates | Other overrides                                       |
+| ---------------------------- | ---------- | -----------: | -----: | ------- | ----------------------------------------------------- |
+| `ordinal_long`               | Ordinal    |           32 |      3 | Joint   | Same model as the earlier run, longer budget/patience |
+| `embedding_joint_32`         | Embeddings |           32 |      3 | Joint   | Base                                                  |
+| `embedding_split_32`         | Embeddings |           32 |      3 | Split   | Base                                                  |
+| `embedding_joint_64`         | Embeddings |           64 |      3 | Joint   | Base                                                  |
+| `embedding_split_64`         | Embeddings |           64 |      3 | Split   | Base                                                  |
+| `embedding_split_slow`       | Embeddings |           64 |      2 | Split   | LR 0.0005, dropout 0.2                                |
+| `embedding_joint_weak_aux`   | Embeddings |           64 |      2 | Joint   | LR 0.0005, auxiliary weight 0.01                      |
+| `embedding_split_strong_aux` | Embeddings |           64 |      3 | Split   | Auxiliary weight 0.5                                  |
 
 The complete resolved configurations, rules, split/source hashes, and static test
 ablations are in [search_plan.json](search_plan.json). All trial validation scores,
@@ -113,12 +113,12 @@ before outer test evaluation. The three fixed test ablations were also declared
 in the frozen plan; they are not test-selected winners.
 
 | Fold | MAE-selected candidate (epochs) | Polarity-selected candidate (epochs) | Validation constraint satisfied? |
-| --- | --- | --- | --- |
-| 0 | `embedding_split_64` (125) | `embedding_split_strong_aux` (79) | Yes |
-| 1 | `embedding_split_32` (59) | `embedding_split_32` (59) | **No: fallback** |
-| 2 | `embedding_split_32` (93) | `embedding_joint_64` (86) | Yes |
-| 3 | `embedding_joint_32` (97) | `embedding_joint_32` (97) | Yes |
-| 4 | `embedding_split_32` (96) | `embedding_split_32` (96) | Yes |
+| ---- | ------------------------------- | ------------------------------------ | -------------------------------- |
+| 0    | `embedding_split_64` (125)      | `embedding_split_strong_aux` (79)    | Yes                              |
+| 1    | `embedding_split_32` (59)       | `embedding_split_32` (59)            | **No: fallback**                 |
+| 2    | `embedding_split_32` (93)       | `embedding_joint_64` (86)            | Yes                              |
+| 3    | `embedding_joint_32` (97)       | `embedding_joint_32` (97)            | Yes                              |
+| 4    | `embedding_split_32` (96)       | `embedding_split_32` (96)            | Yes                              |
 
 The descriptor list is MolWt, MolLogP, TPSA, NumHDonors, NumHAcceptors,
 NumRotatableBonds, RingCount, NumAromaticRings, FractionCSP3, HeavyAtomCount,
@@ -141,20 +141,20 @@ its poor score is not the score of the stronger baseline evaluated here.
 For the same trained forward path, mask each channel's learned node contribution
 and measure `delta_negative = prediction_without_0 - full_prediction` and
 `delta_positive = full_prediction - prediction_without_1`. Multiply standardized
-changes by the training target standard deviation. Fidelity* averages both signed
+changes by the training target standard deviation. Fidelity\* averages both signed
 changes over molecules; absolute changes would discard the intended polarity.
 Zero changes count as nonnegative, so the fractions measure sign consistency,
 not a minimum useful effect size.
 
 For the polarity-constrained selector:
 
-| Fold | Mean negative-channel delta | Mean positive-channel delta | Fidelity* | Negative sign correct | Positive sign correct | Both signs correct |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0 | 1.2869 | 0.2713 | 0.7791 | 99.1% | 76.3% | 75.4% |
-| 1 | 2.4400 | **-0.7756** | 0.8322 | 100.0% | **9.4%** | **9.4%** |
-| 2 | 4.5403 | 0.3864 | 2.4633 | 100.0% | 86.6% | 86.6% |
-| 3 | 3.6861 | 1.5042 | 2.5951 | 100.0% | 96.2% | 96.2% |
-| 4 | 4.2508 | 0.8867 | 2.5687 | 100.0% | 80.5% | 80.5% |
+| Fold | Mean negative-channel delta | Mean positive-channel delta | Fidelity\* | Negative sign correct | Positive sign correct | Both signs correct |
+| ---- | --------------------------: | --------------------------: | ---------: | --------------------: | --------------------: | -----------------: |
+| 0    |                      1.2869 |                      0.2713 |     0.7791 |                 99.1% |                 76.3% |              75.4% |
+| 1    |                      2.4400 |                 **-0.7756** |     0.8322 |                100.0% |              **9.4%** |           **9.4%** |
+| 2    |                      4.5403 |                      0.3864 |     2.4633 |                100.0% |                 86.6% |              86.6% |
+| 3    |                      3.6861 |                      1.5042 |     2.5951 |                100.0% |                 96.2% |              96.2% |
+| 4    |                      4.2508 |                      0.8867 |     2.5687 |                100.0% |                 80.5% |              80.5% |
 
 Mean fidelity* is positive in every fold, but fold 1's positive channel still
 behaves mostly contrary to its intended role. Across all held-out molecules,

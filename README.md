@@ -1,8 +1,8 @@
-# Drugzello — explainable molecular solubility
+# Drugzello: explainable molecular solubility
 
 **Research question:** Can MEGAN predict aqueous solubility on unseen molecular scaffolds while learning useful explanation channels?
 
-Drugzello evaluates MEGAN in PyTorch Geometric using scaffold experiments and baselines. Learn the implementation with the [guide](docs/reproducing-megan.md) and [notebook](notebooks/megan_pytorch.ipynb), or try the trained-model demo.
+Drugzello evaluates MEGAN in PyTorch Geometric using scaffold experiments and baselines. Explore the [model implementation](backend/src/models/megan_architecture.py), [mask-evaluation learning notes](experiments/mask-chemistry/README.md), or trained-model demo.
 
 ## Method and data
 
@@ -10,9 +10,7 @@ The reference is Teufel, Torresi, Reiser and Friederich, [_MEGAN: Multi-Explanat
 
 The model combines GATv2 attention, differentiable node/edge gates, channel-weighted pooling and explanation co-training. Variants add categorical embeddings and explanation-then-prediction updates.
 
-This applies MEGAN to **ESOL**; it does not replicate the paper's AqSolDB benchmark. Residual connections, LayerNorm, auxiliary loss and AdamW are [documented implementation choices](docs/reproducing-megan.md).
-
-A separate [paper-protocol ESOL replication](results/paper-esol/README.md) imports the original KGCNN model and configuration from Appendix C. Five random folds at 400 fixed epochs achieve **MAE 0.4424 ± 0.0291 logS**, close to the authors' 0.4369 ± 0.0319. The scaffold experiments below remain a separate evaluation.
+This applies MEGAN to **ESOL**; it does not replicate the paper's AqSolDB benchmark. See the [architecture](backend/src/models/megan_architecture.py) for residual connections and LayerNorm, and the [trainer](backend/src/models/trainer.py) for auxiliary losses and AdamW.
 
 ESOL contains 1,128 aqueous-solubility targets: `logS = log10(S / (mol/L))`. [Raw data and checksum](backend/data/README.md) are retained.
 
@@ -47,8 +45,6 @@ Download [comparisons](results/scaffold-tuning/comparison.csv), [per-fold metric
 
 Channel ablation uses the same forward path. The constrained selector has positive average fidelity\* on all folds, with a fallback in fold 1. Both channels have the expected sign for only **66.7%** of test molecules; MAE-only selection has negative fidelity on two folds. [Channel evaluation](results/scaffold-tuning/README.md#explanation-channel-behavior).
 
-ESOL has no attribution labels, so learned masks do not establish chemical mechanisms. MC dropout is uncalibrated; confidence is null.
-
 [Chemical-proxy tests](results/mask-chemistry/README.md) find signal in the learned masks: training-oriented polar-versus-nonpolar AUC is 0.777 for the original random-fold model and 0.806 for prediction-only scaffold MEGAN, versus about 0.5 after shuffling. High-mask pooling deletions affect predictions more than equal-sized random deletions. Channel polarity remains inconsistent; these checks support chemical plausibility rather than causal explanations.
 
 ## Install, test and reproduce
@@ -81,7 +77,7 @@ For the original KGCNN benchmark, install the [separate TensorFlow environment](
 
 The [Makefile](Makefile) contains exact flags. The [full report](results/scaffold-tuning/README.md#exact-reproduction-commands) records commands, configurations, splits, seeds, environment and histories. Training regenerates graph caches from the retained CSV.
 
-Compressed source snapshots and fold artifacts preserve the experiments. All **10,152 held-out predictions** replayed exactly after cleanup. See [replay instructions](docs/repository-maintenance.md).
+Compressed source snapshots and fold artifacts preserve the experiments. All **10,152 held-out predictions** replayed exactly after cleanup. See [replay instructions](results/scaffold-tuning/README.md#repository-cleanup-and-archival-replay).
 
 For optional MLflow or archived-source replay, install `backend/requirements/tracking.txt` with pip.
 
@@ -102,7 +98,9 @@ The 93-epoch inference refit is local at `backend/models/trained/scaffold-tuned/
 
 ```bash
 make api
-# Separate terminal:
+```
+
+```bash
 cd frontend
 npm ci
 npm run dev

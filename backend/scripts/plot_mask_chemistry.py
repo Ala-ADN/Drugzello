@@ -22,7 +22,7 @@ LABELS = ["Original MEGAN\nrandom folds", "MEGAN, prediction only\nscaffold fold
 
 def main():
     summaries = [json.loads((BASE / c / "summary.json").read_text()) for c in COHORTS]
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), constrained_layout=True)
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.5), constrained_layout=True)
     y = np.arange(3)
     for field, offset, color, label in [("mask_chemical_auc", -.12, "#2166ac", "Learned masks"),
                                         ("random_weights_chemical_auc", .12, "#888888", "Randomized weights")]:
@@ -37,7 +37,7 @@ def main():
     errors = np.array([[r["mean"] - r["ci95"][0], r["ci95"][1] - r["mean"]] for r in records]).T
     axes[1].errorbar(values, y, xerr=errors, fmt="o", color="#2166ac", capsize=3)
     axes[1].axvline(0, color="black", linestyle="--", linewidth=1)
-    axes[1].set(xlabel="Extra absolute prediction change over random (logS)", title="Top-quarter mask readout deletion", xlim=(-.03, .75))
+    axes[1].set(xlabel="Extra absolute prediction change\nover random (logS)", title="Top-quarter mask readout deletion", xlim=(-.03, .75))
     for ax in axes:
         ax.set_yticks(y, LABELS); ax.invert_yaxis(); ax.grid(axis="x", alpha=.2)
         ax.spines[["top", "right"]].set_visible(False)
